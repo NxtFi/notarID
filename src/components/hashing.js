@@ -175,21 +175,43 @@ export default function HashingForm(){
         .catch(err => console.log('Solicitud fallida', err)); // Capturar errores
     }
     
-    const handleButtonSellar = (e) => {
+    const handleButtonSellar = async (e) => {
         // datos mandados con la solicutud POST
-        let _datos = {
-            id: "7",
-            hash: "72d3d58cf56fcf6da15ff85496acd10a590b094870d5f2460233e65dde7ba286"
+        let _data = {
+            data: "220eddabf3918da723f8b4b1efea5f13d993ee86c8c463f6534a8acdd091d783",
+		    by: "NOTARIO",
+		    scope: "NOTARIO"
         }
         
-        fetch('https://62cdce4f066bd2b6992c8fda.mockapi.io/sellar', {
-            method: "POST",
-            body: JSON.stringify(_datos),
-            headers: {"Content-type": "application/json; charset=UTF-8"}
-        })
-        .then(response => response.json()) 
-        .then(json => console.log(json))
-        .catch(err => console.log(err));
+        // fetch('https://development-signblock.test.nxtfi.net/create', {
+        //     method: "POST",
+        //     //body: JSON.stringify(_datos),
+        //     body: _datos,
+        //     'mode': 'no-cors',
+        //     headers: {"Content-type": "application/json; charset=UTF-8"}
+        // })
+        // .then(response => response.json())
+        // .then(json => console.log(json))
+        // .catch(err => console.log(err));
+
+        const location = 'development-signblock.test.nxtfi.net';
+        const settings = {
+            method: 'POST',
+            'mode': 'no-cors',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(_data)
+        };
+        try {
+            const fetchResponse = await fetch(`https://${location}/create`, settings);
+            const data = await fetchResponse.json();
+            return data;
+        } catch (e) {
+            return e;
+        }    
+
     }
 
     return (
