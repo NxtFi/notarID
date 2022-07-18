@@ -167,10 +167,12 @@ export default function HashingForm(){
     }
 
     const handleButtonVerificar = (e) => {
-        // Solicitud GET (Request).
-        fetch('https://development-001-node.test.nxtfi.net/7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99/_/'+output)
+        // GET (Request).
+        let endpoint = 'https://development-001-node.test.nxtfi.net/7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99/_/';
+        endpoint += output;
+        fetch(endpoint)
         // Exito
-        .then(response => response.json())  // convertir a json
+        .then(response => response.json())
         .then(json => {
             console.log(json);
             if (json!=null){
@@ -179,42 +181,25 @@ export default function HashingForm(){
         
         })    //imprimir los datos en la consola
         .catch(err => console.log('Solicitud fallida', err)); // Capturar errores
-
     }
     
     const handleButtonSellar = async (e) => {
-        // datos mandados con la solicutud POST
-        let data_raw = '{"block": {"data": "// IMPORT 7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99\n { hash: \'1355d4c778090809336ce9d0980af78c16edf218ded10c2a7ac1736c9e8b16fa\' }","by": "NOTARIO","scope": "7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
-        let data = '{"block":{"data":"// IMPORT 7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99\\n {hash:\'1355d4c778090809336ce9d0980af78c16edf218ded10c2a7ac1736c9e8b16fa\'}","by":"NOTARIO","scope":"7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
+        let data_raw = '{"block":{"data":"// IMPORT ';
+        data_raw += '7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99'; // smart contract
+        data_raw += '\\n {hash:\'';
+        data_raw += output; //doc hash
+        data_raw += '\'}","by":"NOTARIO","scope":"7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
 
-        let _data = {
-            //data: output,
-            data: "// IMPORT 7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99\\n { hash: \"1355d4c778090809336ce9d0980af78c16edf218ded10c2a7ac1736c9e8b16fa\" }",
-		    by: "NOTARIO",
-		    scope: "7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"
-        }
-        
-        // fetch('https://development-signblock.test.nxtfi.net/create', {
-        //     method: "POST",
-        //     //body: JSON.stringify(_datos),
-        //     body: _datos,
-        //     'mode': 'no-cors',
-        //     headers: {"Content-type": "application/json; charset=UTF-8"}
-        // })
-        // .then(response => response.json())
-        // .then(json => console.log(json))
-        // .catch(err => console.log(err));
+        // string pattern
+        //let data = '{"block":{"data":"// IMPORT 7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99\\n {hash:\'1355d4c778090809336ce9d0980af78c16edf218ded10c2a7ac1736c9e8b1fff\'}","by":"NOTARIO","scope":"7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
 
         const location = 'signblock.test.nxtfi.net';
         const settings = {
             method: 'POST',
-            //mode: 'no-cors',
             headers: {"Content-type": "application/json"},
-            //body: JSON.stringify(data_raw)
-            body: data
+            body: data_raw
         };
-        //console.log(JSON.stringify(data_raw));
-        console.log(data);
+
         try {
             const fetchResponse = await fetch(`https://${location}/create`, settings);
             const data = await fetchResponse.json();
@@ -224,7 +209,6 @@ export default function HashingForm(){
             console.log('Error: ',  e);
             return e;
         }    
-
     }
 
     return (

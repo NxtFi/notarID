@@ -11,9 +11,8 @@ export default function Navbar() {
             <a href="https://nxtfi.org/">
 				<img src={logo} height="50" alt="NxtFi" id="logo"></img>
 			</a>
-            <button className="hamburger" onClick={() => {setIsNavExpanded(!isNavExpanded)}}>{/* hamburger svg code... */}</button>
             <div className={isNavExpanded ? "navigation-menu expanded" : "navigation-menu"}>
-                <ul>
+                {/* <ul>
                     <li>
                         <a href="/home">Sello de tiempo</a>
                     </li>
@@ -29,7 +28,7 @@ export default function Navbar() {
                     <li>
                         <a href="/contact">Validación con certificado</a>
                     </li>
-                </ul>
+                </ul> */}
             </div>
         </nav>
       )
