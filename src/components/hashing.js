@@ -10,6 +10,8 @@ export default function HashingForm(){
     let [output,setOutput] = useState('');
 
     const [showMessage, setShowMessage] = useState(false);
+    const [showResult, setResult] = useState(false);
+    const [showResponse, setResponse]=useState('Sin resultado');
 
     //For handling text input
     const handleTextInput = async (e) => {
@@ -174,6 +176,7 @@ export default function HashingForm(){
         // Exito
         .then(response => response.json())
         .then(json => {
+            setResponse(json);
             console.log(json);
             if (json!=null){
                 console.log('hash existente');
@@ -181,6 +184,7 @@ export default function HashingForm(){
         
         })    //imprimir los datos en la consola
         .catch(err => console.log('Solicitud fallida', err)); // Capturar errores
+        setResult(true);
     }
     
     const handleButtonSellar = async (e) => {
@@ -211,10 +215,10 @@ export default function HashingForm(){
         }    
     }
 
-    return (
+    return (  
         <div className='hashing-container'>
             <div className='hashing-content'>
-               
+                {!showResult &&
                 <div className="hashing-form">
                     <h4 className="hashing-form-heading">Sello de Tiempo</h4>
                     <form>
@@ -231,27 +235,8 @@ export default function HashingForm(){
                         </div>
                     </form>
                 </div>
-           
-            {/* <div className="hashing-algorithms">
-                <h4 className="hashing-algorithms-heading">Algorithms</h4>
-                <div className="hashing-algorithms-list">
-                    {
-                        algorithms.map(algo => {
-                            return (
-                                <div className="form-check" key={algo}>
-                                    <input className="form-check-input" type="radio" name="algorithm" id={algo} value={algo} checked={algorithm === algo} onChange={handleAlgorithmChange} />
-                                    <label className="form-check-label" htmlFor={algo}>
-                                        {algo}
-                                    </label>
-                                </div>
-
-                            )
-                        })
-                    }
-                </div>
-            </div> */}
-
-                {showMessage &&
+                }
+                {showMessage && !showResult &&
                 <div className="hashed-output">
                     <h4 className="hashed-algorithm-heading">Hash del archivo</h4>
                     <div className="hashed-algorithm-container">
@@ -261,14 +246,23 @@ export default function HashingForm(){
                     </div>
                 </div>
                 }
-                {showMessage &&
+                {showMessage && !showResult &&
                 <div className="hashed-button">              
                     <button className="space" type="button" onClick={handleButtonVerificar}>VERIFICAR</button>
                     <button type="button" onClick={handleButtonSellar}>SELLAR</button>
                 </div>
-                }       
-           
-            </div>
+                }
+                {showResult &&
+                <div className="hashed-output">
+                    <h4 className="hashed-algorithm-heading">Response</h4>
+                    <div className="hashed-algorithm-container">
+                        <p className="hashed-algorithm-text">
+                            {showResponse}
+                        </p>
+                    </div>
+                </div>
+                }                
+            </div>           
         </div>
     );
 }
