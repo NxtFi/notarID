@@ -1,4 +1,5 @@
 import React,{useState} from 'react';
+//import {useNavigate} from 'react-router-dom';
 import {sha1,sha256,sha384,sha512} from 'crypto-hash';
 import './hashing.css';
 
@@ -12,6 +13,16 @@ export default function HashingForm(){
     const [showMessage, setShowMessage] = useState(false);
     const [showResult, setResult] = useState(false);
     const [showResponse, setResponse]=useState('Sin resultado');
+
+
+    function format_time(s) {
+        const dtFormat = new Intl.DateTimeFormat('es-AR', {
+          timeStyle: 'long',
+          timeZone: 'America/Argentina/Buenos_Aires'
+        });
+        
+        return dtFormat.format(new Date(s * 1e3));
+    };
 
     //For handling text input
     const handleTextInput = async (e) => {
@@ -145,9 +156,7 @@ export default function HashingForm(){
                     // Setting the content of the file as file input
                     setFileInput(fr.result);
                 }
-                setShowMessage(true);
-                
-            
+                setShowMessage(true);          
             }
         } else {
             // Usar la interfaz DataTransfer para acceder a el/los archivos
@@ -162,8 +171,7 @@ export default function HashingForm(){
     }
 
     const handleFileDragOver = (e) => {
-        console.log('File(s) in drop zone');
-
+        //console.log('File(s) in drop zone');
         // Prevent default behavior (Prevent file from being opened)
         e.preventDefault();
     }
@@ -176,10 +184,26 @@ export default function HashingForm(){
         // Exito
         .then(response => response.json())
         .then(json => {
-            setResponse(json);
-            console.log(json);
             if (json!=null){
-                console.log('hash existente');
+                console.log('Bloque: ', json);
+                setResponse('Documento sellado en el bloque: '+ json);
+                //obtener timestamp
+                //https://development-001-node.test.nxtfi.net/_block
+                let blockReadEndpoint = 'https://development-001-node.test.nxtfi.net/_block/';
+                blockReadEndpoint += json;
+                fetch(blockReadEndpoint)
+                    // Exito
+                    .then(response => response.json())
+                    .then(blockData => {
+                        console.log('Bloque sellador: ', blockData);
+                        setResponse('Documento sellado en el bloque: '+ blockData.hash + '\nTimestamp: '+blockData.timestamp + '\nFecha y hora: '+(new Date(blockData.timestamp)).toLocaleString("es-AR", "America/Argentina/Buenos_Aires"));
+                    })
+                    .catch(err => console.log('timestamp fail', err));
+                    setResult(true);
+                
+            } else{
+                console.log('Documento no sellado');
+                setResponse('Documento no sellado');
             }
         
         })    //imprimir los datos en la consola
@@ -188,31 +212,59 @@ export default function HashingForm(){
     }
     
     const handleButtonSellar = async (e) => {
-        let data_raw = '{"block":{"data":"// IMPORT ';
-        data_raw += '7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99'; // smart contract
-        data_raw += '\\n {hash:\'';
-        data_raw += output; //doc hash
-        data_raw += '\'}","by":"NOTARIO","scope":"7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
 
-        // string pattern
-        //let data = '{"block":{"data":"// IMPORT 7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99\\n {hash:\'1355d4c778090809336ce9d0980af78c16edf218ded10c2a7ac1736c9e8b1fff\'}","by":"NOTARIO","scope":"7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
+        let endpoint = 'https://development-001-node.test.nxtfi.net/7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99/_/';
+        endpoint += output;
+        fetch(endpoint)
+        // Exito
+        .then(response => response.json())
+        .then(async json => {
+            if (json!=null){
+                console.log('Bloque: ', json);
+                setResponse('Documento ya se encuentra sellado en el bloque: '+ json);
+            } else{
+                console.log('Documento no sellado');
+                //sellar
+                console.log('sellando...');
+                let data_raw = '{"block":{"data":"// IMPORT ';
+                data_raw += '7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99'; // smart contract
+                data_raw += '\\n {hash:\'';
+                data_raw += output; //doc hash
+                data_raw += '\'}","by":"NOTARIO","scope":"7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
 
-        const location = 'signblock.test.nxtfi.net';
-        const settings = {
-            method: 'POST',
-            headers: {"Content-type": "application/json"},
-            body: data_raw
-        };
+                // string pattern
+                //let data = '{"block":{"data":"// IMPORT 7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99\\n {hash:\'1355d4c778090809336ce9d0980af78c16edf218ded10c2a7ac1736c9e8b1fff\'}","by":"NOTARIO","scope":"7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
 
-        try {
-            const fetchResponse = await fetch(`https://${location}/create`, settings);
-            const data = await fetchResponse.json();
-            console.log('Resultado: ', data);
-            return data;
-        } catch (e) {
-            console.log('Error: ',  e);
-            return e;
-        }    
+                const location = 'signblock.test.nxtfi.net';
+                const settings = {
+                    method: 'POST',
+                    headers: {"Content-type": "application/json"},
+                    body: data_raw
+                };
+                try {
+                    setResponse('Documento enviado a sellar');
+                    const fetchResponse = await fetch(`https://${location}/create`, settings);
+                    const data = await fetchResponse.json();
+                    console.log('Resultado: ', data);
+                    return data;
+                } catch (e) {
+                    console.log('Error: ',  e);
+                    return e;
+                }    
+            }
+        
+        })    //imprimir los datos en la consola
+        .catch(err => console.log('Solicitud fallida', err)); // Capturar errores
+        setResult(true);     
+        }
+    
+
+    const backToInitialState = (e) =>{
+        setFileInput('');
+        setOutput('');
+        setResponse('');
+        setResult(false);
+        setShowMessage(false);
     }
 
     return (  
@@ -227,7 +279,7 @@ export default function HashingForm(){
                             <input type="text" className="form-control" id="text-input" placeholder='Write some text' value={text_input} onChange={handleTextInput} />
                         </div> */}
                         <div className="file-drag-drop" onDrop={handleFileDragDrop} onDragOver={handleFileDragOver}>
-                            <p>Arrastra y suelta el documento a esta zona ...</p>
+                            <p>Arrastre y suelte el documento ...</p>
                         </div>
                         <div className="form-group">
                             <label htmlFor="file-input">Selecciona archivo</label>
@@ -254,11 +306,12 @@ export default function HashingForm(){
                 }
                 {showResult &&
                 <div className="hashed-output">
-                    <h4 className="hashed-algorithm-heading">Response</h4>
+                    <h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4>
                     <div className="hashed-algorithm-container">
                         <p className="hashed-algorithm-text">
                             {showResponse}
                         </p>
+                        <button type="button" onClick={backToInitialState}>Volver a verificar/sellar</button>
                     </div>
                 </div>
                 }                
