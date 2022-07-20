@@ -77,6 +77,7 @@ export default function HashingForm(){
             // Setting the content of the file as file input
             setFileInput(fr.result);
             setShowMessage(true);
+            e.target.value = null;
         }
 
         // Reading the file.
@@ -163,11 +164,7 @@ export default function HashingForm(){
             for (var i = 0; i < e.dataTransfer.files.length; i++) {
             console.log('... file[' + i + '].name = ' + e.dataTransfer.files[i].name);
             }
-        }
-
-        // Pasar el evento a removeDragData para limpiar
-        //removeDragData(e)
-        
+        }        
     }
 
     const handleFileDragOver = (e) => {
@@ -256,8 +253,7 @@ export default function HashingForm(){
         })    //imprimir los datos en la consola
         .catch(err => console.log('Solicitud fallida', err)); // Capturar errores
         setResult(true);     
-        }
-    
+        } 
 
     const backToInitialState = (e) =>{
         setFileInput('');
@@ -281,8 +277,8 @@ export default function HashingForm(){
                         <div className="file-drag-drop" onDrop={handleFileDragDrop} onDragOver={handleFileDragOver}>
                             <p>Arrastre y suelte el documento ...</p>
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="file-input">Selecciona archivo</label>
+                        <div>
+                            <label htmlFor="file-input" className='custom-file-upload'>Selecciona archivo</label>
                             <input type="file" className="form-control" id="file-input" onChange={handleFileInput} />
                         </div>
                     </form>
