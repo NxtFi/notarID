@@ -1,5 +1,4 @@
 import React,{useState} from 'react';
-//import {useNavigate} from 'react-router-dom';
 import {sha1,sha256,sha384,sha512} from 'crypto-hash';
 import './hashing.css';
 

@@ -1,34 +1,22 @@
 // Navbar.js 
-import { useState } from "react";
-import "../css/navbar.css";
+import "./navbar.css";
+import { NavLink } from 'react-router-dom';
 
-import logo from '../img/NXTFI-blanco.jpg';
+import nxtfi_logo from '../img/NXTFI-blanco.jpg';
+import notarid_logo from '../img/NotarID_logo.png';
+
 
 export default function Navbar() {
-    const [isNavExpanded, setIsNavExpanded] = useState(false)
     return (
         <nav className="navigation">
-            <a href="https://nxtfi.org/">
-				<img src={logo} height="50" alt="NxtFi" id="logo"></img>
-			</a>
-            <div className={isNavExpanded ? "navigation-menu expanded" : "navigation-menu"}>
-                {/* <ul>
-                    <li>
-                        <a href="/home">Sello de tiempo</a>
-                    </li>
-                    <li>
-                        <a href="/about">Sello certificado</a>
-                    </li>
-                    <li>
-                        <a href="/contact">Sello con datos anexos</a>
-                    </li>
-                    <li>
-                        <a href="/contact">Validación simple</a>
-                    </li>
-                    <li>
-                        <a href="/contact">Validación con certificado</a>
-                    </li>
-                </ul> */}
+            <a href="https://nxtfi.org/"><img src={nxtfi_logo} height="50" alt="NxtFi" id="nxtfi_logo"></img></a>
+            <a href="https://dev.notarid.nxtfi.net/"><img src={notarid_logo} height="50" alt="NotarID" id="notarid_logo"></img></a>
+            <div>
+                <ul>
+                    <li><NavLink className={({ isActive }) => "" + (isActive ? " active" : "")} to="/">Sello de tiempo</NavLink></li>
+                    <li><NavLink className={({ isActive }) => "" + (isActive ? " active" : "")} to="/certificado">Sello certificado</NavLink></li>
+                    <li><NavLink className={({ isActive }) => "" + (isActive ? " active" : "")} to="/anexo">Sello con datos anexos</NavLink></li>
+                </ul>
             </div>
         </nav>
       )
