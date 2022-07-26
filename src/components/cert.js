@@ -3,12 +3,10 @@ import {sha256} from 'crypto-hash';
 import validator from 'validator'
 
 export default function CertForm(){
-  const [algorithms] = useState(['sha1','sha256','sha384','sha512']);
-  let [text_input, setTextInput] =useState('');
-  const [emailError, setEmailError] = useState('');
+  const [emailError, setEmailError] = useState('Ingrese un Email');
+  const [emailOk, setEmailOk] = useState(false);
   const [emailDir, setEmailDir] = useState('');
   let [file_input, setFileInput] = useState('');
-  let [algorithm, setAlgorithm] = useState('sha256');
   let [output,setOutput] = useState('');
 
   const [showMessage, setShowMessage] = useState(false);
@@ -31,9 +29,11 @@ export default function CertForm(){
     var email = e.target.value
   
     if (validator.isEmail(email)) {
-      setEmailError('Valid Email :)')
+      setEmailError('El certificado se enviará a: '+ email);
+      setEmailOk(true);
     } else {
-      setEmailError('Enter valid Email!')
+      setEmailError('Ingrese un Email válido!');
+      setEmailOk(false);
     }
     setEmailDir(email);
   }
@@ -64,36 +64,7 @@ export default function CertForm(){
       // Reading the file.
       fr.readAsText(e.target.files[0]);
   }
-  //For handling algorithm change
-  const handleAlgorithmChange = async (e) => {
-      // Get the selected algorithm
-      let value = e.target.value;
-
-      let result = '';
-
-      // Check if we have a text input
-      if (text_input) {
-
-          // Hash the text based on the selected algorithm
-          
-              result = await sha256(text_input);
-      }
-
-      // Check if we have a file input
-      if (file_input) {
-
-          // Hash the file content based on the selected algorithm
-          result = await sha256(file_input);
-      }
-
-      // Set the selected algorithm
-      setAlgorithm(value);
-
-      // Set the hashed text
-      setOutput(result);
-
-  }
-
+  
   const handleFileDragDrop = (e) => {
       console.log('Fichero(s) arrastrados');
 
@@ -185,7 +156,11 @@ export default function CertForm(){
               console.log('Documento no sellado');
               //sellar
               console.log('sellando...');
-              let data_raw = '{"block":{"data":"// IMPORT ';
+              let data_raw = '{';
+              data_raw += '"mail":"';
+              data_raw += emailDir;
+              data_raw += '",';
+              data_raw += '"block":{"data":"// IMPORT ';
               data_raw += '7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99'; // smart contract
               data_raw += '\\n {hash:\'';
               data_raw += output; //doc hash
@@ -223,6 +198,9 @@ export default function CertForm(){
       setResponse('');
       setResult(false);
       setShowMessage(false);
+      setEmailOk(false);
+      setEmailDir('');
+      setEmailError('Ingrese un Email');
   }
 
   return (  
@@ -235,7 +213,7 @@ export default function CertForm(){
                       <div className="form-group">
                           <label htmlFor="text-input">E-mail</label>
                           <input type="email" className="form-control" id="email-input" placeholder='usuario@mail.com' value={emailDir} onChange={handleEmailInput} />
-                          <p id="demo"><span style={{fontWeight: 'bold', color: 'red',}}>{emailError}</span></p>
+                          <p>{emailError}</p>
                       </div>
                       <div className="file-drag-drop" onDrop={handleFileDragDrop} onDragOver={handleFileDragOver}>
                           <p>Arrastre y suelte el documento ...</p>
@@ -257,7 +235,7 @@ export default function CertForm(){
                   </div>
               </div>
               }
-              {showMessage && !showResult &&
+              {showMessage && !showResult && emailOk &&
               <div className="hashed-button">              
                   <button className="space" type="button" onClick={handleButtonVerificar}>VERIFICAR</button>
                   <button type="button" onClick={handleButtonSellar}>SELLAR</button>
