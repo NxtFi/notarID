@@ -8,6 +8,7 @@ export default function CertForm(){
   const [emailDir, setEmailDir] = useState('');
   let [file_input, setFileInput] = useState('');
   let [output,setOutput] = useState('');
+  let [file_Name, setFileName] = useState('');
 
   const [showMessage, setShowMessage] = useState(false);
   const [showResult, setResult] = useState(false);
@@ -40,29 +41,31 @@ export default function CertForm(){
 
   //For handling file input
   const handleFileInput = (e) => {
-      // Initializing the file reader
-      const fr = new FileReader();
+    // Initializing the file reader
+    const fr = new FileReader();
 
-      // Listening to when the file has been read.
-      fr.onload = async () => {
+    // Listening to when the file has been read.
+    fr.onload = async () => {
 
-          let result = '';
+        let result = '';
 
-          // Hashing the content based on the active algorithm
-          
-          result = await sha256(fr.result);
+        // Hashing the content based on the active algorithm
+        
+        result = await sha256(fr.result);
 
-          // Setting the hashed text as the output
-          setOutput(result);
+        // Setting the hashed text as the output
+        setOutput(result);
 
-          // Setting the content of the file as file input
-          setFileInput(fr.result);
-          setShowMessage(true);
-          e.target.value = null;
-      }
+        // Setting the content of the file as file input
+        setFileInput(fr.result);
+        setShowMessage(true);
+        e.target.value = null;
+    }
 
-      // Reading the file.
-      fr.readAsText(e.target.files[0]);
+    // Reading the file.
+    fr.readAsText(e.target.files[0]);
+    setFileName(e.target.files[0].name);
+    console.log(e.target.files[0].name);
   }
   
   const handleFileDragDrop = (e) => {
@@ -77,6 +80,7 @@ export default function CertForm(){
                      
               var file = e.dataTransfer.files[i];
               console.log('... file[' + i + '].name = ' + file.name);
+              setFileName(file.name);
               
               const fr = new FileReader();
               fr.readAsText(e.dataTransfer.files[i]);
@@ -233,6 +237,7 @@ export default function CertForm(){
                           {output}
                       </p>
                   </div>
+                  <p>Archivo: {file_Name}</p>
               </div>
               }
               {showMessage && !showResult && emailOk &&

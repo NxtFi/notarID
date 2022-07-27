@@ -12,6 +12,7 @@ export default function HashingForm(){
     const [showMessage, setShowMessage] = useState(false);
     const [showResult, setResult] = useState(false);
     const [showResponse, setResponse]=useState('Sin resultado');
+    let [file_Name, setFileName] = useState('');
 
 
     function format_time(s) {
@@ -81,6 +82,8 @@ export default function HashingForm(){
 
         // Reading the file.
         fr.readAsText(e.target.files[0]);
+        setFileName(e.target.files[0].name);
+        console.log(e.target.files[0].name);
     }
     //For handling algorithm change
     const handleAlgorithmChange = async (e) => {
@@ -143,6 +146,7 @@ export default function HashingForm(){
                        
                 var file = e.dataTransfer.files[i];
                 console.log('... file[' + i + '].name = ' + file.name);
+                setFileName(file.name);
                 
                 const fr = new FileReader();
                 fr.readAsText(e.dataTransfer.files[i]);
@@ -291,6 +295,7 @@ export default function HashingForm(){
                             {output}
                         </p>
                     </div>
+                    <p>Archivo: {file_Name}</p>
                 </div>
                 }
                 {showMessage && !showResult &&
