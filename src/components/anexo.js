@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { sha256 } from "crypto-hash";
 import validator from "validator";
-import "./anexo.css";
 
 export default function AnexoForm() {
 	const [emailError, setEmailError] = useState("Ingrese un Email");
@@ -77,7 +76,7 @@ export default function AnexoForm() {
 
 	const handleFileDragDrop = (e) => {
 		console.log("Fichero(s) arrastrados");
-
+		setActiveAnimationDrag(false);
 		// Evitar el comportamiendo por defecto (Evitar que el fichero se abra/ejecute)
 		e.preventDefault();
 
@@ -110,7 +109,7 @@ export default function AnexoForm() {
 	};
 
 	const handleFileDragOver = (e) => {
-        setActiveAnimationDrag(true)
+		setActiveAnimationDrag(true);
 		//console.log('File(s) in drop zone');
 		// Prevent default behavior (Prevent file from being opened)
 		e.preventDefault();
@@ -227,52 +226,55 @@ export default function AnexoForm() {
 						<form>
 							<h4 className="form-heading">Sello con datos anexos</h4>
 							<div className="form-group">
-								<div className="first-group">
-									<div className="input-label">
-										<label htmlFor="name">Nombre:</label>
-										<input type="text" name="name" value={inputs.name || ""} id="name" onChange={handleChange} />
-									</div>
-									<div className="input-label">
-										<label htmlFor="ape">Apellido:</label>
-										<input type="text" name="ape" value={inputs.ape || ""} id="ape" onChange={handleChange} />
-									</div>
-									<div className="input-label">
-										<label htmlFor="obs">Observaciones:</label>
-										<input type="text" name="obs" value={inputs.obs || ""} id="obs"onChange={handleChange} />
-									</div>
+								<div className="input-label">
+									<label htmlFor="name">Nombre:</label>
+									<input
+										type="text"
+										name="name"
+										value={inputs.name || ""}
+										id="name"
+										onChange={handleChange}
+									/>
 								</div>
-								<div className="first-group">
-									<div className="input-label">
-										<label htmlFor="dtype">Tipo de documento:</label>
-										<select name="dtype" value={inputs.dtype || ""} id="dtype" onChange={handleChange}>
-											<option value="DNI">DNI</option>
-											<option value="CI">CI</option>
-											<option value="LC">LC</option>
-											<option value="LE">LE</option>
-										</select>
-									</div>
-									<div className="input-label">
-										<label htmlFor="docnumber">Número:</label>
-										<input
-											type="number"
-											name="docnumber"
-											value={inputs.docnumber || ""}
-											onChange={handleChange}
-											id="docnumber"
-										/>
-									</div>
-									<div className="input-label">
-										<label htmlFor="text-input">E-mail</label>
-										<input
-											type="email"
-											className="form-control"
-											id="email-input"
-											placeholder="usuario@mail.com"
-											value={emailDir}
-											onChange={handleEmailInput}
-										/>
-										<p className="emailError">{emailError}</p>
-									</div>
+								<div className="input-label">
+									<label htmlFor="ape">Apellido:</label>
+									<input type="text" name="ape" value={inputs.ape || ""} id="ape" onChange={handleChange} />
+								</div>
+
+								<div className="input-label">
+									<label htmlFor="dtype">Tipo de documento:</label>
+									<select name="dtype" value={inputs.dtype || ""} id="dtype" onChange={handleChange}>
+										<option value="DNI">DNI</option>
+										<option value="CI">CI</option>
+										<option value="LC">LC</option>
+										<option value="LE">LE</option>
+									</select>
+								</div>
+								<div className="input-label">
+									<label htmlFor="docnumber">Número:</label>
+									<input
+										type="number"
+										name="docnumber"
+										value={inputs.docnumber || ""}
+										onChange={handleChange}
+										id="docnumber"
+									/>
+								</div>
+								<div className="input-label">
+									<label htmlFor="obs">Observaciones:</label>
+									<input type="text" name="obs" value={inputs.obs || ""} id="obs" onChange={handleChange} />
+								</div>
+								<div className="input-label">
+									<label htmlFor="text-input">E-mail</label>
+									<input
+										type="email"
+										className="form-control"
+										id="email-input"
+										placeholder="usuario@mail.com"
+										value={emailDir}
+										onChange={handleEmailInput}
+									/>
+									<p className="emailError">{emailError}</p>
 								</div>
 							</div>
 							<div
@@ -294,29 +296,29 @@ export default function AnexoForm() {
 				)}
 				{showMessage && !showResult && (
 					<div className="hashed-output">
-						{/* <h4 className="hashed-algorithm-heading">Hash del archivo</h4>
+						<h4 className="hashed-algorithm-heading">Hash del archivo</h4>
 						<div className="hashed-algorithm-container">
 							<p className="hashed-algorithm-text">{output}</p>
 						</div>
-						<p>Archivo: {file_Name}</p> */}
+						<p className="file-name">Archivo: {file_Name}</p>
 					</div>
 				)}
 				{showMessage && !showResult && emailOk && (
 					<div className="hashed-button">
-						{/* <button className="space" type="button" onClick={handleButtonVerificar}>
+						<button className="verify-doc" type="button" onClick={handleButtonVerificar}>
 							VERIFICAR
 						</button>
-						<button type="button" onClick={handleButtonSellar}>
+						<button className="sellar-doc" type="button" onClick={handleButtonSellar}>
 							SELLAR
-						</button> */}
+						</button>
 					</div>
 				)}
 				{showResult && (
-					<div className="hashed-output">
-						{/* <h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4> */}
+					<div className="hashed-output-response">
+						<h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4>
 						<div className="hashed-algorithm-container">
-							{/* <p className="hashed-algorithm-text">{showResponse}</p> */}
-							<button type="button" onClick={backToInitialState}>
+							<p className="hashed-algorithm-text">{showResponse}</p>
+							<button className="again-button" type="button" onClick={backToInitialState}>
 								Volver a verificar/sellar
 							</button>
 						</div>

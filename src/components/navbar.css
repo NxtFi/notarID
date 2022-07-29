@@ -30,17 +30,20 @@
 
 .navigation li {
 	float: left;
-	border-right: 1px solid #bbb;
-	border-left: 1px solid #bbb;
+	/* border-right: 1px solid #bbb; */
+	/* border-left: 1px solid #bbb; */
 }
 
 .navigation li a {
 	display: block;
 	color: white;
+	border-radius:0.5rem;
 	text-align: center;
 	padding: 14px 16px;
 	transition:all .2s ease;
 	text-decoration: none;
+	font-weight:bold;
+
 }
 .navigation li a:hover:not(.active) {
 	background-color: white;

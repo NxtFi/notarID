@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { sha1, sha256, sha384, sha512 } from "crypto-hash";
-import "./hashing.css";
 
 export default function HashingForm() {
 	const [algorithms] = useState(["sha1", "sha256", "sha384", "sha512"]);
@@ -127,7 +126,7 @@ export default function HashingForm() {
 
 	const handleFileDragDrop = (e) => {
 		console.log("Fichero(s) arrastrados");
-
+		setActiveAnimationDrag(false);
 		// Evitar el comportamiendo por defecto (Evitar que el fichero se abra/ejecute)
 		e.preventDefault();
 
@@ -283,7 +282,7 @@ export default function HashingForm() {
 								onDragOver={handleFileDragOver}
 								onDragLeave={() => setActiveAnimationDrag(false)}
 							>
-								<p>Arrastre y suelte el documento ...</p>
+								 <p>Arrastre y suelte el documento ...</p>
 							</div>
 							<div>
 								<label htmlFor="file-input" className="custom-file-upload">
@@ -296,31 +295,31 @@ export default function HashingForm() {
 				)}
 				{showMessage && !showResult && (
 					<div className="hashed-output">
-						{/* <h4 className="hashed-algorithm-heading">Hash del archivo</h4>
+						<h4 className="hashed-algorithm-heading">Hash del archivo: </h4>
 						<div className="hashed-algorithm-container">
 							<p className="hashed-algorithm-text">{output}</p>
 						</div>
-						<p>Archivo: {file_Name}</p> */}
+						<p className="file-name">Archivo: {file_Name}</p>
 					</div>
 				)}
 				{showMessage && !showResult && (
 					<div className="hashed-button">
-						{/* <button className="space" type="button" onClick={handleButtonVerificar}>
+						<button className="verify-doc" type="button" onClick={handleButtonVerificar}>
 							VERIFICAR
-						</button> */}
-						{/* <button type="button" onClick={handleButtonSellar}>
+						</button>
+						<button type="button" className="sellar-doc" onClick={handleButtonSellar}>
 							SELLAR
-						</button> */}
+						</button>
 					</div>
 				)}
 				{showResult && (
-					<div className="hashed-output">
-						{/* <h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4> */}
+					<div className="hashed-output-response">
+						<h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4>
 						<div className="hashed-algorithm-container">
-							{/* <p className="hashed-algorithm-text">{showResponse}</p> */}
-							{/* <button type="button"  onClick={backToInitialState}>
+							<p className="hashed-algorithm-text">{showResponse}</p>
+							<button type="button" className="again-button" onClick={backToInitialState}>
 								Volver a verificar/sellar
-							</button> */}
+							</button>
 						</div>
 					</div>
 				)}
