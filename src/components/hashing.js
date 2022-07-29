@@ -296,31 +296,31 @@ export default function HashingForm() {
 				)}
 				{showMessage && !showResult && (
 					<div className="hashed-output">
-						<h4 className="hashed-algorithm-heading">Hash del archivo</h4>
+						{/* <h4 className="hashed-algorithm-heading">Hash del archivo</h4>
 						<div className="hashed-algorithm-container">
 							<p className="hashed-algorithm-text">{output}</p>
 						</div>
-						<p>Archivo: {file_Name}</p>
+						<p>Archivo: {file_Name}</p> */}
 					</div>
 				)}
 				{showMessage && !showResult && (
 					<div className="hashed-button">
-						<button className="space" type="button" onClick={handleButtonVerificar}>
+						{/* <button className="space" type="button" onClick={handleButtonVerificar}>
 							VERIFICAR
-						</button>
-						<button type="button" onClick={handleButtonSellar}>
+						</button> */}
+						{/* <button type="button" onClick={handleButtonSellar}>
 							SELLAR
-						</button>
+						</button> */}
 					</div>
 				)}
 				{showResult && (
 					<div className="hashed-output">
-						<h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4>
+						{/* <h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4> */}
 						<div className="hashed-algorithm-container">
-							<p className="hashed-algorithm-text">{showResponse}</p>
-							<button type="button" onClick={backToInitialState}>
+							{/* <p className="hashed-algorithm-text">{showResponse}</p> */}
+							{/* <button type="button"  onClick={backToInitialState}>
 								Volver a verificar/sellar
-							</button>
+							</button> */}
 						</div>
 					</div>
 				)}

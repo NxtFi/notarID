@@ -4,7 +4,7 @@
   /* margin-top:2rem; */
 }
 
-.file-drag-drop.is-active {
+/* .file-drag-drop.is-active {
 	border: thick dashed #d4d4d5;
 	background-color: var(--primary-color);
 	animation: pulse 1.5s infinite;
@@ -18,4 +18,4 @@
 	50% {
 		transform: scale(1.05);
 	}
-}
+} */

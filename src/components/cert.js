@@ -259,19 +259,19 @@ export default function CertForm() {
 				)}
 				{showMessage && !showResult && emailOk && (
 					<div className="hashed-button">
-						<button className="space" type="button" onClick={handleButtonVerificar}>
+						{/* <button className="space" type="button" onClick={handleButtonVerificar}>
 							VERIFICAR
 						</button>
 						<button type="button" onClick={handleButtonSellar}>
 							SELLAR
-						</button>
+						</button> */}
 					</div>
 				)}
 				{showResult && (
 					<div className="hashed-output">
-						<h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4>
+						{/* <h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4> */}
 						<div className="hashed-algorithm-container">
-							<p className="hashed-algorithm-text">{showResponse}</p>
+							{/* <p className="hashed-algorithm-text">{showResponse}</p> */}
 							<button type="button" onClick={backToInitialState}>
 								Volver a verificar/sellar
 							</button>

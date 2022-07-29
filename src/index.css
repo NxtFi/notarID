@@ -34,13 +34,12 @@
 	--title-color: #3055fb;
 }
 body {
-	font-family: 'TTCommons-Regular', 'DM Sans', sans-serif;
+	font-family: "TTCommons-Regular", "DM Sans", sans-serif;
 	font-size: 62.5%;
 	color: white;
 	background-color: var(--primary-color);
 	line-height: 1.7em;
 }
-
 
 /* Form styles */
 
@@ -67,7 +66,7 @@ body {
 	background-color: black;
 	width: 70%;
 	height: 65vh;
-	max-width:50rem;
+	max-width: 50rem;
 	margin: 0px auto;
 	background-color: white;
 	border-radius: 1rem;
@@ -145,7 +144,7 @@ select {
 	border: 1px solid #393939;
 	border-radius: 5px 5px 5px 5px;
 	text-align: center;
-	-webkit-appearance:button;
+	-webkit-appearance: button;
 }
 .form-group label {
 	display: block;
@@ -161,6 +160,16 @@ select {
 	margin-top: 0.5rem;
 	color: var(--primary-color);
 }
+
+/* hidden div without styles */
+.container.hashed-output,
+.hashed-algorithm-heading,
+.hashed-algorithm-container,
+.hashed-algorithm-text{
+	display: none !important;
+}
+/* ----------------- */
+
 
 /* 
 .hashing-algorithms .hashing-algorithms-list {
@@ -196,7 +205,7 @@ input[type="file"] {
 	border: 0.2rem dotted #d4d4d5;
 	border-radius: 1rem;
 	margin-bottom: 5px;
-	margin-top:5px;
+	margin-top: 5px;
 	height: 35%;
 	display: flex;
 	justify-content: center;
@@ -222,7 +231,7 @@ input[type="file"] {
 	width: 70%;
 }
 
-.file-drag-drop.is-active {
+/* .file-drag-drop.is-active {
 	border: 0.1rem dashed #d4d4d5;
 	background-color: var(--primary-color);
 	animation: pulse 1.5s infinite;
@@ -237,3 +246,4 @@ input[type="file"] {
 		transform: scale(1.05);
 	}
 }
+ */
