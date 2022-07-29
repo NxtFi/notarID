@@ -1,310 +1,328 @@
-import React,{useState} from 'react';
-import {sha256} from 'crypto-hash';
-import validator from 'validator'
+import React, { useState } from "react";
+import { sha256 } from "crypto-hash";
+import validator from "validator";
+import "./anexo.css";
 
-export default function AnexoForm(){
-  const [emailError, setEmailError] = useState('Ingrese un Email');
-  const [emailOk, setEmailOk] = useState(false);
-  const [emailDir, setEmailDir] = useState('');
-  let [file_input, setFileInput] = useState('');
-  let [file_Name, setFileName] = useState('');
+export default function AnexoForm() {
+	const [emailError, setEmailError] = useState("Ingrese un Email");
+	const [emailOk, setEmailOk] = useState(false);
+	const [emailDir, setEmailDir] = useState("");
+	let [file_input, setFileInput] = useState("");
+	let [file_Name, setFileName] = useState("");
 
-  let [output,setOutput] = useState('');
+	let [output, setOutput] = useState("");
 
-  const [showMessage, setShowMessage] = useState(false);
-  const [showResult, setResult] = useState(false);
-  const [showResponse, setResponse]=useState('Sin resultado');
+	const [showMessage, setShowMessage] = useState(false);
+	const [activeAnimationDrag, setActiveAnimationDrag] = useState(false);
+	const [showResult, setResult] = useState(false);
+	const [showResponse, setResponse] = useState("Sin resultado");
 
-  const [inputs, setInputs] = useState({});
+	const [inputs, setInputs] = useState({});
 
-  const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setInputs(values => ({...values, [name]: value}))
-  }
+	const handleChange = (event) => {
+		const name = event.target.name;
+		const value = event.target.value;
+		setInputs((values) => ({ ...values, [name]: value }));
+	};
 
+	function format_time(s) {
+		const dtFormat = new Intl.DateTimeFormat("es-AR", {
+			timeStyle: "long",
+			timeZone: "America/Argentina/Buenos_Aires",
+		});
+		return dtFormat.format(new Date(s * 1e3));
+	}
 
-  function format_time(s) {
-    const dtFormat = new Intl.DateTimeFormat('es-AR', {
-        timeStyle: 'long',
-        timeZone: 'America/Argentina/Buenos_Aires'
-    });
-    return dtFormat.format(new Date(s * 1e3));
-  };
+	//For handling text input
+	const handleEmailInput = async (e) => {
+		// Get the value
+		var email = e.target.value;
 
-  //For handling text input
-  const handleEmailInput = async (e) => {
-    // Get the value
-    var email = e.target.value
-  
-    if (validator.isEmail(email)) {
-      setEmailError('El certificado se enviará a: '+ email);
-      setEmailOk(true);
-    } else {
-      setEmailError('Ingrese un Email válido!');
-      setEmailOk(false);
-    }
-    setEmailDir(email);
-  }
+		if (validator.isEmail(email)) {
+			setEmailError("El certificado se enviará a: " + email);
+			setEmailOk(true);
+		} else {
+			setEmailError("Ingrese un Email válido!");
+			setEmailOk(false);
+		}
+		setEmailDir(email);
+	};
 
-  //For handling file input
-  const handleFileInput = (e) => {
-    // Initializing the file reader
-    const fr = new FileReader();
+	//For handling file input
+	const handleFileInput = (e) => {
+		// Initializing the file reader
+		const fr = new FileReader();
 
-    // Listening to when the file has been read.
-    fr.onload = async () => {
-        let result = '';
-        // Hashing the content based on the active algorithm
-        
-        result = await sha256(fr.result);
+		// Listening to when the file has been read.
+		fr.onload = async () => {
+			let result = "";
+			// Hashing the content based on the active algorithm
 
-        // Setting the hashed text as the output
-        setOutput(result);
+			result = await sha256(fr.result);
 
-        // Setting the content of the file as file input
-        setFileInput(fr.result);
-        setShowMessage(true);
-        e.target.value = null;
-    }
+			// Setting the hashed text as the output
+			setOutput(result);
 
-    // Reading the file.
-    fr.readAsText(e.target.files[0]);
-    setFileName(e.target.files[0].name);
-    console.log(e.target.files[0].name);
-  }
-  
-  const handleFileDragDrop = (e) => {
-    console.log('Fichero(s) arrastrados');
+			// Setting the content of the file as file input
+			setFileInput(fr.result);
+			setShowMessage(true);
+			e.target.value = null;
+		};
 
-    // Evitar el comportamiendo por defecto (Evitar que el fichero se abra/ejecute)
-    e.preventDefault();
+		// Reading the file.
+		fr.readAsText(e.target.files[0]);
+		setFileName(e.target.files[0].name);
+		console.log(e.target.files[0].name);
+	};
 
-    if (e.dataTransfer.files) {
-        // Usar la interfaz DataTransferItemList para acceder a el/los archivos)
-        for (var i = 0; i < e.dataTransfer.files.length; i++) {
-                    
-            var file = e.dataTransfer.files[i];
-            console.log('... file[' + i + '].name = ' + file.name);
-            setFileName(file.name);
-            
-            const fr = new FileReader();
-            fr.readAsText(e.dataTransfer.files[i]);
+	const handleFileDragDrop = (e) => {
+		console.log("Fichero(s) arrastrados");
 
-            fr.onload = async () => {
+		// Evitar el comportamiendo por defecto (Evitar que el fichero se abra/ejecute)
+		e.preventDefault();
 
-                let result = '';
-                result = await sha256(fr.result);
-                // Setting the hashed text as the output
-                setOutput(result);
-                // Setting the content of the file as file input
-                setFileInput(fr.result);
-            }
-            setShowMessage(true);          
-        }
-    } else {
-        // Usar la interfaz DataTransfer para acceder a el/los archivos
-        for (var i = 0; i < e.dataTransfer.files.length; i++) {
-        console.log('... file[' + i + '].name = ' + e.dataTransfer.files[i].name);
-        }
-    }        
-  }
+		if (e.dataTransfer.files) {
+			// Usar la interfaz DataTransferItemList para acceder a el/los archivos)
+			for (var i = 0; i < e.dataTransfer.files.length; i++) {
+				var file = e.dataTransfer.files[i];
+				console.log("... file[" + i + "].name = " + file.name);
+				setFileName(file.name);
 
-  const handleFileDragOver = (e) => {
-      //console.log('File(s) in drop zone');
-      // Prevent default behavior (Prevent file from being opened)
-      e.preventDefault();
-  }
+				const fr = new FileReader();
+				fr.readAsText(e.dataTransfer.files[i]);
 
-  const handleButtonVerificar = (e) => {
-      // GET (Request).
-      let endpoint = 'https://development-001-node.test.nxtfi.net/7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99/_/';
-      endpoint += output;
-      fetch(endpoint)
-      // Exito
-      .then(response => response.json())
-      .then(json => {
-          if (json!=null){
-              console.log('Bloque: ', json);
-              setResponse('Documento sellado en el bloque: '+ json);
-              //obtener timestamp
-              //https://development-001-node.test.nxtfi.net/_block
-              let blockReadEndpoint = 'https://development-001-node.test.nxtfi.net/_block/';
-              blockReadEndpoint += json;
-              fetch(blockReadEndpoint)
-                  // Exito
-                  .then(response => response.json())
-                  .then(blockData => {
-                      console.log('Bloque sellador: ', blockData);
-                      setResponse('Documento sellado en el bloque: '+ blockData.hash + '\nTimestamp: '+blockData.timestamp + '\nFecha y hora: '+(new Date(blockData.timestamp)).toLocaleString("es-AR", "America/Argentina/Buenos_Aires"));
-                  })
-                  .catch(err => console.log('timestamp fail', err));
-                  setResult(true);
-              
-          } else{
-              console.log('Documento no sellado');
-              setResponse('Documento no sellado');
-          }
-      
-      })    //imprimir los datos en la consola
-      .catch(err => console.log('Solicitud fallida', err)); // Capturar errores
-      setResult(true);
-  }
-  
-  const handleButtonSellar = async (e) => {
+				fr.onload = async () => {
+					let result = "";
+					result = await sha256(fr.result);
+					// Setting the hashed text as the output
+					setOutput(result);
+					// Setting the content of the file as file input
+					setFileInput(fr.result);
+				};
+				setShowMessage(true);
+			}
+		} else {
+			// Usar la interfaz DataTransfer para acceder a el/los archivos
+			for (var i = 0; i < e.dataTransfer.files.length; i++) {
+				console.log("... file[" + i + "].name = " + e.dataTransfer.files[i].name);
+			}
+		}
+	};
 
-      let endpoint = 'https://development-001-node.test.nxtfi.net/7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99/_/';
-      endpoint += output;
-      fetch(endpoint)
-      // Exito
-      .then(response => response.json())
-      .then(async json => {
-          if (json!=null){
-              console.log('Bloque: ', json);
-              setResponse('Documento ya se encuentra sellado en el bloque: '+ json);
-          } else{
-              console.log('Documento no sellado');
-              //sellar
-              console.log('sellando...');
-              let data_raw = '{';
-              data_raw += '"mail":"';
-              data_raw += emailDir;
-              data_raw += '",';
-              data_raw += '"block":{"data":"// IMPORT ';
-              data_raw += '7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99'; // smart contract
-              data_raw += '\\n {hash:\'';
-              data_raw += output; //doc hash
-              data_raw += '\'}","by":"NOTARIO","scope":"7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
+	const handleFileDragOver = (e) => {
+        setActiveAnimationDrag(true)
+		//console.log('File(s) in drop zone');
+		// Prevent default behavior (Prevent file from being opened)
+		e.preventDefault();
+	};
 
-              // string pattern
-              //let data = '{"block":{"data":"// IMPORT 7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99\\n {hash:\'1355d4c778090809336ce9d0980af78c16edf218ded10c2a7ac1736c9e8b1fff\'}","by":"NOTARIO","scope":"7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
+	const handleButtonVerificar = (e) => {
+		// GET (Request).
+		let endpoint =
+			"https://development-001-node.test.nxtfi.net/7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99/_/";
+		endpoint += output;
+		fetch(endpoint)
+			// Exito
+			.then((response) => response.json())
+			.then((json) => {
+				if (json != null) {
+					console.log("Bloque: ", json);
+					setResponse("Documento sellado en el bloque: " + json);
+					//obtener timestamp
+					//https://development-001-node.test.nxtfi.net/_block
+					let blockReadEndpoint = "https://development-001-node.test.nxtfi.net/_block/";
+					blockReadEndpoint += json;
+					fetch(blockReadEndpoint)
+						// Exito
+						.then((response) => response.json())
+						.then((blockData) => {
+							console.log("Bloque sellador: ", blockData);
+							setResponse(
+								"Documento sellado en el bloque: " +
+									blockData.hash +
+									"\nTimestamp: " +
+									blockData.timestamp +
+									"\nFecha y hora: " +
+									new Date(blockData.timestamp).toLocaleString("es-AR", "America/Argentina/Buenos_Aires")
+							);
+						})
+						.catch((err) => console.log("timestamp fail", err));
+					setResult(true);
+				} else {
+					console.log("Documento no sellado");
+					setResponse("Documento no sellado");
+				}
+			}) //imprimir los datos en la consola
+			.catch((err) => console.log("Solicitud fallida", err)); // Capturar errores
+		setResult(true);
+	};
 
-              const location = 'signblock.test.nxtfi.net';
-              const settings = {
-                  method: 'POST',
-                  headers: {"Content-type": "application/json"},
-                  body: data_raw
-              };
-              try {
-                  setResponse('Documento enviado a sellar');
-                  const fetchResponse = await fetch(`https://${location}/create`, settings);
-                  const data = await fetchResponse.json();
-                  console.log('Resultado: ', data);
-                  return data;
-              } catch (e) {
-                  console.log('Error: ',  e);
-                  return e;
-              }    
-          }
-      
-      })    //imprimir los datos en la consola
-      .catch(err => console.log('Solicitud fallida', err)); // Capturar errores
-      setResult(true);     
-      } 
+	const handleButtonSellar = async (e) => {
+		let endpoint =
+			"https://development-001-node.test.nxtfi.net/7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99/_/";
+		endpoint += output;
+		fetch(endpoint)
+			// Exito
+			.then((response) => response.json())
+			.then(async (json) => {
+				if (json != null) {
+					console.log("Bloque: ", json);
+					setResponse("Documento ya se encuentra sellado en el bloque: " + json);
+				} else {
+					console.log("Documento no sellado");
+					//sellar
+					console.log("sellando...");
+					let data_raw = "{";
+					data_raw += '"mail":"';
+					data_raw += emailDir;
+					data_raw += '",';
+					data_raw += '"block":{"data":"// IMPORT ';
+					data_raw += "7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"; // smart contract
+					data_raw += "\\n {hash:'";
+					data_raw += output; //doc hash
+					data_raw +=
+						'\'}","by":"NOTARIO","scope":"7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
 
-  const backToInitialState = (e) =>{
-      setFileInput('');
-      setOutput('');
-      setResponse('');
-      setResult(false);
-      setShowMessage(false);
-      setEmailOk(false);
-      setEmailDir('');
-      setEmailError('Ingrese un Email');
-  }
+					// string pattern
+					//let data = '{"block":{"data":"// IMPORT 7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99\\n {hash:\'1355d4c778090809336ce9d0980af78c16edf218ded10c2a7ac1736c9e8b1fff\'}","by":"NOTARIO","scope":"7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
 
-  return (  
-      <div className='hashing-container'>
-          <div className='hashing-content'>
-              {!showResult &&
-              <div className="hashing-form">
-                  <h4 className="hashing-form-heading">Sello con datos anexos</h4>
-                  <form>
-                      <div className="form-group">
-                        <label>Nombre:
-                        <input 
-                          type="text" 
-                          name="name" 
-                          value={inputs.name || ""} 
-                          onChange={handleChange}
-                        />
-                        </label>
-                        <label>Apellido:
-                        <input 
-                          type="text" 
-                          name="ape" 
-                          value={inputs.ape || ""} 
-                          onChange={handleChange}
-                        />
-                        </label>
-                        <label>Tipo de documento:
-                        <select name="dtype" value={inputs.dtype || ""} onChange={handleChange}>
-                            <option value="DNI">DNI</option>
-                            <option value="CI">CI</option>
-                            <option value="LC">LC</option>
-                            <option value="LE">LE</option>
-                        </select>
-                        </label>
-                        <label>Número:
-                        <input 
-                        type="number" 
-                        name="docnumber" 
-                        value={inputs.docnumber || ""} 
-                        onChange={handleChange}
-                        />
-                        </label>
-                        <label>Observaciones:
-                        <input 
-                        type="text" 
-                        name="obs" 
-                        value={inputs.obs || ""} 
-                        onChange={handleChange}
-                        />
-                        </label>
+					const location = "signblock.test.nxtfi.net";
+					const settings = {
+						method: "POST",
+						headers: { "Content-type": "application/json" },
+						body: data_raw,
+					};
+					try {
+						setResponse("Documento enviado a sellar");
+						const fetchResponse = await fetch(`https://${location}/create`, settings);
+						const data = await fetchResponse.json();
+						console.log("Resultado: ", data);
+						return data;
+					} catch (e) {
+						console.log("Error: ", e);
+						return e;
+					}
+				}
+			}) //imprimir los datos en la consola
+			.catch((err) => console.log("Solicitud fallida", err)); // Capturar errores
+		setResult(true);
+	};
 
-                        <label htmlFor="text-input">E-mail</label>
-                        <input type="email" className="form-control" id="email-input" placeholder='usuario@mail.com' value={emailDir} onChange={handleEmailInput} />
-                        <p>{emailError}</p>
-                      </div>
-                      <div className="file-drag-drop" onDrop={handleFileDragDrop} onDragOver={handleFileDragOver}>
-                          <p>Arrastre y suelte el documento ...</p>
-                      </div>
-                      <div>
-                          <label htmlFor="file-input" className='custom-file-upload'>Selecciona archivo</label>
-                          <input type="file" className="form-control" id="file-input" onChange={handleFileInput} />
-                      </div>
-                  </form>
-              </div>
-              }
-              {showMessage && !showResult &&
-              <div className="hashed-output">
-                  <h4 className="hashed-algorithm-heading">Hash del archivo</h4>
-                  <div className="hashed-algorithm-container">
-                      <p className="hashed-algorithm-text">
-                          {output}
-                      </p>
-                  </div>
-                  <p>Archivo: {file_Name}</p>
-              </div>
-              }
-              {showMessage && !showResult && emailOk &&
-              <div className="hashed-button">              
-                  <button className="space" type="button" onClick={handleButtonVerificar}>VERIFICAR</button>
-                  <button type="button" onClick={handleButtonSellar}>SELLAR</button>
-              </div>
-              }
-              {showResult &&
-              <div className="hashed-output">
-                  <h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4>
-                  <div className="hashed-algorithm-container">
-                      <p className="hashed-algorithm-text">
-                          {showResponse}
-                      </p>
-                      <button type="button" onClick={backToInitialState}>Volver a verificar/sellar</button>
-                  </div>
-              </div>
-              }                
-          </div>           
-      </div>
-  );
+	const backToInitialState = (e) => {
+		setFileInput("");
+		setOutput("");
+		setResponse("");
+		setResult(false);
+		setShowMessage(false);
+		setEmailOk(false);
+		setEmailDir("");
+		setEmailError("Ingrese un Email");
+	};
+
+	return (
+		<div className="container ">
+			<div className="container-content">
+				{!showResult && (
+					<div className="container-form-title">
+						<form>
+							<h4 className="form-heading">Sello con datos anexos</h4>
+							<div className="form-group">
+								<div className="first-group">
+									<div className="input-label">
+										<label htmlFor="name">Nombre:</label>
+										<input type="text" name="name" value={inputs.name || ""} id="name" onChange={handleChange} />
+									</div>
+									<div className="input-label">
+										<label htmlFor="ape">Apellido:</label>
+										<input type="text" name="ape" value={inputs.ape || ""} id="ape" onChange={handleChange} />
+									</div>
+									<div className="input-label">
+										<label htmlFor="obs">Observaciones:</label>
+										<input type="text" name="obs" value={inputs.obs || ""} id="obs"onChange={handleChange} />
+									</div>
+								</div>
+								<div className="first-group">
+									<div className="input-label">
+										<label htmlFor="dtype">Tipo de documento:</label>
+										<select name="dtype" value={inputs.dtype || ""} id="dtype" onChange={handleChange}>
+											<option value="DNI">DNI</option>
+											<option value="CI">CI</option>
+											<option value="LC">LC</option>
+											<option value="LE">LE</option>
+										</select>
+									</div>
+									<div className="input-label">
+										<label htmlFor="docnumber">Número:</label>
+										<input
+											type="number"
+											name="docnumber"
+											value={inputs.docnumber || ""}
+											onChange={handleChange}
+											id="docnumber"
+										/>
+									</div>
+									<div className="input-label">
+										<label htmlFor="text-input">E-mail</label>
+										<input
+											type="email"
+											className="form-control"
+											id="email-input"
+											placeholder="usuario@mail.com"
+											value={emailDir}
+											onChange={handleEmailInput}
+										/>
+										<p className="emailError">{emailError}</p>
+									</div>
+								</div>
+							</div>
+							<div
+								className={activeAnimationDrag ? "is-active file-drag-drop " : "file-drag-drop "}
+								onDrop={handleFileDragDrop}
+								onDragOver={handleFileDragOver}
+								onDragLeave={() => setActiveAnimationDrag(false)}
+							>
+								<p>Arrastre y suelte el documento ...</p>
+							</div>
+							<div>
+								<label htmlFor="file-input" className="custom-file-upload">
+									Selecciona archivo
+								</label>
+								<input type="file" className="form-control" id="file-input" onChange={handleFileInput} />
+							</div>
+						</form>
+					</div>
+				)}
+				{showMessage && !showResult && (
+					<div className="hashed-output">
+						<h4 className="hashed-algorithm-heading">Hash del archivo</h4>
+						<div className="hashed-algorithm-container">
+							<p className="hashed-algorithm-text">{output}</p>
+						</div>
+						<p>Archivo: {file_Name}</p>
+					</div>
+				)}
+				{showMessage && !showResult && emailOk && (
+					<div className="hashed-button">
+						<button className="space" type="button" onClick={handleButtonVerificar}>
+							VERIFICAR
+						</button>
+						<button type="button" onClick={handleButtonSellar}>
+							SELLAR
+						</button>
+					</div>
+				)}
+				{showResult && (
+					<div className="hashed-output">
+						<h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4>
+						<div className="hashed-algorithm-container">
+							<p className="hashed-algorithm-text">{showResponse}</p>
+							<button type="button" onClick={backToInitialState}>
+								Volver a verificar/sellar
+							</button>
+						</div>
+					</div>
+				)}
+			</div>
+		</div>
+	);
 }

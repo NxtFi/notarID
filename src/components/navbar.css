@@ -1,80 +1,98 @@
 .navigation {
-  height: 60px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  position: relative;
-  padding: 0.5rem 0rem;
-  background-color: #000;
-  color: black;
-  box-shadow: 0 2px 2px 2px rgba(9, 9, 9, 0.23);
+	height: 60px;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	position: relative;
+	padding: 3rem 2rem;
+	background-color: #000;
+	position: absolute;
+	color: black;
+	box-shadow: 0 2px 2px 2px rgba(9, 9, 9, 0.23);
 }
+.icon-menu {
+	display: none;
+}
+
 .navigation ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
-  margin-left: 10px;
+	list-style-type: none;
+	display: flex;
+	column-gap: 2rem;
+	margin: 0;
+	font-size: 1rem;
+	padding: 0;
+	z-index: 999;
+
+	overflow: hidden;
+	background-color: black;
 }
+
 .navigation li {
-  
-  float: left;
-  border-right:1px solid #bbb;
+	float: left;
+	border-right: 1px solid #bbb;
+	border-left: 1px solid #bbb;
 }
+
 .navigation li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
+	transition:all .2s ease;
+	text-decoration: none;
 }
 .navigation li a:hover:not(.active) {
-    background-color: #111;
+	background-color: white;
+	color:#1e35c2;
 }
 
 .active {
-    background-color: rgb(9, 204, 248);
+	/* background-color: rgb(9, 204, 248); */
+	background-color: #1e35c2;
 }
 
-.navigation img{
-    border-radius: 5px;
-    margin-right: 5px;
-}
-
-
-
-
-.navigation-menu ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-   
-    position: absolute;
-    top: 60px;
-    left: 0;
-    
-    flex-direction: column;
-  
-    width: 100%;
-    height: calc(100vh - 77px);
-    background-color: white;
-    border-top: 1px solid black;
-    list-style-type: none;
-}
-.navigation-menu li {
-  
-    text-align: center;
-    margin: 0;
-    float: left;
-}
-.navigation-menu li a {
-    display: block;
-    color: rgb(9, 204, 248);
-   
-    width: 100%;
-    padding: 8px;
+.navigation img {
+	border-radius: 5px;
+	margin-right: 5px;
 }
 .navigation-menu li:hover {
-    background-color: #eee;
+	background-color: #eee;
+}
+
+@media screen and (max-width: 960px) {
+	.icon-menu {
+		display: block;
+		position: absolute;
+		cursor: pointer;
+		right: 2rem;
+	}
+	.icon-menu svg {
+		fill: white;
+		font-size: 2rem;
+		cursor: pointer;
+	}
+
+	.navigation li {
+		width: 100%;
+		border: none;
+	}
+
+	.navigation ul {
+		background-color: #333;
+		position: absolute;
+		top: 6rem;
+		width: 100%;
+		height: 90vh;
+		justify-content: center;
+		flex-direction: column;
+		align-items: center;
+		transition: 0.5s left ease;
+	}
+	.navigation .show-menu {
+		left: 0;
+	}
+	.navigation .hidden-menu {
+		left: -100%;
+	}
 }

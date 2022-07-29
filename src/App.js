@@ -1,4 +1,3 @@
-import './App.css';
 import Hashing from './components/hashing';
 import Navbar from './components/Navbar';
 import Cert from './components/cert.js';
