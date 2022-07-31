@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { sha1, sha256, sha384, sha512 } from "crypto-hash";
+import Spinner from "./Spinner";
 
 export default function HashingForm() {
 	const [algorithms] = useState(["sha1", "sha256", "sha384", "sha512"]);
@@ -11,7 +12,12 @@ export default function HashingForm() {
 	const [showMessage, setShowMessage] = useState(false);
 	const [showResult, setResult] = useState(false);
 	const [activeAnimationDrag, setActiveAnimationDrag] = useState(false);
-	const [showResponse, setResponse] = useState("Sin resultado");
+	const [showResponse, setResponse] = useState({
+		msg: "Sin resultado",
+		data: {},
+		sellado: false,
+		loading: false,
+	});
 	let [file_Name, setFileName] = useState("");
 
 	function format_time(s) {
@@ -176,7 +182,7 @@ export default function HashingForm() {
 			.then((json) => {
 				if (json != null) {
 					console.log("Bloque: ", json);
-					setResponse("Documento sellado en el bloque: " + json);
+					// setResponse({ msg: "Documento sellado", data: { hash: json }, sellado: true });
 					//obtener timestamp
 					//https://development-001-node.test.nxtfi.net/_block
 					let blockReadEndpoint = "https://development-001-node.test.nxtfi.net/_block/";
@@ -186,23 +192,42 @@ export default function HashingForm() {
 						.then((response) => response.json())
 						.then((blockData) => {
 							console.log("Bloque sellador: ", blockData);
-							setResponse(
-								"Documento sellado en el bloque: " +
-									blockData.hash +
-									"\nTimestamp: " +
-									blockData.timestamp +
-									"\nFecha y hora: " +
-									new Date(blockData.timestamp).toLocaleString("es-AR", "America/Argentina/Buenos_Aires")
-							);
+							setResponse({
+								msg: "Documento sellado",
+								data: {
+									hash: blockData.hash,
+									timestamp: blockData.timestamp,
+									date: new Date(blockData.timestamp).toLocaleString(
+										"es-AR",
+										"America/Argentina/Buenos_Aires"
+									),
+								},
+								sellado: true,
+								loading: true,
+							});
+							// setResponse(
+							// 	"Documento sellado en el bloque: " +
+							// 		blockData.hash +
+							// 		"\nTimestamp: " +
+							// 		blockData.timestamp +
+							// 		"\nFecha y hora: " +
+							// 		new Date(blockData.timestamp).toLocaleString("es-AR", "America/Argentina/Buenos_Aires")
+							// );
 						})
-						.catch((err) => console.log("timestamp fail", err));
+						.catch((err) => {
+							console.log("timestamp fail", err);
+							setResponse({ msg: "Lo sentimos ha ocurrido un error", data: [], loading: true, sellado:false });
+						});
 					setResult(true);
 				} else {
 					console.log("Documento no sellado");
-					setResponse("Documento no sellado");
+					setResponse({ msg: "Documento no sellado", data: {}, sellado: false, loading: true });
 				}
 			}) //imprimir los datos en la consola
-			.catch((err) => console.log("Solicitud fallida", err)); // Capturar errores
+			.catch((err) => {
+				console.log("Solicitud fallida", err);
+				setResponse({ msg: "Sin Resultado", data: [], loading: true, sellado:false });
+			}); // Capturar errores
 		setResult(true);
 	};
 
@@ -216,7 +241,12 @@ export default function HashingForm() {
 			.then(async (json) => {
 				if (json != null) {
 					console.log("Bloque: ", json);
-					setResponse("Documento ya se encuentra sellado en el bloque: " + json);
+					setResponse({
+						msg: "Documento ya se encuentra sellado en el bloque: " + json,
+						data: { hash: json },
+						sellado: true,
+						loading: true,
+					});
 				} else {
 					console.log("Documento no sellado");
 					//sellar
@@ -238,29 +268,33 @@ export default function HashingForm() {
 						body: data_raw,
 					};
 					try {
-						setResponse("Documento enviado a sellar");
+						setResponse({ msg: "Documento enviado a sellar", data: {}, sellado: false, loading: true });
 						const fetchResponse = await fetch(`https://${location}/create`, settings);
 						const data = await fetchResponse.json();
 						console.log("Resultado: ", data);
 						return data;
 					} catch (e) {
 						console.log("Error: ", e);
+						setResponse({ msg: "Sin resultado", data: {}, sellado: false, loading: true });
 						return e;
 					}
 				}
 			}) //imprimir los datos en la consola
-			.catch((err) => console.log("Solicitud fallida", err)); // Capturar errores
+			.catch((err) => {
+				console.log("Solicitud fallida", err);
+				setResponse({ msg: "Sin resultado", data: {}, sellado: false, loading: true });
+			}); // Capturar errores
 		setResult(true);
 	};
 
 	const backToInitialState = (e) => {
 		setFileInput("");
 		setOutput("");
-		setResponse("");
+		setResponse({});
 		setResult(false);
 		setShowMessage(false);
 	};
-
+	console.log(showResponse);
 	return (
 		<div className="container">
 			<div className="container-content">
@@ -282,7 +316,7 @@ export default function HashingForm() {
 								onDragOver={handleFileDragOver}
 								onDragLeave={() => setActiveAnimationDrag(false)}
 							>
-								 <p>Arrastre y suelte el documento ...</p>
+								<p>Arrastre y suelte el documento ...</p>
 							</div>
 							<div>
 								<label htmlFor="file-input" className="custom-file-upload">
@@ -313,10 +347,41 @@ export default function HashingForm() {
 					</div>
 				)}
 				{showResult && (
-					<div className="hashed-output-response">
+					<div className="hashed-output-response ">
 						<h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4>
 						<div className="hashed-algorithm-container">
-							<p className="hashed-algorithm-text">{showResponse}</p>
+							{showResponse.loading ? (
+								showResponse.sellado && showResponse.data.timestamp ? (
+									<div className="response-hashed-algorithm animate__animated animate__fadeIn animate__delay-8s">
+										<div className="field-resp ">
+											<h3 className="response-heading">Estado:</h3>
+											<p>{showResponse.msg}</p>
+										</div>
+										<div className="field-resp ">
+											<h3 className="response-heading">Hash del bloque:</h3>
+											<p>{showResponse.data.hash}</p>
+										</div>
+										<div className="field-resp">
+											<h3 className="response-heading">Timestamp:</h3>
+											<p>{showResponse.data.timestamp}</p>
+										</div>
+										<div className="field-resp ">
+											<h3 className="response-heading">Fecha y hora:</h3>
+											<p>{showResponse.data.date}</p>
+										</div>
+									</div>
+								) : (
+									<div  className="response-hashed-algorithm animate__animated animate__fadeIn animate__delay-8s">
+										<p className="hashed-algorithm-text">
+										{showResponse.msg}
+									</p>
+									</div>
+								)
+							) : (
+								<div className="spinner">
+									<Spinner />
+								</div>
+							)}
 							<button type="button" className="again-button" onClick={backToInitialState}>
 								Volver a verificar/sellar
 							</button>

@@ -13,7 +13,12 @@ export default function CertForm() {
 	const [showMessage, setShowMessage] = useState(false);
 	const [activeAnimationDrag, setActiveAnimationDrag] = useState(false);
 	const [showResult, setResult] = useState(false);
-	const [showResponse, setResponse] = useState("Sin resultado");
+	const [showResponse, setResponse] = useState({
+		msg: "Sin resultado",
+		data: {},
+		sellado: false,
+		loading: false,
+	});
 
 	function format_time(s) {
 		const dtFormat = new Intl.DateTimeFormat("es-AR", {
@@ -120,7 +125,7 @@ export default function CertForm() {
 			.then((json) => {
 				if (json != null) {
 					console.log("Bloque: ", json);
-					setResponse("Documento sellado en el bloque: " + json);
+					// setResponse("Documento sellado en el bloque: " + json);
 					//obtener timestamp
 					//https://development-001-node.test.nxtfi.net/_block
 					let blockReadEndpoint = "https://development-001-node.test.nxtfi.net/_block/";
@@ -130,14 +135,27 @@ export default function CertForm() {
 						.then((response) => response.json())
 						.then((blockData) => {
 							console.log("Bloque sellador: ", blockData);
-							setResponse(
+							setResponse({
+								msg: "Documento sellado",
+								data: {
+									hash: blockData.hash,
+									timestamp: blockData.timestamp,
+									date: new Date(blockData.timestamp).toLocaleString(
+										"es-AR",
+										"America/Argentina/Buenos_Aires"
+									),
+								},
+								sellado: true,
+								loading: true,
+							});
+							/* setResponse(
 								"Documento sellado en el bloque: " +
 									blockData.hash +
 									"\nTimestamp: " +
 									blockData.timestamp +
 									"\nFecha y hora: " +
 									new Date(blockData.timestamp).toLocaleString("es-AR", "America/Argentina/Buenos_Aires")
-							);
+							); */
 						})
 						.catch((err) => console.log("timestamp fail", err));
 					setResult(true);
@@ -271,7 +289,7 @@ export default function CertForm() {
 					<div className="hashed-output-response">
 						<h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4> 
 						<div className="hashed-algorithm-container">
-							<p className="hashed-algorithm-text">{showResponse}</p> 
+							<p className="hashed-algorithm-text">{showResponse.msg}</p> 
 							<button className="again-button" type="button" onClick={backToInitialState}>
 								Volver a verificar/sellar
 							</button>
