@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { sha256 } from "crypto-hash";
 import validator from "validator";
 import Spinner from "./Spinner";
+import ShowResponse from "./ShowResponse";
 
 export default function CertForm() {
 	const [emailError, setEmailError] = useState("Ingrese un Email");
@@ -162,7 +163,12 @@ export default function CertForm() {
 					setResult(true);
 				} else {
 					console.log("Documento no sellado");
-					setResponse({ msg: "Documento no sellado", data: {hash:""}, sellado: false, loading: true });
+					setResponse({
+						msg: "Documento no sellado",
+						data: { hash: "" },
+						sellado: false,
+						loading: true,
+					});
 				}
 			}) //imprimir los datos en la consola
 			.catch((err) => {
@@ -214,7 +220,12 @@ export default function CertForm() {
 						body: data_raw,
 					};
 					try {
-						setResponse({ msg: "Documento enviado a sellar", data: {hash:""}, sellado: false, loading: true });
+						setResponse({
+							msg: "Documento enviado a sellar",
+							data: { hash: "" },
+							sellado: false,
+							loading: true,
+						});
 						const fetchResponse = await fetch(`https://${location}/create`, settings);
 						const data = await fetchResponse.json();
 						console.log("Resultado: ", data);
@@ -228,7 +239,7 @@ export default function CertForm() {
 			}) //imprimir los datos en la consola
 			.catch((err) => {
 				console.log("Solicitud fallida", err);
-				setResponse({ msg: "Sin resultado", data: {hash:""}, sellado: false, loading: true });
+				setResponse({ msg: "Sin resultado", data: { hash: "" }, sellado: false, loading: true });
 			}); // Capturar errores
 		setResult(true);
 	};
@@ -300,44 +311,7 @@ export default function CertForm() {
 					</div>
 				)}
 				{showResult && (
-					<div className="hashed-output-response">
-						<h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4>
-						<div className="hashed-algorithm-container">
-							{showResponse.loading ? (
-								showResponse.sellado && showResponse.data.timestamp ? (
-									<div className="response-hashed-algorithm animate__animated animate__fadeIn animate__delay-8s">
-										<div className="field-resp ">
-											<h3 className="response-heading">Estado:</h3>
-											<p>{showResponse.msg}</p>
-										</div>
-										<div className="field-resp ">
-											<h3 className="response-heading">Hash del bloque:</h3>
-											<p>{showResponse.data.hash}</p>
-										</div>
-										<div className="field-resp">
-											<h3 className="response-heading">Timestamp:</h3>
-											<p>{showResponse.data.timestamp}</p>
-										</div>
-										<div className="field-resp ">
-											<h3 className="response-heading">Fecha y hora:</h3>
-											<p>{showResponse.data.date}</p>
-										</div>
-									</div>
-								) : (
-									<div className="res-msg  animate__animated animate__fadeIn animate__delay-8s">
-										<p className="hashed-algorithm-text">{showResponse.msg} </p>
-									</div>
-								)
-							) : (
-								<div className="spinner">
-									<Spinner />
-								</div>
-							)}
-							<button type="button" className="again-button" onClick={backToInitialState}>
-								Volver a verificar/sellar
-							</button>
-						</div>
-					</div>
+					<ShowResponse showResponse={showResponse} backToInitialState={backToInitialState} />//component show response 
 				)}
 			</div>
 		</div>

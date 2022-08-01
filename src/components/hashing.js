@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { sha1, sha256, sha384, sha512 } from "crypto-hash";
 import Spinner from "./Spinner";
+import ShowResponse from "./ShowResponse";
 
 export default function HashingForm() {
 	const [algorithms] = useState(["sha1", "sha256", "sha384", "sha512"]);
@@ -216,7 +217,12 @@ export default function HashingForm() {
 						})
 						.catch((err) => {
 							console.log("timestamp fail", err);
-							setResponse({ msg: "Lo sentimos ha ocurrido un error", data: [], loading: true, sellado:false });
+							setResponse({
+								msg: "Lo sentimos ha ocurrido un error",
+								data: [],
+								loading: true,
+								sellado: false,
+							});
 						});
 					setResult(true);
 				} else {
@@ -226,7 +232,7 @@ export default function HashingForm() {
 			}) //imprimir los datos en la consola
 			.catch((err) => {
 				console.log("Solicitud fallida", err);
-				setResponse({ msg: "Sin Resultado", data: {}, loading: true, sellado:false });
+				setResponse({ msg: "Sin Resultado", data: {}, loading: true, sellado: false });
 			}); // Capturar errores
 		setResult(true);
 	};
@@ -347,46 +353,7 @@ export default function HashingForm() {
 					</div>
 				)}
 				{showResult && (
-					<div className="hashed-output-response ">
-						<h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4>
-						<div className="hashed-algorithm-container">
-							{showResponse.loading ? (
-								showResponse.sellado && showResponse.data.timestamp ? (
-									<div className="response-hashed-algorithm animate__animated animate__fadeIn animate__delay-8s">
-										<div className="field-resp ">
-											<h3 className="response-heading">Estado:</h3>
-											<p>{showResponse.msg}</p>
-										</div>
-										<div className="field-resp ">
-											<h3 className="response-heading">Hash del bloque:</h3>
-											<p>{showResponse.data.hash}</p>
-										</div>
-										<div className="field-resp">
-											<h3 className="response-heading">Timestamp:</h3>
-											<p>{showResponse.data.timestamp}</p>
-										</div>
-										<div className="field-resp ">
-											<h3 className="response-heading">Fecha y hora:</h3>
-											<p>{showResponse.data.date}</p>
-										</div>
-									</div>
-								) : (
-									<div  className="res-msg animate__animated animate__fadeIn animate__delay-8s">
-										<p className="hashed-algorithm-text">
-										{showResponse.msg}
-									</p>
-									</div>
-								)
-							) : (
-								<div className="spinner">
-									<Spinner />
-								</div>
-							)}
-							<button type="button" className="again-button" onClick={backToInitialState}>
-								Volver a verificar/sellar
-							</button>
-						</div>
-					</div>
+					<ShowResponse showResponse={showResponse} backToInitialState={backToInitialState} />
 				)}
 			</div>
 		</div>
