@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { sha256 } from "crypto-hash";
 import validator from "validator";
+import Spinner from "./Spinner";
+import ShowResponse from "./ShowResponse";
 
 export default function AnexoForm() {
 	const [emailError, setEmailError] = useState("Ingrese un Email");
@@ -14,7 +16,12 @@ export default function AnexoForm() {
 	const [showMessage, setShowMessage] = useState(false);
 	const [activeAnimationDrag, setActiveAnimationDrag] = useState(false);
 	const [showResult, setResult] = useState(false);
-	const [showResponse, setResponse] = useState("Sin resultado");
+	const [showResponse, setResponse] = useState({
+		msg: "Sin resultado",
+		data: {},
+		sellado: false,
+		loading: false,
+	});
 
 	const [inputs, setInputs] = useState({});
 
@@ -126,7 +133,7 @@ export default function AnexoForm() {
 			.then((json) => {
 				if (json != null) {
 					console.log("Bloque: ", json);
-					setResponse("Documento sellado en el bloque: " + json);
+					// setResponse("Documento sellado en el bloque: " + json);
 					//obtener timestamp
 					//https://development-001-node.test.nxtfi.net/_block
 					let blockReadEndpoint = "https://development-001-node.test.nxtfi.net/_block/";
@@ -136,23 +143,39 @@ export default function AnexoForm() {
 						.then((response) => response.json())
 						.then((blockData) => {
 							console.log("Bloque sellador: ", blockData);
-							setResponse(
-								"Documento sellado en el bloque: " +
-									blockData.hash +
-									"\nTimestamp: " +
-									blockData.timestamp +
-									"\nFecha y hora: " +
-									new Date(blockData.timestamp).toLocaleString("es-AR", "America/Argentina/Buenos_Aires")
-							);
+							setResponse({
+								msg: "Documento sellado",
+								data: {
+									hash: blockData.hash,
+									timestamp: blockData.timestamp,
+									date: new Date(blockData.timestamp).toLocaleString(
+										"es-AR",
+										"America/Argentina/Buenos_Aires"
+									),
+								},
+								sellado: true,
+								loading: true,
+							});
 						})
-						.catch((err) => console.log("timestamp fail", err));
+						.catch((err) => {
+							console.log("timestamp fail", err);
+							setResponse({
+								msg: "Lo sentimos ha ocurrido un error",
+								data: { hash: "" },
+								loading: true,
+								sellado: false,
+							});
+						});
 					setResult(true);
 				} else {
 					console.log("Documento no sellado");
-					setResponse("Documento no sellado");
+					setResponse({ msg: "Documento no sellado", data: {}, sellado: false, loading: true });
 				}
 			}) //imprimir los datos en la consola
-			.catch((err) => console.log("Solicitud fallida", err)); // Capturar errores
+			.catch((err) => {
+				console.log("Solicitud fallida", err);
+				setResponse({ msg: "Sin Resultado", data: { hash: "" }, loading: true, sellado: false });
+			}); // Capturar errores
 		setResult(true);
 	};
 
@@ -166,7 +189,13 @@ export default function AnexoForm() {
 			.then(async (json) => {
 				if (json != null) {
 					console.log("Bloque: ", json);
-					setResponse("Documento ya se encuentra sellado en el bloque: " + json);
+					// setResponse("Documento ya se encuentra sellado en el bloque: " + json);
+					setResponse({
+						msg: "Documento ya se encuentra sellado",
+						data: { hash: json },
+						sellado: true,
+						loading: true,
+					});
 				} else {
 					console.log("Documento no sellado");
 					//sellar
@@ -192,29 +221,34 @@ export default function AnexoForm() {
 						body: data_raw,
 					};
 					try {
-						setResponse("Documento enviado a sellar");
+						setResponse({ msg: "Documento enviado a sellar", data: {}, sellado: false, loading: true });
 						const fetchResponse = await fetch(`https://${location}/create`, settings);
 						const data = await fetchResponse.json();
 						console.log("Resultado: ", data);
 						return data;
 					} catch (e) {
 						console.log("Error: ", e);
+						setResponse({ msg: "Sin resultado", data: {}, sellado: false, loading: true });
 						return e;
 					}
 				}
 			}) //imprimir los datos en la consola
-			.catch((err) => console.log("Solicitud fallida", err)); // Capturar errores
+			.catch((err) => {
+				console.log("Solicitud fallida", err);
+				setResponse({ msg: "Sin resultado", data: {}, sellado: false, loading: true });
+			}); // Capturar errores
 		setResult(true);
 	};
 
 	const backToInitialState = (e) => {
 		setFileInput("");
 		setOutput("");
-		setResponse("");
+		setResponse({});
 		setResult(false);
 		setShowMessage(false);
 		setEmailOk(false);
 		setEmailDir("");
+		setInputs({});
 		setEmailError("Ingrese un Email");
 	};
 
@@ -222,7 +256,7 @@ export default function AnexoForm() {
 		<div className="container ">
 			<div className="container-content">
 				{!showResult && (
-					<div className="container-form-title">
+					<div className="container-form-title animate__animated animate__fadeIn ">
 						<form>
 							<h4 className="form-heading">Sello con datos anexos</h4>
 							<div className="form-group">
@@ -314,15 +348,7 @@ export default function AnexoForm() {
 					</div>
 				)}
 				{showResult && (
-					<div className="hashed-output-response">
-						<h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4>
-						<div className="hashed-algorithm-container">
-							<p className="hashed-algorithm-text">{showResponse}</p>
-							<button className="again-button" type="button" onClick={backToInitialState}>
-								Volver a verificar/sellar
-							</button>
-						</div>
-					</div>
+					<ShowResponse showResponse={showResponse} backToInitialState={backToInitialState} />
 				)}
 			</div>
 		</div>

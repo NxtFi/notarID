@@ -226,7 +226,7 @@ export default function HashingForm() {
 			}) //imprimir los datos en la consola
 			.catch((err) => {
 				console.log("Solicitud fallida", err);
-				setResponse({ msg: "Sin Resultado", data: [], loading: true, sellado:false });
+				setResponse({ msg: "Sin Resultado", data: {}, loading: true, sellado:false });
 			}); // Capturar errores
 		setResult(true);
 	};
@@ -240,9 +240,9 @@ export default function HashingForm() {
 			.then((response) => response.json())
 			.then(async (json) => {
 				if (json != null) {
-					console.log("Bloque: ", json);
+					console.log("Documento selllado en el Bloque: ", json);
 					setResponse({
-						msg: "Documento ya se encuentra sellado en el bloque: " + json,
+						msg: "Documento ya se encuentra sellado",
 						data: { hash: json },
 						sellado: true,
 						loading: true,
@@ -297,9 +297,9 @@ export default function HashingForm() {
 	console.log(showResponse);
 	return (
 		<div className="container">
-			<div className="container-content">
+			<div className="container-content  ">
 				{!showResult && (
-					<div className="container-form-title">
+					<div className="container-form-title  animate__animated animate__fadeIn">
 						<form>
 							<h4 className="form-heading">Sello de Tiempo</h4>
 							{/* <div className="form-group">
@@ -371,7 +371,7 @@ export default function HashingForm() {
 										</div>
 									</div>
 								) : (
-									<div  className="response-hashed-algorithm animate__animated animate__fadeIn animate__delay-8s">
+									<div  className="res-msg animate__animated animate__fadeIn animate__delay-8s">
 										<p className="hashed-algorithm-text">
 										{showResponse.msg}
 									</p>

@@ -1,6 +1,6 @@
 import React from "react";
 
-import "../css/spinner.css";
+import "./spinner.css";
 const Spinner = () => {
 	return (
 		<div className="sk-chase">
@@ -13,6 +13,5 @@ const Spinner = () => {
 		</div>
 	);
 };
-
 
 export default Spinner;

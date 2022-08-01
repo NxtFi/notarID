@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { sha256 } from "crypto-hash";
 import validator from "validator";
+import Spinner from "./Spinner";
 
 export default function CertForm() {
 	const [emailError, setEmailError] = useState("Ingrese un Email");
@@ -74,7 +75,7 @@ export default function CertForm() {
 
 	const handleFileDragDrop = (e) => {
 		console.log("Fichero(s) arrastrados");
-		setActiveAnimationDrag(false)
+		setActiveAnimationDrag(false);
 
 		// Evitar el comportamiendo por defecto (Evitar que el fichero se abra/ejecute)
 		e.preventDefault();
@@ -108,7 +109,7 @@ export default function CertForm() {
 	};
 
 	const handleFileDragOver = (e) => {
-        setActiveAnimationDrag(true);
+		setActiveAnimationDrag(true);
 		//console.log('File(s) in drop zone');
 		// Prevent default behavior (Prevent file from being opened)
 		e.preventDefault();
@@ -148,23 +149,26 @@ export default function CertForm() {
 								sellado: true,
 								loading: true,
 							});
-							/* setResponse(
-								"Documento sellado en el bloque: " +
-									blockData.hash +
-									"\nTimestamp: " +
-									blockData.timestamp +
-									"\nFecha y hora: " +
-									new Date(blockData.timestamp).toLocaleString("es-AR", "America/Argentina/Buenos_Aires")
-							); */
 						})
-						.catch((err) => console.log("timestamp fail", err));
+						.catch((err) => {
+							console.log("timestamp fail", err);
+							setResponse({
+								msg: "Lo sentimos ha ocurrido un error",
+								data: [],
+								loading: true,
+								sellado: false,
+							});
+						});
 					setResult(true);
 				} else {
 					console.log("Documento no sellado");
-					setResponse("Documento no sellado");
+					setResponse({ msg: "Documento no sellado", data: {hash:""}, sellado: false, loading: true });
 				}
 			}) //imprimir los datos en la consola
-			.catch((err) => console.log("Solicitud fallida", err)); // Capturar errores
+			.catch((err) => {
+				console.log("Solicitud fallida", err);
+				setResponse({ msg: "Sin Resultado", data: {}, loading: true, sellado: false });
+			}); // Capturar errores
 		setResult(true);
 	};
 
@@ -178,7 +182,13 @@ export default function CertForm() {
 			.then(async (json) => {
 				if (json != null) {
 					console.log("Bloque: ", json);
-					setResponse("Documento ya se encuentra sellado en el bloque: " + json);
+					// setResponse("Documento ya se encuentra sellado en el bloque: " + json);
+					setResponse({
+						msg: "Documento ya se encuentra sellado ",
+						data: { hash: json },
+						sellado: true,
+						loading: true,
+					});
 				} else {
 					console.log("Documento no sellado");
 					//sellar
@@ -204,25 +214,29 @@ export default function CertForm() {
 						body: data_raw,
 					};
 					try {
-						setResponse("Documento enviado a sellar");
+						setResponse({ msg: "Documento enviado a sellar", data: {hash:""}, sellado: false, loading: true });
 						const fetchResponse = await fetch(`https://${location}/create`, settings);
 						const data = await fetchResponse.json();
 						console.log("Resultado: ", data);
 						return data;
 					} catch (e) {
 						console.log("Error: ", e);
+						setResponse({ msg: "Sin resultado", data: {}, sellado: false, loading: true });
 						return e;
 					}
 				}
 			}) //imprimir los datos en la consola
-			.catch((err) => console.log("Solicitud fallida", err)); // Capturar errores
+			.catch((err) => {
+				console.log("Solicitud fallida", err);
+				setResponse({ msg: "Sin resultado", data: {hash:""}, sellado: false, loading: true });
+			}); // Capturar errores
 		setResult(true);
 	};
 
 	const backToInitialState = (e) => {
 		setFileInput("");
 		setOutput("");
-		setResponse("");
+		setResponse({});
 		setResult(false);
 		setShowMessage(false);
 		setEmailOk(false);
@@ -234,7 +248,7 @@ export default function CertForm() {
 		<div className="container">
 			<div className="container-content">
 				{!showResult && (
-					<div className="container-form-title">
+					<div className="container-form-title animate__animated animate__fadeIn">
 						<form>
 							<h4 className="form-heading">Sello con certificado</h4>
 							<div className="form-group cert-form-group">
@@ -277,20 +291,49 @@ export default function CertForm() {
 				)}
 				{showMessage && !showResult && emailOk && (
 					<div className="hashed-button">
-					<button className="verify-doc" type="button" onClick={handleButtonVerificar}>
+						<button className="verify-doc" type="button" onClick={handleButtonVerificar}>
 							VERIFICAR
 						</button>
 						<button className="sellar-doc" type="button" onClick={handleButtonSellar}>
 							SELLAR
-						</button> 
+						</button>
 					</div>
 				)}
 				{showResult && (
 					<div className="hashed-output-response">
-						<h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4> 
+						<h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4>
 						<div className="hashed-algorithm-container">
-							<p className="hashed-algorithm-text">{showResponse.msg}</p> 
-							<button className="again-button" type="button" onClick={backToInitialState}>
+							{showResponse.loading ? (
+								showResponse.sellado && showResponse.data.timestamp ? (
+									<div className="response-hashed-algorithm animate__animated animate__fadeIn animate__delay-8s">
+										<div className="field-resp ">
+											<h3 className="response-heading">Estado:</h3>
+											<p>{showResponse.msg}</p>
+										</div>
+										<div className="field-resp ">
+											<h3 className="response-heading">Hash del bloque:</h3>
+											<p>{showResponse.data.hash}</p>
+										</div>
+										<div className="field-resp">
+											<h3 className="response-heading">Timestamp:</h3>
+											<p>{showResponse.data.timestamp}</p>
+										</div>
+										<div className="field-resp ">
+											<h3 className="response-heading">Fecha y hora:</h3>
+											<p>{showResponse.data.date}</p>
+										</div>
+									</div>
+								) : (
+									<div className="res-msg  animate__animated animate__fadeIn animate__delay-8s">
+										<p className="hashed-algorithm-text">{showResponse.msg} </p>
+									</div>
+								)
+							) : (
+								<div className="spinner">
+									<Spinner />
+								</div>
+							)}
+							<button type="button" className="again-button" onClick={backToInitialState}>
 								Volver a verificar/sellar
 							</button>
 						</div>
