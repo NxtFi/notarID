@@ -4,15 +4,11 @@ import Spinner from './Spinner';
 const ShowResponse = ({showResponse, backToInitialState}) => {
   return (
     <div className="hashed-output-response">
-    <h4 className="hashed-algorithm-heading">Respuesta de la blockchain</h4>
-    <div className="hashed-algorithm-container">
+    <h4 className="hashed-algorithm-heading animate__animated animate__fadeIn animate__delay-.8s">{showResponse.sellado && showResponse.msg.includes('Documento sellado') && showResponse.msg}</h4>
+    <div className="hashed-algorithm-container ">
       {showResponse.loading ? (
         showResponse.sellado && showResponse.data.timestamp ? (
-          <div className="response-hashed-algorithm animate__animated animate__fadeIn animate__delay-8s">
-            <div className="field-resp ">
-              <h3 className="response-heading">Estado:</h3>
-              <p>{showResponse.msg}</p>
-            </div>
+          <div className="response-hashed-algorithm animate__animated animate__fadeIn animate__delay-.8s">
             <div className="field-resp ">
               <h3 className="response-heading">Hash del bloque:</h3>
               <p>{showResponse.data.hash}</p>
