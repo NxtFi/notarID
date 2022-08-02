@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { sha256 } from "crypto-hash";
 import validator from "validator";
-import ShowResponse from "./ShowResponse";
+import ShowResponse from "../components/ShowResponse";
 
 export default function CertForm() {
 	const [emailError, setEmailError] = useState("Ingrese un Email");

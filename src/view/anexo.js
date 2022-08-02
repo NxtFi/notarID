@@ -1,58 +1,57 @@
 import React, { useState } from "react";
-import { sha1, sha256, sha384, sha512 } from "crypto-hash";
-import ShowResponse from "./ShowResponse";
+import { sha256 } from "crypto-hash";
+import validator from "validator";
+import ShowResponse from "../components/ShowResponse";
 
-export default function HashingForm() {
-	const [algorithms] = useState(["sha1", "sha256", "sha384", "sha512"]);
-	// let [text_input, setTextInput] = useState("");
+export default function AnexoForm() {
+	const [emailError, setEmailError] = useState("Ingrese un Email");
+	const [emailOk, setEmailOk] = useState(false);
+	const [emailDir, setEmailDir] = useState("");
 	let [file_input, setFileInput] = useState("");
-	let [algorithm, setAlgorithm] = useState("sha256");
+	let [file_Name, setFileName] = useState("");
+
 	let [output, setOutput] = useState("");
 
 	const [showMessage, setShowMessage] = useState(false);
-	const [showResult, setResult] = useState(false);
 	const [activeAnimationDrag, setActiveAnimationDrag] = useState(false);
+	const [showResult, setResult] = useState(false);
 	const [showResponse, setResponse] = useState({
 		msg: "Sin resultado",
 		data: {},
 		sellado: false,
 		loading: false,
 	});
-	let [file_Name, setFileName] = useState("");
+
+	const [inputs, setInputs] = useState({});
+
+	const handleChange = (event) => {
+		const name = event.target.name;
+		const value = event.target.value;
+		setInputs((values) => ({ ...values, [name]: value }));
+	};
 
 	// function format_time(s) {
 	// 	const dtFormat = new Intl.DateTimeFormat("es-AR", {
 	// 		timeStyle: "long",
 	// 		timeZone: "America/Argentina/Buenos_Aires",
 	// 	});
-
 	// 	return dtFormat.format(new Date(s * 1e3));
 	// }
 
 	//For handling text input
-	// const handleTextInput = async (e) => {
-	// 	// Get the value
-	// 	let value = e.target.value;
+	const handleEmailInput = async (e) => {
+		// Get the value
+		var email = e.target.value;
 
-	// 	let result = "";
-
-	// 	// Get the current active algorithm and hash the value using it.
-	// 	if (algorithm === "sha1") {
-	// 		result = await sha1(value);
-	// 	} else if (algorithm === "sha256") {
-	// 		result = await sha256(value);
-	// 	} else if (algorithm === "sha384") {
-	// 		result = await sha384(value);
-	// 	} else if (algorithm === "sha512") {
-	// 		result = await sha512(value);
-	// 	}
-
-	// 	// Set the hashed text as output
-	// 	setOutput(result);
-
-	// 	// Set the value of the text input
-	// 	setTextInput(value);
-	// };
+		if (validator.isEmail(email)) {
+			setEmailError("El certificado se enviará a: " + email);
+			setEmailOk(true);
+		} else {
+			setEmailError("Ingrese un Email válido!");
+			setEmailOk(false);
+		}
+		setEmailDir(email);
+	};
 
 	//For handling file input
 	const handleFileInput = (e) => {
@@ -62,17 +61,9 @@ export default function HashingForm() {
 		// Listening to when the file has been read.
 		fr.onload = async () => {
 			let result = "";
-
 			// Hashing the content based on the active algorithm
-			if (algorithm === "sha1") {
-				result = await sha1(fr.result);
-			} else if (algorithm === "sha256") {
-				result = await sha256(fr.result);
-			} else if (algorithm === "sha384") {
-				result = await sha384(fr.result);
-			} else if (algorithm === "sha512") {
-				result = await sha512(fr.result);
-			}
+
+			result = await sha256(fr.result);
 
 			// Setting the hashed text as the output
 			setOutput(result);
@@ -88,47 +79,6 @@ export default function HashingForm() {
 		setFileName(e.target.files[0].name);
 		// console.log(e.target.files[0].name);
 	};
-	//For handling algorithm change
-	// const handleAlgorithmChange = async (e) => {
-	// 	// Get the selected algorithm
-	// 	let value = e.target.value;
-
-	// 	let result = "";
-
-	// 	// Check if we have a text input
-	// 	if (text_input) {
-	// 		// Hash the text based on the selected algorithm
-	// 		if (value === "sha1") {
-	// 			result = await sha1(text_input);
-	// 		} else if (value === "sha256") {
-	// 			result = await sha256(text_input);
-	// 		} else if (value === "sha384") {
-	// 			result = await sha384(text_input);
-	// 		} else if (value === "sha512") {
-	// 			result = await sha512(text_input);
-	// 		}
-	// 	}
-
-	// 	// Check if we have a file input
-	// 	if (file_input) {
-	// 		// Hash the file content based on the selected algorithm
-	// 		if (value === "sha1") {
-	// 			result = await sha1(file_input);
-	// 		} else if (value === "sha256") {
-	// 			result = await sha256(file_input);
-	// 		} else if (value === "sha384") {
-	// 			result = await sha384(file_input);
-	// 		} else if (value === "sha512") {
-	// 			result = await sha512(file_input);
-	// 		}
-	// 	}
-
-	// 	// Set the selected algorithm
-	// 	setAlgorithm(value);
-
-	// 	// Set the hashed text
-	// 	setOutput(result);
-	// };
 
 	const handleFileDragDrop = (e) => {
 		// console.log("Fichero(s) arrastrados");
@@ -182,7 +132,7 @@ export default function HashingForm() {
 			.then((json) => {
 				if (json != null) {
 					// console.log("Bloque: ", json);
-					// setResponse({ msg: "Documento sellado", data: { hash: json }, sellado: true });
+					// setResponse("Documento sellado en el bloque: " + json);
 					//obtener timestamp
 					//https://development-001-node.test.nxtfi.net/_block
 					let blockReadEndpoint = "https://development-001-node.test.nxtfi.net/_block/";
@@ -210,7 +160,7 @@ export default function HashingForm() {
 							// console.log("timestamp fail", err);
 							setResponse({
 								msg: "Lo sentimos ha ocurrido un error",
-								data: [],
+								data: { hash: "" },
 								loading: true,
 								sellado: false,
 							});
@@ -223,7 +173,7 @@ export default function HashingForm() {
 			}) //imprimir los datos en la consola
 			.catch((err) => {
 				// console.log("Solicitud fallida", err);
-				setResponse({ msg: "Sin Resultado", data: {}, loading: true, sellado: false });
+				setResponse({ msg: "Sin Resultado", data: { hash: "" }, loading: true, sellado: false });
 			}); // Capturar errores
 		setResult(true);
 	};
@@ -237,7 +187,8 @@ export default function HashingForm() {
 			.then((response) => response.json())
 			.then(async (json) => {
 				if (json != null) {
-					// console.log("Documento selllado en el Bloque: ", json);
+					// console.log("Bloque: ", json);
+					// setResponse("Documento ya se encuentra sellado en el bloque: " + json);
 					setResponse({
 						msg: "Documento ya se encuentra sellado",
 						data: { hash: json },
@@ -248,7 +199,11 @@ export default function HashingForm() {
 					// console.log("Documento no sellado");
 					//sellar
 					// console.log("sellando...");
-					let data_raw = '{"block":{"data":"// IMPORT ';
+					let data_raw = "{";
+					data_raw += '"mail":"';
+					data_raw += emailDir;
+					data_raw += '",';
+					data_raw += '"block":{"data":"// IMPORT ';
 					data_raw += "7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"; // smart contract
 					data_raw += "\\n {hash:'";
 					data_raw += output; //doc hash
@@ -290,25 +245,73 @@ export default function HashingForm() {
 		setResponse({});
 		setResult(false);
 		setShowMessage(false);
+		setEmailOk(false);
+		setEmailDir("");
+		setInputs({});
+		setEmailError("Ingrese un Email");
 	};
-	// console.log(showResponse);
+
 	return (
-		<div className="container">
-			<div className="container-content  ">
+		<div className="container ">
+			<div className="container-content">
 				{!showResult && (
-					<div className="container-form-title  animate__animated animate__fadeIn">
+					<div className="container-form-title animate__animated animate__fadeIn ">
 						<form>
-							<h4 className="form-heading">Sello de Tiempo</h4>
-							{/* <div className="form-group">
-                            <label htmlFor="text-input">Text</label>
-                            <input type="text" className="form-control" id="text-input" placeholder='Write some text' value={text_input} onChange={handleTextInput} />
-                        </div> */}
+							<h4 className="form-heading">Sello con datos anexos</h4>
+							<div className="form-group">
+								<div className="input-label">
+									<label htmlFor="name">Nombre:</label>
+									<input
+										type="text"
+										name="name"
+										value={inputs.name || ""}
+										id="name"
+										onChange={handleChange}
+									/>
+								</div>
+								<div className="input-label">
+									<label htmlFor="ape">Apellido:</label>
+									<input type="text" name="ape" value={inputs.ape || ""} id="ape" onChange={handleChange} />
+								</div>
+
+								<div className="input-label">
+									<label htmlFor="dtype">Tipo de documento:</label>
+									<select name="dtype" value={inputs.dtype || ""} id="dtype" onChange={handleChange}>
+										<option value="DNI">DNI</option>
+										<option value="CI">CI</option>
+										<option value="LC">LC</option>
+										<option value="LE">LE</option>
+									</select>
+								</div>
+								<div className="input-label">
+									<label htmlFor="docnumber">Número:</label>
+									<input
+										type="number"
+										name="docnumber"
+										value={inputs.docnumber || ""}
+										onChange={handleChange}
+										id="docnumber"
+									/>
+								</div>
+								<div className="input-label">
+									<label htmlFor="obs">Observaciones:</label>
+									<input type="text" name="obs" value={inputs.obs || ""} id="obs" onChange={handleChange} />
+								</div>
+								<div className="input-label">
+									<label htmlFor="text-input">E-mail</label>
+									<input
+										type="email"
+										className="form-control"
+										id="email-input"
+										placeholder="usuario@mail.com"
+										value={emailDir}
+										onChange={handleEmailInput}
+									/>
+									<p className="emailError">{emailError}</p>
+								</div>
+							</div>
 							<div
-								className={
-									activeAnimationDrag
-										? "is-active file-drag-drop custom-drag-drop"
-										: "file-drag-drop custom-drag-drop"
-								}
+								className={activeAnimationDrag ? "is-active file-drag-drop " : "file-drag-drop "}
 								onDrop={handleFileDragDrop}
 								onDragOver={handleFileDragOver}
 								onDragLeave={() => setActiveAnimationDrag(false)}
@@ -326,19 +329,19 @@ export default function HashingForm() {
 				)}
 				{showMessage && !showResult && (
 					<div className="hashed-output">
-						<h4 className="hashed-algorithm-heading">Hash del archivo: </h4>
+						<h4 className="hashed-algorithm-heading">Hash del archivo</h4>
 						<div className="hashed-algorithm-container">
 							<p className="hashed-algorithm-text">{output}</p>
 						</div>
 						<p className="file-name">Archivo: {file_Name}</p>
 					</div>
 				)}
-				{showMessage && !showResult && (
+				{showMessage && !showResult && emailOk && (
 					<div className="hashed-button">
 						<button className="verify-doc" type="button" onClick={handleButtonVerificar}>
 							VERIFICAR
 						</button>
-						<button type="button" className="sellar-doc" onClick={handleButtonSellar}>
+						<button className="sellar-doc" type="button" onClick={handleButtonSellar}>
 							SELLAR
 						</button>
 					</div>
