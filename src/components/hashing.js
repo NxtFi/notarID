@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { sha1, sha256, sha384, sha512 } from "crypto-hash";
-import Spinner from "./Spinner";
 import ShowResponse from "./ShowResponse";
 
 export default function HashingForm() {
 	const [algorithms] = useState(["sha1", "sha256", "sha384", "sha512"]);
-	let [text_input, setTextInput] = useState("");
+	// let [text_input, setTextInput] = useState("");
 	let [file_input, setFileInput] = useState("");
 	let [algorithm, setAlgorithm] = useState("sha256");
 	let [output, setOutput] = useState("");
@@ -21,39 +20,39 @@ export default function HashingForm() {
 	});
 	let [file_Name, setFileName] = useState("");
 
-	function format_time(s) {
-		const dtFormat = new Intl.DateTimeFormat("es-AR", {
-			timeStyle: "long",
-			timeZone: "America/Argentina/Buenos_Aires",
-		});
+	// function format_time(s) {
+	// 	const dtFormat = new Intl.DateTimeFormat("es-AR", {
+	// 		timeStyle: "long",
+	// 		timeZone: "America/Argentina/Buenos_Aires",
+	// 	});
 
-		return dtFormat.format(new Date(s * 1e3));
-	}
+	// 	return dtFormat.format(new Date(s * 1e3));
+	// }
 
 	//For handling text input
-	const handleTextInput = async (e) => {
-		// Get the value
-		let value = e.target.value;
+	// const handleTextInput = async (e) => {
+	// 	// Get the value
+	// 	let value = e.target.value;
 
-		let result = "";
+	// 	let result = "";
 
-		// Get the current active algorithm and hash the value using it.
-		if (algorithm == "sha1") {
-			result = await sha1(value);
-		} else if (algorithm == "sha256") {
-			result = await sha256(value);
-		} else if (algorithm == "sha384") {
-			result = await sha384(value);
-		} else if (algorithm == "sha512") {
-			result = await sha512(value);
-		}
+	// 	// Get the current active algorithm and hash the value using it.
+	// 	if (algorithm === "sha1") {
+	// 		result = await sha1(value);
+	// 	} else if (algorithm === "sha256") {
+	// 		result = await sha256(value);
+	// 	} else if (algorithm === "sha384") {
+	// 		result = await sha384(value);
+	// 	} else if (algorithm === "sha512") {
+	// 		result = await sha512(value);
+	// 	}
 
-		// Set the hashed text as output
-		setOutput(result);
+	// 	// Set the hashed text as output
+	// 	setOutput(result);
 
-		// Set the value of the text input
-		setTextInput(value);
-	};
+	// 	// Set the value of the text input
+	// 	setTextInput(value);
+	// };
 
 	//For handling file input
 	const handleFileInput = (e) => {
@@ -65,13 +64,13 @@ export default function HashingForm() {
 			let result = "";
 
 			// Hashing the content based on the active algorithm
-			if (algorithm == "sha1") {
+			if (algorithm === "sha1") {
 				result = await sha1(fr.result);
-			} else if (algorithm == "sha256") {
+			} else if (algorithm === "sha256") {
 				result = await sha256(fr.result);
-			} else if (algorithm == "sha384") {
+			} else if (algorithm === "sha384") {
 				result = await sha384(fr.result);
-			} else if (algorithm == "sha512") {
+			} else if (algorithm === "sha512") {
 				result = await sha512(fr.result);
 			}
 
@@ -87,61 +86,61 @@ export default function HashingForm() {
 		// Reading the file.
 		fr.readAsText(e.target.files[0]);
 		setFileName(e.target.files[0].name);
-		console.log(e.target.files[0].name);
+		// console.log(e.target.files[0].name);
 	};
 	//For handling algorithm change
-	const handleAlgorithmChange = async (e) => {
-		// Get the selected algorithm
-		let value = e.target.value;
+	// const handleAlgorithmChange = async (e) => {
+	// 	// Get the selected algorithm
+	// 	let value = e.target.value;
 
-		let result = "";
+	// 	let result = "";
 
-		// Check if we have a text input
-		if (text_input) {
-			// Hash the text based on the selected algorithm
-			if (value == "sha1") {
-				result = await sha1(text_input);
-			} else if (value == "sha256") {
-				result = await sha256(text_input);
-			} else if (value == "sha384") {
-				result = await sha384(text_input);
-			} else if (value == "sha512") {
-				result = await sha512(text_input);
-			}
-		}
+	// 	// Check if we have a text input
+	// 	if (text_input) {
+	// 		// Hash the text based on the selected algorithm
+	// 		if (value === "sha1") {
+	// 			result = await sha1(text_input);
+	// 		} else if (value === "sha256") {
+	// 			result = await sha256(text_input);
+	// 		} else if (value === "sha384") {
+	// 			result = await sha384(text_input);
+	// 		} else if (value === "sha512") {
+	// 			result = await sha512(text_input);
+	// 		}
+	// 	}
 
-		// Check if we have a file input
-		if (file_input) {
-			// Hash the file content based on the selected algorithm
-			if (value == "sha1") {
-				result = await sha1(file_input);
-			} else if (value == "sha256") {
-				result = await sha256(file_input);
-			} else if (value == "sha384") {
-				result = await sha384(file_input);
-			} else if (value == "sha512") {
-				result = await sha512(file_input);
-			}
-		}
+	// 	// Check if we have a file input
+	// 	if (file_input) {
+	// 		// Hash the file content based on the selected algorithm
+	// 		if (value === "sha1") {
+	// 			result = await sha1(file_input);
+	// 		} else if (value === "sha256") {
+	// 			result = await sha256(file_input);
+	// 		} else if (value === "sha384") {
+	// 			result = await sha384(file_input);
+	// 		} else if (value === "sha512") {
+	// 			result = await sha512(file_input);
+	// 		}
+	// 	}
 
-		// Set the selected algorithm
-		setAlgorithm(value);
+	// 	// Set the selected algorithm
+	// 	setAlgorithm(value);
 
-		// Set the hashed text
-		setOutput(result);
-	};
+	// 	// Set the hashed text
+	// 	setOutput(result);
+	// };
 
 	const handleFileDragDrop = (e) => {
-		console.log("Fichero(s) arrastrados");
+		// console.log("Fichero(s) arrastrados");
 		setActiveAnimationDrag(false);
 		// Evitar el comportamiendo por defecto (Evitar que el fichero se abra/ejecute)
 		e.preventDefault();
 
 		if (e.dataTransfer.files) {
 			// Usar la interfaz DataTransferItemList para acceder a el/los archivos)
-			for (var i = 0; i < e.dataTransfer.files.length; i++) {
-				var file = e.dataTransfer.files[i];
-				console.log("... file[" + i + "].name = " + file.name);
+			for (let i = 0; i < e.dataTransfer.files.length; i++) {
+				let file = e.dataTransfer.files[i];
+				// console.log("... file[" + i + "].name = " + file.name);
 				setFileName(file.name);
 
 				const fr = new FileReader();
@@ -159,8 +158,8 @@ export default function HashingForm() {
 			}
 		} else {
 			// Usar la interfaz DataTransfer para acceder a el/los archivos
-			for (var i = 0; i < e.dataTransfer.files.length; i++) {
-				console.log("... file[" + i + "].name = " + e.dataTransfer.files[i].name);
+			for (let i = 0; i < e.dataTransfer.files.length; i++) {
+				// console.log("... file[" + i + "].name = " + e.dataTransfer.files[i].name);
 			}
 		}
 	};
@@ -182,7 +181,7 @@ export default function HashingForm() {
 			.then((response) => response.json())
 			.then((json) => {
 				if (json != null) {
-					console.log("Bloque: ", json);
+					// console.log("Bloque: ", json);
 					// setResponse({ msg: "Documento sellado", data: { hash: json }, sellado: true });
 					//obtener timestamp
 					//https://development-001-node.test.nxtfi.net/_block
@@ -192,7 +191,7 @@ export default function HashingForm() {
 						// Exito
 						.then((response) => response.json())
 						.then((blockData) => {
-							console.log("Bloque sellador: ", blockData);
+							// console.log("Bloque sellador: ", blockData);
 							setResponse({
 								msg: "Documento sellado",
 								data: {
@@ -206,17 +205,9 @@ export default function HashingForm() {
 								sellado: true,
 								loading: true,
 							});
-							// setResponse(
-							// 	"Documento sellado en el bloque: " +
-							// 		blockData.hash +
-							// 		"\nTimestamp: " +
-							// 		blockData.timestamp +
-							// 		"\nFecha y hora: " +
-							// 		new Date(blockData.timestamp).toLocaleString("es-AR", "America/Argentina/Buenos_Aires")
-							// );
 						})
 						.catch((err) => {
-							console.log("timestamp fail", err);
+							// console.log("timestamp fail", err);
 							setResponse({
 								msg: "Lo sentimos ha ocurrido un error",
 								data: [],
@@ -226,12 +217,12 @@ export default function HashingForm() {
 						});
 					setResult(true);
 				} else {
-					console.log("Documento no sellado");
+					// console.log("Documento no sellado");
 					setResponse({ msg: "Documento no sellado", data: {}, sellado: false, loading: true });
 				}
 			}) //imprimir los datos en la consola
 			.catch((err) => {
-				console.log("Solicitud fallida", err);
+				// console.log("Solicitud fallida", err);
 				setResponse({ msg: "Sin Resultado", data: {}, loading: true, sellado: false });
 			}); // Capturar errores
 		setResult(true);
@@ -246,7 +237,7 @@ export default function HashingForm() {
 			.then((response) => response.json())
 			.then(async (json) => {
 				if (json != null) {
-					console.log("Documento selllado en el Bloque: ", json);
+					// console.log("Documento selllado en el Bloque: ", json);
 					setResponse({
 						msg: "Documento ya se encuentra sellado",
 						data: { hash: json },
@@ -254,9 +245,9 @@ export default function HashingForm() {
 						loading: true,
 					});
 				} else {
-					console.log("Documento no sellado");
+					// console.log("Documento no sellado");
 					//sellar
-					console.log("sellando...");
+					// console.log("sellando...");
 					let data_raw = '{"block":{"data":"// IMPORT ';
 					data_raw += "7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"; // smart contract
 					data_raw += "\\n {hash:'";
@@ -277,17 +268,17 @@ export default function HashingForm() {
 						setResponse({ msg: "Documento enviado a sellar", data: {}, sellado: false, loading: true });
 						const fetchResponse = await fetch(`https://${location}/create`, settings);
 						const data = await fetchResponse.json();
-						console.log("Resultado: ", data);
+						// console.log("Resultado: ", data);
 						return data;
 					} catch (e) {
-						console.log("Error: ", e);
+						// console.log("Error: ", e);
 						setResponse({ msg: "Sin resultado", data: {}, sellado: false, loading: true });
 						return e;
 					}
 				}
 			}) //imprimir los datos en la consola
 			.catch((err) => {
-				console.log("Solicitud fallida", err);
+				// console.log("Solicitud fallida", err);
 				setResponse({ msg: "Sin resultado", data: {}, sellado: false, loading: true });
 			}); // Capturar errores
 		setResult(true);
@@ -300,7 +291,7 @@ export default function HashingForm() {
 		setResult(false);
 		setShowMessage(false);
 	};
-	console.log(showResponse);
+	// console.log(showResponse);
 	return (
 		<div className="container">
 			<div className="container-content  ">

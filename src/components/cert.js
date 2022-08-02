@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { sha256 } from "crypto-hash";
 import validator from "validator";
-import Spinner from "./Spinner";
 import ShowResponse from "./ShowResponse";
 
 export default function CertForm() {
@@ -22,14 +21,14 @@ export default function CertForm() {
 		loading: false,
 	});
 
-	function format_time(s) {
-		const dtFormat = new Intl.DateTimeFormat("es-AR", {
-			timeStyle: "long",
-			timeZone: "America/Argentina/Buenos_Aires",
-		});
+	// function format_time(s) {
+	// 	const dtFormat = new Intl.DateTimeFormat("es-AR", {
+	// 		timeStyle: "long",
+	// 		timeZone: "America/Argentina/Buenos_Aires",
+	// 	});
 
-		return dtFormat.format(new Date(s * 1e3));
-	}
+	// 	return dtFormat.format(new Date(s * 1e3));
+	// }
 
 	//For handling text input
 	const handleEmailInput = async (e) => {
@@ -71,11 +70,11 @@ export default function CertForm() {
 		// Reading the file.
 		fr.readAsText(e.target.files[0]);
 		setFileName(e.target.files[0].name);
-		console.log(e.target.files[0].name);
+		// console.log(e.target.files[0].name);
 	};
 
 	const handleFileDragDrop = (e) => {
-		console.log("Fichero(s) arrastrados");
+		// console.log("Fichero(s) arrastrados");
 		setActiveAnimationDrag(false);
 
 		// Evitar el comportamiendo por defecto (Evitar que el fichero se abra/ejecute)
@@ -83,9 +82,9 @@ export default function CertForm() {
 
 		if (e.dataTransfer.files) {
 			// Usar la interfaz DataTransferItemList para acceder a el/los archivos)
-			for (var i = 0; i < e.dataTransfer.files.length; i++) {
-				var file = e.dataTransfer.files[i];
-				console.log("... file[" + i + "].name = " + file.name);
+			for (let i = 0; i < e.dataTransfer.files.length; i++) {
+				let file = e.dataTransfer.files[i];
+				// console.log("... file[" + i + "].name = " + file.name);
 				setFileName(file.name);
 
 				const fr = new FileReader();
@@ -103,8 +102,8 @@ export default function CertForm() {
 			}
 		} else {
 			// Usar la interfaz DataTransfer para acceder a el/los archivos
-			for (var i = 0; i < e.dataTransfer.files.length; i++) {
-				console.log("... file[" + i + "].name = " + e.dataTransfer.files[i].name);
+			for (let i = 0; i < e.dataTransfer.files.length; i++) {
+				// console.log("... file[" + i + "].name = " + e.dataTransfer.files[i].name);
 			}
 		}
 	};
@@ -126,7 +125,7 @@ export default function CertForm() {
 			.then((response) => response.json())
 			.then((json) => {
 				if (json != null) {
-					console.log("Bloque: ", json);
+					// console.log("Bloque: ", json);
 					// setResponse("Documento sellado en el bloque: " + json);
 					//obtener timestamp
 					//https://development-001-node.test.nxtfi.net/_block
@@ -136,7 +135,7 @@ export default function CertForm() {
 						// Exito
 						.then((response) => response.json())
 						.then((blockData) => {
-							console.log("Bloque sellador: ", blockData);
+							// console.log("Bloque sellador: ", blockData);
 							setResponse({
 								msg: "Documento sellado",
 								data: {
@@ -152,7 +151,7 @@ export default function CertForm() {
 							});
 						})
 						.catch((err) => {
-							console.log("timestamp fail", err);
+							// console.log("timestamp fail", err);
 							setResponse({
 								msg: "Lo sentimos ha ocurrido un error",
 								data: [],
@@ -162,7 +161,7 @@ export default function CertForm() {
 						});
 					setResult(true);
 				} else {
-					console.log("Documento no sellado");
+					// console.log("Documento no sellado");
 					setResponse({
 						msg: "Documento no sellado",
 						data: { hash: "" },
@@ -172,7 +171,7 @@ export default function CertForm() {
 				}
 			}) //imprimir los datos en la consola
 			.catch((err) => {
-				console.log("Solicitud fallida", err);
+				// console.log("Solicitud fallida", err);
 				setResponse({ msg: "Sin Resultado", data: {}, loading: true, sellado: false });
 			}); // Capturar errores
 		setResult(true);
@@ -187,7 +186,7 @@ export default function CertForm() {
 			.then((response) => response.json())
 			.then(async (json) => {
 				if (json != null) {
-					console.log("Bloque: ", json);
+					// console.log("Bloque: ", json);
 					// setResponse("Documento ya se encuentra sellado en el bloque: " + json);
 					setResponse({
 						msg: "Documento ya se encuentra sellado ",
@@ -196,9 +195,9 @@ export default function CertForm() {
 						loading: true,
 					});
 				} else {
-					console.log("Documento no sellado");
+					// console.log("Documento no sellado");
 					//sellar
-					console.log("sellando...");
+					// console.log("sellando...");
 					let data_raw = "{";
 					data_raw += '"mail":"';
 					data_raw += emailDir;
@@ -228,17 +227,17 @@ export default function CertForm() {
 						});
 						const fetchResponse = await fetch(`https://${location}/create`, settings);
 						const data = await fetchResponse.json();
-						console.log("Resultado: ", data);
+						// console.log("Resultado: ", data);
 						return data;
 					} catch (e) {
-						console.log("Error: ", e);
+						// console.log("Error: ", e);
 						setResponse({ msg: "Sin resultado", data: {}, sellado: false, loading: true });
 						return e;
 					}
 				}
 			}) //imprimir los datos en la consola
 			.catch((err) => {
-				console.log("Solicitud fallida", err);
+				// console.log("Solicitud fallida", err);
 				setResponse({ msg: "Sin resultado", data: { hash: "" }, sellado: false, loading: true });
 			}); // Capturar errores
 		setResult(true);

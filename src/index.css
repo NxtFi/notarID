@@ -136,11 +136,8 @@ body {
 /* ---------------------Forms---------------------------------- */
 .form-group {
 	display: flex;
-	/* flex-direction: row; */
-	/* align-items: stretch; */
 	justify-content: space-between;
 	color: var(--secondary-color);
-	/* column-gap: 1rem; */
 	font-size: 1rem;
 	flex-wrap: wrap;
 }
@@ -340,8 +337,7 @@ select {
 	word-wrap: break-word;
 }
 .field-resp p {
-	font-family: Roboto Mono;
-	/* font-family:TTCommons-Light-Italic; */
+	font-family:TTCommons-Light-Italic;
 }
 
 /*---------styles for input file------------- */
