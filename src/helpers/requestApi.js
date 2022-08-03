@@ -25,6 +25,7 @@ export const verifyDoc = async (setResponse, setResult, output) => {
 							data: {
 								hash: blockData.hash,
 								timestamp: blockData.timestamp,
+								hashdoc:output,
 								date: new Date(blockData.timestamp).toLocaleString(
 									"es-AR",
 									"America/Argentina/Buenos_Aires"

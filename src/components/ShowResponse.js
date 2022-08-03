@@ -11,6 +11,10 @@ const ShowResponse = ({showResponse, backToInitialState}) => {
         showResponse.sellado && showResponse.data.timestamp ? (
           <div className="response-hashed-algorithm animate__animated animate__fadeIn animate__delay-.8s">
             <div className="field-resp ">
+              <h3 className="response-heading">Hash del documento:</h3>
+              <p>{showResponse.data.hashdoc}</p>
+            </div>
+            <div className="field-resp ">
               <h3 className="response-heading">Hash del bloque:</h3>
               <p>{showResponse.data.hash}</p>
             </div>

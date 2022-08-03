@@ -122,7 +122,7 @@ export default function AnexoForm() {
 
 	const handleButtonSellar = async (e) => {
 		let data_raw = "{";
-		data_raw += '"mail":"';
+		data_raw += '"email":"';
 		data_raw += emailDir;
 		data_raw += '",';
 		data_raw += '"block":{"data":"// IMPORT ';

@@ -15,7 +15,7 @@ const HashDoc = () => {
 	});
 	const [result, setResult] = useState(false);
 
-	//Get params <hashId>
+	//Get params <hashDoc>
 	let { hashDoc } = useParams();
  const backToInitialState = ()=>{
   //go to home
@@ -27,10 +27,7 @@ const HashDoc = () => {
 				verifyDoc(setResponse, setResult, hashDoc);
 			}
 		};
-
 		getData();
-
-		// setShowResponse(showResponse)
 	}, [hashDoc]);
 
 	return (
