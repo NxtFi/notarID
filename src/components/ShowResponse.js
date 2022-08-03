@@ -2,6 +2,7 @@ import React from 'react'
 import Spinner from './Spinner';
 
 const ShowResponse = ({showResponse, backToInitialState}) => {
+
   return (
     <div className="hashed-output-response">
     <h4 className="hashed-algorithm-heading animate__animated animate__fadeIn animate__delay-.8s">{showResponse.sellado && showResponse.msg.includes('Documento sellado') && showResponse.msg}</h4>

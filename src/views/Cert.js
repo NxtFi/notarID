@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { sha256 } from "crypto-hash";
 import validator from "validator";
 import ShowResponse from "../components/ShowResponse";
+import { sellarDoc, verifyDoc } from "../helpers/requestApi";
 
 export default function CertForm() {
 	const [emailError, setEmailError] = useState("Ingrese un Email");
@@ -20,15 +21,6 @@ export default function CertForm() {
 		sellado: false,
 		loading: false,
 	});
-
-	// function format_time(s) {
-	// 	const dtFormat = new Intl.DateTimeFormat("es-AR", {
-	// 		timeStyle: "long",
-	// 		timeZone: "America/Argentina/Buenos_Aires",
-	// 	});
-
-	// 	return dtFormat.format(new Date(s * 1e3));
-	// }
 
 	//For handling text input
 	const handleEmailInput = async (e) => {
@@ -117,130 +109,22 @@ export default function CertForm() {
 
 	const handleButtonVerificar = (e) => {
 		// GET (Request).
-		let endpoint =
-			"https://development-001-node.test.nxtfi.net/7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99/_/";
-		endpoint += output;
-		fetch(endpoint)
-			// Exito
-			.then((response) => response.json())
-			.then((json) => {
-				if (json != null) {
-					// console.log("Bloque: ", json);
-					// setResponse("Documento sellado en el bloque: " + json);
-					//obtener timestamp
-					//https://development-001-node.test.nxtfi.net/_block
-					let blockReadEndpoint = "https://development-001-node.test.nxtfi.net/_block/";
-					blockReadEndpoint += json;
-					fetch(blockReadEndpoint)
-						// Exito
-						.then((response) => response.json())
-						.then((blockData) => {
-							// console.log("Bloque sellador: ", blockData);
-							setResponse({
-								msg: "Documento sellado",
-								data: {
-									hash: blockData.hash,
-									timestamp: blockData.timestamp,
-									date: new Date(blockData.timestamp).toLocaleString(
-										"es-AR",
-										"America/Argentina/Buenos_Aires"
-									),
-								},
-								sellado: true,
-								loading: true,
-							});
-						})
-						.catch((err) => {
-							// console.log("timestamp fail", err);
-							setResponse({
-								msg: "Lo sentimos ha ocurrido un error",
-								data: [],
-								loading: true,
-								sellado: false,
-							});
-						});
-					setResult(true);
-				} else {
-					// console.log("Documento no sellado");
-					setResponse({
-						msg: "Documento no sellado",
-						data: { hash: "" },
-						sellado: false,
-						loading: true,
-					});
-				}
-			}) //imprimir los datos en la consola
-			.catch((err) => {
-				// console.log("Solicitud fallida", err);
-				setResponse({ msg: "Sin Resultado", data: {}, loading: true, sellado: false });
-			}); // Capturar errores
+		verifyDoc(setResponse, setResult, output);
 		setResult(true);
 	};
 
 	const handleButtonSellar = async (e) => {
-		let endpoint =
-			"https://development-001-node.test.nxtfi.net/7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99/_/";
-		endpoint += output;
-		fetch(endpoint)
-			// Exito
-			.then((response) => response.json())
-			.then(async (json) => {
-				if (json != null) {
-					// console.log("Bloque: ", json);
-					// setResponse("Documento ya se encuentra sellado en el bloque: " + json);
-					setResponse({
-						msg: "Documento ya se encuentra sellado ",
-						data: { hash: json },
-						sellado: true,
-						loading: true,
-					});
-				} else {
-					// console.log("Documento no sellado");
-					//sellar
-					// console.log("sellando...");
-					let data_raw = "{";
-					data_raw += '"mail":"';
-					data_raw += emailDir;
-					data_raw += '",';
-					data_raw += '"block":{"data":"// IMPORT ';
-					data_raw += "7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"; // smart contract
-					data_raw += "\\n {hash:'";
-					data_raw += output; //doc hash
-					data_raw +=
-						'\'}","by":"NOTARIO","scope":"7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
-
-					// string pattern
-					//let data = '{"block":{"data":"// IMPORT 7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99\\n {hash:\'1355d4c778090809336ce9d0980af78c16edf218ded10c2a7ac1736c9e8b1fff\'}","by":"NOTARIO","scope":"7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
-
-					const location = "signblock.test.nxtfi.net";
-					const settings = {
-						method: "POST",
-						headers: { "Content-type": "application/json" },
-						body: data_raw,
-					};
-					try {
-						setResponse({
-							msg: "Documento enviado a sellar",
-							data: { hash: "" },
-							sellado: false,
-							loading: true,
-						});
-						const fetchResponse = await fetch(`https://${location}/create`, settings);
-						const data = await fetchResponse.json();
-						// console.log("Resultado: ", data);
-						return data;
-					} catch (e) {
-						// console.log("Error: ", e);
-						setResponse({ msg: "Sin resultado", data: {}, sellado: false, loading: true });
-						return e;
-					}
-				}
-			}) //imprimir los datos en la consola
-			.catch((err) => {
-				// console.log("Solicitud fallida", err);
-				setResponse({ msg: "Sin resultado", data: { hash: "" }, sellado: false, loading: true });
-			}); // Capturar errores
-		setResult(true);
+		let data_raw = "{";
+		data_raw += '"mail":"';
+		data_raw += emailDir;
+		data_raw += '",';
+		data_raw += '"block":{"data":"// IMPORT ';
+		data_raw += "7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"; // smart contract
+		data_raw += "\\n {hash:'";
+		data_raw += output; //doc hash
+		data_raw +=
+			'\'}","by":"NOTARIO","scope":"7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
+		sellarDoc(setResponse, setResult, output, data_raw);
 	};
 
 	const backToInitialState = (e) => {
@@ -310,7 +194,7 @@ export default function CertForm() {
 					</div>
 				)}
 				{showResult && (
-					<ShowResponse showResponse={showResponse} backToInitialState={backToInitialState} />//component show response 
+					<ShowResponse showResponse={showResponse} backToInitialState={backToInitialState} /> //component show response
 				)}
 			</div>
 		</div>
