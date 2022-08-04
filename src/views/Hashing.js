@@ -23,6 +23,8 @@ export default function HashingForm() {
 		const dochash = params.get("dochash");
 		if (dochash) {
 			handleButtonVerificar();
+			setResult(true)//added line to prevent show form
+			
 		}
 	}, []);
 
@@ -102,9 +104,10 @@ export default function HashingForm() {
 	};
 	// console.log(showResponse);
 	return (
+
 		<div className="container">
 			<div className="container-content  ">
-				{!showResult && (
+				{!showResult &&(
 					<div className="container-form-title  animate__animated animate__fadeIn">
 						<form>
 							<h4 className="form-heading">Sello de Tiempo</h4>
