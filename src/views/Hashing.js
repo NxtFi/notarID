@@ -3,37 +3,40 @@ import { sha1, sha256, sha384, sha512 } from "crypto-hash";
 import ShowResponse from "../components/ShowResponse";
 import { sellarDoc, verifyDoc } from "../helpers/requestApi";
 import { useSearchParams } from "react-router-dom";
+import { SpinnerDocHash } from "../components/Spinner";
+import InfoDoc from "../components/InfoDoc";
+import ButtonsVerifySellar from "../components/ButtonsVerifySellar";
 
 export default function HashingForm() {
 	const [params, setParams] = useSearchParams(); // hook for get params url
-	const [output, setOutput] = useState("");//save dochash
-	const [showMessage, setShowMessage] = useState(false); //toogle for show information
-	const [showResult, setResult] = useState(false);//toogle for show api result
-	const [file_Name, setFileName] = useState("");//save name file load
+	const [output, setOutput] = useState({ dochash: "", loading: false }); //save dochash
+	const [showMessage, setShowMessage] = useState(false); //toogle for show information and buttons
+	const [showResult, setResult] = useState(false); //toogle for show api result
+	const [file_Name, setFileName] = useState(""); //save name file load
 	const [activeAnimationDrag, setActiveAnimationDrag] = useState(false); //toogle for active animation
 	const [showResponse, setResponse] = useState({
 		msg: "Sin resultado",
 		data: {},
 		sellado: false,
 		loading: false,
-	});//state for save api response
+	}); //state for save api response
 
 	//Render one time and verify if exist <dochash> params
 	useEffect(() => {
 		const dochash = params.get("dochash");
 		if (dochash) {
 			handleButtonVerificar();
-			setResult(true)//added line to prevent show form
-			
+			setResult(true); //added line to prevent show form
+			setShowMessage(false); //added line to prevent show form
 		}
 	}, []);
-
 
 	const handleFileDragDrop = (e) => {
 		// Evitar el comportamiendo por defecto (Evitar que el fichero se abra/ejecute)
 		e.preventDefault();
+		setShowMessage(false);
+		setOutput({ dochash: "", loading: false });
 		setActiveAnimationDrag(false);
-		console.log(e.dataTransfer.files);
 		if (e.dataTransfer.files) {
 			// Usar la interfaz DataTransferItemList para acceder a el/los archivos)
 			for (let i = 0; i < e.dataTransfer.files.length; i++) {
@@ -48,14 +51,14 @@ export default function HashingForm() {
 					let result = "";
 					result = await sha256(fr.result);
 					// Setting the hashed text as the output
-					setOutput(result);
+					setOutput({ dochash: result, loading: true });
 					//setting params in url
 					setParams({
 						dochash: result,
 					});
-					// setFileInput(fr.result);
-					setShowMessage(true);
 				};
+				// setFileInput(fr.result);
+				setShowMessage(true);
 			}
 		} else {
 			// Usar la interfaz DataTransfer para acceder a el/los archivos
@@ -63,6 +66,39 @@ export default function HashingForm() {
 				console.log("... file[" + i + "].name = " + e.dataTransfer.files[i].name);
 			}
 		}
+	};
+
+	//For handling file input
+	const handleFileInput = (e) => {
+		e.preventDefault();
+		setOutput({ dochash: "", loading: false });
+		setShowMessage(false);
+
+		// Initializing the file reader
+		const fr = new FileReader();
+
+		// Listening to when the file has been read.
+		fr.onload = async () => {
+			let result = "";
+			// Hashing the content based on the active algorithm
+
+			result = await sha256(fr.result);
+
+			// Setting the hashed text as the output
+			setOutput({ dochash: result, loading: true });
+			setParams({
+				dochash: result,
+			});
+
+			// Setting the content of the file as file input
+			e.target.value = null;
+		};
+		setShowMessage(true);
+
+		// Reading the file.
+		fr.readAsText(e.target.files[0]);
+		setFileName(e.target.files[0].name);
+		// console.log(e.target.files[0].name);
 	};
 
 	const handleFileDragOver = (e) => {
@@ -86,16 +122,17 @@ export default function HashingForm() {
 		let data_raw = '{"block":{"data":"// IMPORT ';
 		data_raw += "7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"; // smart contract
 		data_raw += "\\n {hash:'";
-		data_raw += output; //doc hash
+		data_raw += output.dochash; //doc hash
 		data_raw +=
 			'\'}","by":"NOTARIO","scope":"7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
 		//seal the doc
-		sellarDoc(setResponse, setResult, output, data_raw);
+		sellarDoc(setResponse, setResult, output.dochash, data_raw);
+		setShowMessage(false);
 	};
 
 	const backToInitialState = (e) => {
 		//reset state
-		setOutput("");
+		setOutput({ dochash: "", loading: false });
 		setResponse({});
 		setResult(false);
 		setShowMessage(false);
@@ -104,10 +141,9 @@ export default function HashingForm() {
 	};
 	// console.log(showResponse);
 	return (
-
 		<div className="container">
 			<div className="container-content  ">
-				{!showResult &&(
+				{!showResult && (
 					<div className="container-form-title  animate__animated animate__fadeIn">
 						<form>
 							<h4 className="form-heading">Sello de Tiempo</h4>
@@ -127,36 +163,18 @@ export default function HashingForm() {
 								<label htmlFor="file-input" className="custom-file-upload">
 									Selecciona archivo
 								</label>
-								<input
-									type="file"
-									className="form-control"
-									id="file-input"
-								/>
+								<input type="file" className="form-control" id="file-input" onChange={handleFileInput} />
 							</div>
 						</form>
 					</div>
 				)}
-				{showMessage && !showResult && (
-					<>
-						<div className="hashed-output">
-							<h4 className="hashed-algorithm-heading">Hash del archivo: </h4>
-							<div className="hashed-algorithm-container">
-								<p className="hashed-algorithm-text">{output}</p>
-							</div>
-							<p className="file-name">Archivo: {file_Name}</p>
-						</div>
-
-						<div className="hashed-button">
-							<button className="verify-doc" type="button" onClick={handleButtonVerificar}>
-								VERIFICAR
-							</button>
-							<button type="button" className="sellar-doc" onClick={handleButtonSellar}>
-								SELLAR
-							</button>
-						</div>
-					</>
+				{showMessage && !showResult && <InfoDoc output={output} file_Name={file_Name} />}
+				{showMessage && !showResult && output.loading && (
+					<ButtonsVerifySellar
+						handleButtonSellar={handleButtonSellar}
+						handleButtonVerificar={handleButtonVerificar}
+					/>
 				)}
-
 				{showResult && (
 					<ShowResponse showResponse={showResponse} backToInitialState={backToInitialState} />
 				)}

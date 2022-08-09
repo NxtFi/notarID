@@ -7,12 +7,16 @@
 	position: relative;
 	padding: 3rem 2rem;
 	background-color: #000;
-	position: absolute;
+	/* position: absolute; */
 	color: black;
 	box-shadow: 0 2px 2px 2px rgba(9, 9, 9, 0.23);
 }
 .icon-menu {
 	display: none;
+}
+.logos-navigation {
+	display: flex;
+	align-items: center;
 }
 
 .navigation ul {
@@ -22,7 +26,7 @@
 	margin: 0;
 	font-size: 1rem;
 	padding: 0;
-	z-index: 999;
+	z-index: 2;
 
 	overflow: hidden;
 	background-color: black;
@@ -37,24 +41,26 @@
 .navigation li a {
 	display: block;
 	color: white;
-	border-radius:0.5rem;
+	border-radius: 0.5rem;
 	text-align: center;
 	padding: 14px 16px;
-	transition:all .2s ease;
+	transition: all 0.2s ease;
 	text-decoration: none;
-	font-weight:bold;
-
+	font-weight: bold;
 }
 .navigation li a:hover:not(.active) {
 	background-color: white;
-	color:#1e35c2;
+	color: #1e35c2;
 }
 
 .active {
 	/* background-color: rgb(9, 204, 248); */
 	background-color: #1e35c2;
 }
-
+.notarid-logo {
+	height: 5rem;
+	width: 5rem;
+}
 .navigation img {
 	border-radius: 5px;
 	margin-right: 5px;
@@ -94,8 +100,10 @@
 	}
 	.navigation .show-menu {
 		left: 0;
+		height: calc(100vh - 90px);
 	}
 	.navigation .hidden-menu {
 		left: -100%;
 	}
 }
+

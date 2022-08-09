@@ -1,4 +1,9 @@
-
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 @font-face {
 	font-family: "TTCommons-Regular";
 	src: url("./assets/fonts/TTCommons-Regular.ttf");
@@ -32,13 +37,14 @@
 	--secondary-color: black;
 	--third-color: white;
 	--text-color: white;
-	--title-color: #3055fb;
+	--title-color: Y30505fb;
 }
+
 body {
 	font-family: "TTCommons-Regular", "DM Sans", sans-serif;
 	font-size: 62.5%;
 	color: white;
+	min-height:calc(100vh - 96px);
 	background-color: var(--primary-color);
-	/* line-height: 1.7em; */
 }
 @import "./assets/css/views.css";

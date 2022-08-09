@@ -3,15 +3,17 @@ import { sha256 } from "crypto-hash";
 import validator from "validator";
 import ShowResponse from "../components/ShowResponse";
 import { sellarDoc, verifyDoc } from "../helpers/requestApi";
+import { SpinnerDocHash } from "../components/Spinner";
+import InfoDoc from "../components/InfoDoc";
+import ButtonsVerifySellar from "../components/ButtonsVerifySellar";
 
 export default function AnexoForm() {
 	const [emailError, setEmailError] = useState("Ingrese un Email");
 	const [emailOk, setEmailOk] = useState(false);
 	const [emailDir, setEmailDir] = useState("");
-	let [file_input, setFileInput] = useState("");
 	let [file_Name, setFileName] = useState("");
 
-	let [output, setOutput] = useState("");
+	let [output, setOutput] = useState({ dochash: "", loading: false });
 
 	const [showMessage, setShowMessage] = useState(false);
 	const [activeAnimationDrag, setActiveAnimationDrag] = useState(false);
@@ -24,13 +26,12 @@ export default function AnexoForm() {
 	});
 
 	const [inputs, setInputs] = useState({});
-
 	const handleChange = (event) => {
 		const name = event.target.name;
 		const value = event.target.value;
 		setInputs((values) => ({ ...values, [name]: value }));
 	};
-
+	// console.log(file_input)
 	//For handling text input
 	const handleEmailInput = async (e) => {
 		// Get the value
@@ -48,6 +49,10 @@ export default function AnexoForm() {
 
 	//For handling file input
 	const handleFileInput = (e) => {
+		e.preventDefault();
+		setOutput({ dochash: "", loading: false });
+		setShowMessage(false);
+
 		// Initializing the file reader
 		const fr = new FileReader();
 
@@ -59,14 +64,13 @@ export default function AnexoForm() {
 			result = await sha256(fr.result);
 
 			// Setting the hashed text as the output
-			setOutput(result);
+			setOutput({ dochash: result, loading: true });
 
 			// Setting the content of the file as file input
-			setFileInput(fr.result);
-			setShowMessage(true);
 			e.target.value = null;
 		};
 
+		setShowMessage(true);
 		// Reading the file.
 		fr.readAsText(e.target.files[0]);
 		setFileName(e.target.files[0].name);
@@ -74,10 +78,11 @@ export default function AnexoForm() {
 	};
 
 	const handleFileDragDrop = (e) => {
-		// console.log("Fichero(s) arrastrados");
-		setActiveAnimationDrag(false);
 		// Evitar el comportamiendo por defecto (Evitar que el fichero se abra/ejecute)
 		e.preventDefault();
+		setActiveAnimationDrag(false);
+		setShowMessage(false);
+		setOutput({ dochash: "", loading: false });
 
 		if (e.dataTransfer.files) {
 			// Usar la interfaz DataTransferItemList para acceder a el/los archivos)
@@ -93,9 +98,9 @@ export default function AnexoForm() {
 					let result = "";
 					result = await sha256(fr.result);
 					// Setting the hashed text as the output
-					setOutput(result);
+					setOutput({ dochash: result, loading: true });
+
 					// Setting the content of the file as file input
-					setFileInput(fr.result);
 				};
 				setShowMessage(true);
 			}
@@ -116,7 +121,7 @@ export default function AnexoForm() {
 
 	const handleButtonVerificar = (e) => {
 		// GET (Request).
-		verifyDoc(setResponse, setResult, output);
+		verifyDoc(setResponse, setResult, output.dochash);
 		setResult(true);
 	};
 
@@ -128,15 +133,15 @@ export default function AnexoForm() {
 		data_raw += '"block":{"data":"// IMPORT ';
 		data_raw += "7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"; // smart contract
 		data_raw += "\\n {hash:'";
-		data_raw += output; //doc hash
+		data_raw += output.dochash; //doc hash
 		data_raw +=
 			'\'}","by":"NOTARIO","scope":"7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
-		sellarDoc(setResponse, setResult, output, data_raw);
+		sellarDoc(setResponse, setResult, output.dochash, data_raw);
+		setShowMessage(false);
 	};
 
 	const backToInitialState = (e) => {
-		setFileInput("");
-		setOutput("");
+		setOutput({ dochash: "", loading: false });
 		setResponse({});
 		setResult(false);
 		setShowMessage(false);
@@ -222,24 +227,12 @@ export default function AnexoForm() {
 						</form>
 					</div>
 				)}
-				{showMessage && !showResult && (
-					<div className="hashed-output">
-						<h4 className="hashed-algorithm-heading">Hash del archivo</h4>
-						<div className="hashed-algorithm-container">
-							<p className="hashed-algorithm-text">{output}</p>
-						</div>
-						<p className="file-name">Archivo: {file_Name}</p>
-					</div>
-				)}
-				{showMessage && !showResult && emailOk && (
-					<div className="hashed-button">
-						<button className="verify-doc" type="button" onClick={handleButtonVerificar}>
-							VERIFICAR
-						</button>
-						<button className="sellar-doc" type="button" onClick={handleButtonSellar}>
-							SELLAR
-						</button>
-					</div>
+				{showMessage && !showResult && <InfoDoc output={output} file_Name={file_Name} />}
+				{showMessage && !showResult && emailOk && output.loading && (
+					<ButtonsVerifySellar
+						handleButtonSellar={handleButtonSellar}
+						handleButtonVerificar={handleButtonVerificar}
+					/>
 				)}
 				{showResult && (
 					<ShowResponse showResponse={showResponse} backToInitialState={backToInitialState} />

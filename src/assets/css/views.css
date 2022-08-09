@@ -3,13 +3,12 @@
 /* Containers */
 .container {
 	width: 100%;
-	height: 100vh;
+	min-height: calc(100vh - 96px);
 	font-size: 1rem;
+	transition: all 0.3s ease-in;
 	padding: 2rem 3rem;
 	display: flex;
-	padding-top: 9.6rem;
 	justify-content: center;
-	align-items: center;
 }
 .container-form-title {
 	height: auto;
@@ -24,58 +23,39 @@
 	background-color: black;
 	width: 90%;
 	overflow-y: auto;
-	min-height: 65vh;
-	max-height: 75vh;
-	font-family:TTCommons-Light;
-	height: 100%;
-	font-size:1.2rem;
+	min-height: 100%;
+	font-family: TTCommons-Light;
+	font-size: 1.2rem;
 	max-width: 50rem;
 	margin: 0px auto;
 	background-color: white;
 	border-radius: 1rem;
-	/* padding: 1rem; */
-	padding-top:1rem;
-	padding-bottom: 1.5rem;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
 	box-shadow: 0 1px 3px #d4d4d5, 0 0 0 1px #d4d4d5;
 }
 /* ---------------------------------------------------------------- */
-/* scroll-y styles */
-.container-content::-webkit-scrollbar {
-	-webkit-appearance: none;
-}
-.container-content::-webkit-scrollbar:vertical {
-	width: 10px;
-}
-.container-content::-webkit-scrollbar-button:increment,
-.contenedor::-webkit-scrollbar-button {
-	display: none;
-}
-.container-content::-webkit-scrollbar:horizontal {
-	height: 10px;
-}
 
-.container-content::-webkit-scrollbar-thumb {
-	background-color: #797979;
-	border-radius: 1rem;
-	border: 2px solid #f1f2f3;
-}
-
-.container-content::-webkit-scrollbar-track {
-	border-radius: 1rem;
-}
 /* --------------------------------------------------------- */
 
 /* -------------------media query for containers----------------- */
 @media screen and (max-width: 960px) {
 	.container {
-		padding-right: 0;
-		padding-left: 0;
-		height: 90vh;
+		padding: 1rem 0;
 	}
 	.container-content {
 		width: 90%;
-		height: 100%;
-		overflow-y: auto;
+		min-height: calc(100vh - 96px);
+	}
+}
+@media screen and (max-width: 550px) {
+	.container {
+		padding: 0;
+	}
+	.container-content {
+		width: 100%;
+		min-height: 100vh;
+		border-radius: 0;
 	}
 }
 /* ---------------Titles form-------------------- */
@@ -83,9 +63,9 @@
 .hashed-algorithm-heading {
 	text-align: center;
 	padding: 1rem;
-	font-family:TTCommons-Bold;
+	font-family: TTCommons-Bold;
 	line-height: 2rem;
-	color: var(--title-color);
+	color: var(--primary-color);
 	font-weight: bold;
 	font-size: 1.5rem;
 	text-transform: capitalize;
@@ -102,19 +82,24 @@
 .cert-form-group {
 	height: 30%;
 }
+.cert-form-group input:focus,
+.form-group input:focus {
+	border: 1px solid var(--primary-color);
+	outline: none;
+}
 .form-group input,
 select {
 	width: 100%;
-	background: var(--);
 	border: 1px solid #393939;
 	border-radius: 1px 5px 5px 5px;
 	font-size: 1rem;
 	padding: 0.5rem;
+	/* background-color: var(--primary-color); */
 }
 
 .input-label {
 	width: 45%;
-	font-size:1rem;
+	font-size: 1rem;
 	margin-bottom: 1rem;
 }
 .input-label select {
@@ -126,7 +111,7 @@ select {
 .form-group label {
 	display: block;
 	text-align: left;
-	font-size:1rem;
+	font-size: 1rem;
 
 	width: 100%;
 	margin-bottom: 0.5rem;
@@ -136,6 +121,7 @@ select {
 	padding-top: 0.1rem;
 	text-align: center;
 	width: 100%;
+	min-height: 20px;
 	margin-top: 0.5rem;
 	color: var(--primary-color);
 }
@@ -151,7 +137,6 @@ select {
 	}
 	.container-content {
 		overflow-y: auto;
-		height: 100%;
 	}
 	.first-group {
 		width: 100%;
@@ -164,7 +149,6 @@ select {
 		width: 100%;
 	}
 }
-
 /*--------------------------------Show result---------------------- */
 
 .hashed-algorithm-container {
@@ -174,7 +158,7 @@ select {
 	min-height: 70%;
 	display: flex;
 	padding-top: 2rem;
-	padding-bottom:2rem;
+	padding-bottom: 2rem;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
@@ -198,7 +182,7 @@ select {
 	width: 100%;
 	height: auto;
 	text-align: center;
-	font-family:TTCommons-Light-Italic;
+	font-family: TTCommons-Light-Italic;
 	margin: 0.5rem auto;
 }
 .center-response {
@@ -217,6 +201,14 @@ select {
 	column-gap: 2rem;
 	color: black;
 }
+.dochash-p {
+	font-weight: bold;
+	position: relative;
+}
+.facopy {
+	margin-left: 1rem;
+}
+
 /* Buttons verify and sellar */
 .verify-doc,
 .sellar-doc,
@@ -274,19 +266,20 @@ select {
 	text-align: left;
 	width: 88%;
 	height: 100%;
+	position: relative;
 	line-height: 1.5rem;
 }
-.res-msg{
+.res-msg {
 	width: 85%;
 	line-height: 1.5rem;
-	height:100%;
-	display:flex;
-	align-items:center;
+	height: 100%;
+	display: flex;
+	align-items: center;
 }
 
 .response-heading {
 	/* font-weight: bold; */
-	font-family:TTCommons-Bold;
+	font-family: TTCommons-Bold;
 	font-size: 1rem;
 }
 .field-resp {
@@ -294,7 +287,7 @@ select {
 	word-wrap: break-word;
 }
 .field-resp p {
-	font-family:TTCommons-Light-Italic;
+	font-family: TTCommons-Light-Italic;
 }
 
 /*---------styles for input file------------- */
@@ -315,7 +308,7 @@ input[type="file"] {
 }
 .file-drag-drop p {
 	/* z-indez: 9; */
-	font-family:TTCommons-Light-Italic;
+	font-family: TTCommons-Light-Italic;
 	color: black;
 }
 .file-name {
@@ -327,14 +320,13 @@ input[type="file"] {
 	border: 2px solid #d4d4d6;
 	border-radius: 0.5rem;
 	color: white;
-	font-family:TTCommons-Bold;
+	font-family: TTCommons-Bold;
 	cursor: pointer;
 	padding: 15px 32px;
 	text-align: center;
-	margin: 2rem auto;
+	margin: 1rem auto;
 	text-decoration: none;
 	display: block;
-	/* font-size: 16px; */
 	width: 70%;
 }
 
@@ -355,11 +347,16 @@ input[type="file"] {
 		transform: scale(1.05);
 	}
 }
+@media screen and (max-width: 550px) {
+	.file-drag-drop {
+		display: none;
+	}
+}
 /* Spinner */
 .spinner {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	height: 100%;
-	min-height:40vh;
+	min-height: 40vh;
 }
