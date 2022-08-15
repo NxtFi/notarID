@@ -1,23 +1,53 @@
-/* body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-} */
+html {
+	box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+@font-face {
+	font-family: "TTCommons-Regular";
+	src: url("./assets/fonts/TTCommons-Regular.ttf");
+	font-weight: normal;
+	font-style: normal;
+}
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@font-face {
+	font-family: "TTCommons-Bold";
+	src: url("./assets/fonts/TTCommons-Bold.ttf");
+	font-weight: Bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "TTCommons-Light";
+	src: url("./assets/fonts/TTCommons-Light.ttf");
+	font-weight: light;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "TTCommons-Light-Italic";
+	src: url("./assets/fonts/TTCommons-LightItalic.ttf");
+	font-weight: light;
+	font-style: italic;
+}
+
+:root {
+	--primary-color: #1e35c2;
+	--secondary-color: black;
+	--third-color: white;
+	--text-color: white;
+	--title-color: Y30505fb;
 }
 
 body {
-  font-family: Open Sans,Arial,sans-serif;
-  font-size: 14px;
-  color: #666;
-  background-color: #fff;
-  line-height: 1.7em;
-  font-weight: 500;
-  -webkit-font-smoothing: antialiased;
+	font-family: "TTCommons-Regular", "DM Sans", sans-serif;
+	font-size: 62.5%;
+	color: white;
+	min-height: calc(100vh - 96px);
+	background-color: var(--primary-color);
+
 }
+@import "./assets/css/views.css";
