@@ -10,6 +10,7 @@
 	display: flex;
 	justify-content: center;
 }
+
 .container-form-title {
 	height: auto;
 }
@@ -20,7 +21,6 @@
 }
 
 .container-content {
-	background-color: black;
 	width: 90%;
 	overflow-y: auto;
 	min-height: 100%;
@@ -88,13 +88,13 @@
 	outline: none;
 }
 .form-group input,
-select {
+.form-group select {
 	width: 100%;
-	border: 1px solid #393939;
-	border-radius: 1px 5px 5px 5px;
+	border: 1px solid transparent;
+	border-radius: 0.5rem;
+	box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
 	font-size: 1rem;
-	padding: 0.5rem;
-	/* background-color: var(--primary-color); */
+	padding: 0.7rem;
 }
 
 .input-label {
@@ -103,10 +103,9 @@ select {
 	margin-bottom: 1rem;
 }
 .input-label select {
-	border: 1px solid #393939;
-	border-radius: 5px 5px 5px 5px;
 	text-align: center;
 	-webkit-appearance: button;
+	cursor: pointer;
 }
 .form-group label {
 	display: block;
@@ -203,11 +202,18 @@ select {
 }
 .dochash-p {
 	font-weight: bold;
+	word-wrap: break-word !important;
 	position: relative;
+	width: 93%;
 }
-.facopy {
-	margin-left: 1rem;
+
+.resp-facopy {
+	display: flex;
+	justify-content: space-between;
+	align-content: center;
+	flex-wrap: no-wrap;
 }
+
 
 /* Buttons verify and sellar */
 .verify-doc,
@@ -288,6 +294,7 @@ select {
 }
 .field-resp p {
 	font-family: TTCommons-Light-Italic;
+	width: 93%;
 }
 
 /*---------styles for input file------------- */
@@ -299,6 +306,7 @@ input[type="file"] {
 	border: 0.2rem dotted #d4d4d5;
 	border-radius: 1rem;
 	margin-bottom: 5px;
+
 	margin-top: 5px;
 	/* height: 35%; */
 	height: 10rem;

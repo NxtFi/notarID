@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Hashing from "./views/Hashing";
 import Navbar from "./components/Navbar";
 import Cert from "./views/Cert.js";

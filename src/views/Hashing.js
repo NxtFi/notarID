@@ -3,7 +3,6 @@ import { sha1, sha256, sha384, sha512 } from "crypto-hash";
 import ShowResponse from "../components/ShowResponse";
 import { sellarDoc, verifyDoc } from "../helpers/requestApi";
 import { useSearchParams } from "react-router-dom";
-import { SpinnerDocHash } from "../components/Spinner";
 import InfoDoc from "../components/InfoDoc";
 import ButtonsVerifySellar from "../components/ButtonsVerifySellar";
 
@@ -20,7 +19,7 @@ export default function HashingForm() {
 		sellado: false,
 		loading: false,
 	}); //state for save api response
-
+	console.log(output.dochash)
 	//Render one time and verify if exist <dochash> params
 	useEffect(() => {
 		const dochash = params.get("dochash");
@@ -30,6 +29,7 @@ export default function HashingForm() {
 			setShowMessage(false); //added line to prevent show form
 		}
 	}, []);
+	console.log('hola')
 
 	const handleFileDragDrop = (e) => {
 		// Evitar el comportamiendo por defecto (Evitar que el fichero se abra/ejecute)

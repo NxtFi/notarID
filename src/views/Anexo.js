@@ -3,7 +3,6 @@ import { sha256 } from "crypto-hash";
 import validator from "validator";
 import ShowResponse from "../components/ShowResponse";
 import { sellarDoc, verifyDoc } from "../helpers/requestApi";
-import { SpinnerDocHash } from "../components/Spinner";
 import InfoDoc from "../components/InfoDoc";
 import ButtonsVerifySellar from "../components/ButtonsVerifySellar";
 
@@ -239,5 +238,5 @@ export default function AnexoForm() {
 				)}
 			</div>
 		</div>
-	);
+	)
 }

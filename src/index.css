@@ -1,8 +1,10 @@
 html {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
-*, *:before, *:after {
-  box-sizing: inherit;
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
 }
 @font-face {
 	font-family: "TTCommons-Regular";
@@ -44,7 +46,8 @@ body {
 	font-family: "TTCommons-Regular", "DM Sans", sans-serif;
 	font-size: 62.5%;
 	color: white;
-	min-height:calc(100vh - 96px);
+	min-height: calc(100vh - 96px);
 	background-color: var(--primary-color);
+
 }
 @import "./assets/css/views.css";

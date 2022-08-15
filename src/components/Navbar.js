@@ -4,8 +4,8 @@ import "../assets/css/components/navbar.css";
 import { NavLink } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 
-import nxtfi_logo from "../assets/img/NXTFI-blanco.jpg";
-import notarid_logo from "../assets/img/notarId_nuevo.svg";
+import nxtfi_logo from "../assets/img/logo.svg";
+import notarid_logo from "../assets/img/notarId.svg";
 
 export default function Navbar() {
 	const [showMenu, setShowMenu] = useState(false);

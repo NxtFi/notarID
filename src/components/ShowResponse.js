@@ -7,14 +7,15 @@ import toast, { Toaster } from "react-hot-toast";
 const ShowResponse = ({ showResponse, backToInitialState }) => {
 	const handleCopyClipboard = (hashdoc) => {
 		copy(hashdoc);
-		toast.success("Texto copiado al portapapeles", {
+		toast.success("Copiado al portapapeles", {
 			gutter: 1,
 			id: "clipboard",
+			duration: 1000,
 			iconTheme: {
 				primary: "black",
 				secondary: "#fff",
 			},
-			className: " animate__animated animate__fadeIn",
+			className: " notify-copy animate__animated animate__fadeIn",
 		});
 	};
 
@@ -29,12 +30,12 @@ const ShowResponse = ({ showResponse, backToInitialState }) => {
 						<div className="response-hashed-algorithm animate__animated animate__fadeIn animate__delay-.8s">
 							<div className="field-resp ">
 								<h3 className="response-heading">Hash del documento:</h3>
-								<p className="dochash-p">
-									{showResponse.data.hashdoc}
+								<div className="resp-facopy">
+									<p className="dochash-p">{showResponse.data.hashdoc}</p>
 									<button onClick={() => handleCopyClipboard(showResponse.data.hashdoc)}>
 										<FaCopy className="facopy" />
 									</button>
-								</p>
+								</div>
 								<Toaster
 									position="top-center"
 									duration={1000}

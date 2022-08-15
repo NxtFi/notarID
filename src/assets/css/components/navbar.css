@@ -18,7 +18,13 @@
 	display: flex;
 	align-items: center;
 }
-
+.logos-navigation #nxtfi_logo{
+	height:2rem;
+}
+.notarid-logo {
+	height: 4rem;
+	width: 4rem;
+}
 .navigation ul {
 	list-style-type: none;
 	display: flex;
@@ -57,10 +63,7 @@
 	/* background-color: rgb(9, 204, 248); */
 	background-color: #1e35c2;
 }
-.notarid-logo {
-	height: 5rem;
-	width: 5rem;
-}
+
 .navigation img {
 	border-radius: 5px;
 	margin-right: 5px;
