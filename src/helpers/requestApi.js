@@ -65,7 +65,7 @@ export const sellarDoc = (setResponse, setResult, output, data_raw) => {
 		// Exito
 		.then((response) => response.json())
 		.then(async (json) => {
-			if (json != null) {
+			if (json != null  && json.error != "notFound") {
 				// console.log("Documento selllado en el Bloque: ", json);
 				setResponse({
 					msg: "Documento ya se encuentra sellado",
