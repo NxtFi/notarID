@@ -3,7 +3,7 @@ export const verifyDoc = async (setResponse, setResult, output) => {
 	// GET (Request).
 	let endpoint =
 		"https://dev-001-node.cloud.nxtfi.org/v2/dc84d53faa57e49723397454bef9a6ec2c60d9f9c390dd370cbf483b25a823e7/_/";
-	endpoint += output;
+	endpoint += output + "/";
 	await fetch(endpoint)
 		// Exito
 		.then((response) => response.json())
