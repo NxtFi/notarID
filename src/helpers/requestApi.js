@@ -2,7 +2,7 @@
 export const verifyDoc = async (setResponse, setResult, output) => {
 	// GET (Request).
 	let endpoint =
-		"https://development-001-node.test.nxtfi.net/7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99/_/";
+		"https://dev-001-node.cloud.nxtfi.org/v2/dc84d53faa57e49723397454bef9a6ec2c60d9f9c390dd370cbf483b25a823e7/_/";
 	endpoint += output;
 	await fetch(endpoint)
 		// Exito
@@ -12,8 +12,8 @@ export const verifyDoc = async (setResponse, setResult, output) => {
 				// console.log("Bloque: ", json);
 				// setResponse({ msg: "Documento sellado", data: { hash: json }, sellado: true });
 				//obtener timestamp
-				//https://development-001-node.test.nxtfi.net/_block
-				let blockReadEndpoint = "https://development-001-node.test.nxtfi.net/_block/";
+				//https://dev-001-node.cloud.nxtfi.org/v2/_block
+				let blockReadEndpoint = "https://dev-001-node.cloud.nxtfi.org/v2/_block/";
 				blockReadEndpoint += json;
 				fetch(blockReadEndpoint)
 					// Exito
@@ -59,7 +59,7 @@ export const verifyDoc = async (setResponse, setResult, output) => {
 
 export const sellarDoc = (setResponse, setResult, output, data_raw) => {
 	let endpoint =
-		"https://development-001-node.test.nxtfi.net/7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99/_/";
+		"https://dev-001-node.cloud.nxtfi.org/v2/dc84d53faa57e49723397454bef9a6ec2c60d9f9c390dd370cbf483b25a823e7/_/";
 	endpoint += output;
 	fetch(endpoint)
 		// Exito
@@ -76,9 +76,9 @@ export const sellarDoc = (setResponse, setResult, output, data_raw) => {
 			} else {
 				// string pattern
 				//here was data_raw declaration
-				//let data = '{"block":{"data":"// IMPORT 7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99\\n {hash:\'1355d4c778090809336ce9d0980af78c16edf218ded10c2a7ac1736c9e8b1fff\'}","by":"NOTARIO","scope":"7489cf6d4c588125eb62e1fff365d4ec8c00e1ebd61bd67f158efe8916765f99"}}';
+				//let data = '{"block":{"data":"// IMPORT dc84d53faa57e49723397454bef9a6ec2c60d9f9c390dd370cbf483b25a823e7\\n {hash:\'1355d4c778090809336ce9d0980af78c16edf218ded10c2a7ac1736c9e8b1fff\'}","by":"NOTARIO","scope":"dc84d53faa57e49723397454bef9a6ec2c60d9f9c390dd370cbf483b25a823e7"}}';
 
-				const location = "signblock.test.nxtfi.net";
+				const location = "signblock.dev.nxtfi.org";
 				const settings = {
 					method: "POST",
 					headers: { "Content-type": "application/json" },

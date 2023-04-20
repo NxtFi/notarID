@@ -23,7 +23,7 @@ export default function Navbar() {
 				<a href="https://nxtfi.org/">
 					<img src={nxtfi_logo} height="50" alt="NxtFi" id="nxtfi_logo"></img>
 				</a>
-				<a href="https://dev.notarid.nxtfi.net/">
+				<a href="https://www.notarid.demo.nxtfi.org/">
 					<img
 						src={notarid_logo}
 						height="50"
