@@ -20,7 +20,7 @@ export default function Navbar() {
 	return (
 		<nav className={`navigation `}>
 			<div className="logos-navigation">
-				<a href="https://nxtfi.org/">
+				<a href="https://www.notarid.demo.nxtfi.org/">
 					<img src={nxtfi_logo} height="50" alt="NxtFi" id="nxtfi_logo"></img>
 				</a>
 				<a href="https://www.notarid.demo.nxtfi.org/">
