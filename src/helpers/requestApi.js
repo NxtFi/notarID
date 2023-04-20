@@ -8,7 +8,7 @@ export const verifyDoc = async (setResponse, setResult, output) => {
 		// Exito
 		.then((response) => response.json())
 		.then((json) => {
-			if (json != null) {
+			if (json != null  && json.error != "notFound") {
 				// console.log("Bloque: ", json);
 				// setResponse({ msg: "Documento sellado", data: { hash: json }, sellado: true });
 				//obtener timestamp
