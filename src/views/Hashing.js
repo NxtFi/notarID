@@ -121,10 +121,9 @@ export default function HashingForm() {
 		//data that send to api
 		let data_raw = '{"block":{"data":"// IMPORT ';
 		data_raw += "dc84d53faa57e49723397454bef9a6ec2c60d9f9c390dd370cbf483b25a823e7"; // smart contract
-		data_raw += "\\n {hash:'";
+		data_raw += '\\n {\'hash\':\'';
 		data_raw += output.dochash; //doc hash
-		data_raw +=
-			'\'}","by":"NOTARIO","scope":"dc84d53faa57e49723397454bef9a6ec2c60d9f9c390dd370cbf483b25a823e7"}}';
+		data_raw += '\'}","by":"NOTARIO","scope":"dc84d53faa57e49723397454bef9a6ec2c60d9f9c390dd370cbf483b25a823e7"}}';
 		//seal the doc
 		sellarDoc(setResponse, setResult, output.dochash, data_raw);
 		setShowMessage(false);
