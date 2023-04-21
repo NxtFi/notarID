@@ -8,7 +8,7 @@ import { Footer } from "./components/Footer";
 function App() {
 	return (
 			<BrowserRouter>
-					<div className="font-sans h-screen flex flex-col items-center justify-center">
+					<div className="font-sans h-screen  flex flex-col items-center justify-center">
 				<Navbar />
 					<Routes>
 						<Route path="/" element={<Hashing />} />

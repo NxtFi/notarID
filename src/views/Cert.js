@@ -146,13 +146,13 @@ export default function CertForm() {
   };
 
   return (
-    <div className="w-6/12 h-auto gap-2 text-[#6b7280] bg-white shadow-sm rounded-md flex flex-col items-center text-center px-7 py-6 ">
+    <div className="md:w-6/12 w-9/12 h-auto gap-2 text-[#6b7280] bg-white shadow-sm rounded-md flex flex-col items-center text-center px-7 py-6 ">
       {!showResult && (
         <>
-          <h2 className="text-lg font-semibold">Sello con certificado</h2>
-          <form className="flex flex-col gap-5 w-10/12  ">
+          <h2 className="md:text-lg text-2xl font-semibold">Sello con certificado</h2>
+          <form className="flex flex-col gap-5  w-full md:w-10/12 max-md:p-1 ">
             <div className="flex flex-col gap-2">
-              <p className="emailError text-left">{emailError}</p>
+              <p className=" text-left">{emailError}</p>
               <input
                 type="email"
                 className="py-1 px-4 rounded-xl border border-[#94a3b8]"
@@ -167,7 +167,7 @@ export default function CertForm() {
                 activeAnimationDrag
                   ? "bg-[#79b6f3] text-white border-white"
                   : ""
-              } p-7 border-2 border-dashed transition-all duration-300 ease-in-out`}
+              } p-7 border-2 border-dashed transition-all duration-300 ease-in-out max-md:hidden`}
               onDrop={handleFileDragDrop}
               onDragOver={handleFileDragOver}
               onDragLeave={() => setActiveAnimationDrag(false)}

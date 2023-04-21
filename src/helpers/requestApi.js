@@ -86,10 +86,10 @@ export const sellarDoc = (setResponse, setResult, output, data_raw) => {
 					body: data_raw,
 				};
 				try {
-					setResponse({ msg: "Documento enviado a sellar", data: {}, sellado: false, loading: true });
+					setResponse({ msg: "", data: {}, sellado: false, loading: false });
 					const fetchResponse = await fetch(`https://${location}/create`, settings);
 					const data = await fetchResponse.json();
-					console.log(data)
+					setResponse({ msg: "Documento enviado a sellar", data: {}, sellado: false, loading: true });
 					// console.log("Resultado: ", data);
 					return data;
 				} catch (e) {
