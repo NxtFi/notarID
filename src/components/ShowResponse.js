@@ -22,25 +22,24 @@ const ShowResponse = ({ showResponse, backToInitialState }) => {
 
   return (
     <div className="w-full flex flex-col gap-7 px-8">
-      <h4 className="text-lg font-semibold">
-        {showResponse.sellado &&
-          showResponse.msg.includes("Documento sellado") &&
-          showResponse.msg}
-      </h4>
+      {showResponse.sellado &&
+        showResponse.msg.includes("Documento sellado") && (
+          <h4 className="text-lg font-semibold">{showResponse.msg}</h4>
+        )}
       <div className="">
         {showResponse.loading ? (
           showResponse.sellado && showResponse.data.timestamp ? (
-            <div className="text-left grid gap-4">
+            <div className="text-left grid gap-4 overflow-auto">
               <div className="">
                 <h3 className="font-semibold">Hash del documento:</h3>
-                <div className="resp-facopy">
-                  <p className="text-sm" >{showResponse.data.hashdoc}</p>
+                <div className="">
+                  <p className="text-sm">{showResponse.data.hashdoc}</p>
                   <button
                     onClick={() =>
                       handleCopyClipboard(showResponse.data.hashdoc)
                     }
                   >
-                    <FaCopy  />
+                    <FaCopy />
                   </button>
                 </div>
               </div>
@@ -58,9 +57,9 @@ const ShowResponse = ({ showResponse, backToInitialState }) => {
               </div>
             </div>
           ) : (
-            <div className="res-msg animate__animated animate__fadeIn animate__delay-8s">
+            <div className="">
               <CheckIcon />
-              <p className="hashed-algorithm-text">{showResponse.msg}</p>
+              <p className="hashed-algorithm-text mt-4">{showResponse.msg}</p>
             </div>
           )
         ) : (

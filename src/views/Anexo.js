@@ -154,9 +154,10 @@ export default function AnexoForm() {
   };
 
   return (
-    <div className="w-9/12 h-auto text-[#6b7280] bg-white shadow-sm rounded-md flex flex-col gap-5 md:gap-10 items-center text-center py-7 px-8 ">
-      <h2 className="text-lg font-semibold">Sello con datos anexos</h2>
+    <div className="w-9/12 h-auto text-[#6b7280] bg-white shadow-sm rounded-md flex flex-col gap-5 md:gap-10 items-center text-center py-7 px-8  ">
       {!showResult && (
+        <>
+             <h2 className="text-lg font-semibold">Sello con datos anexos</h2>
         <div className="flex max-md:flex-col gap-9 md:gap-12">
           <form className="flex flex-col gap-5 w-full ">
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-8 ">
@@ -251,7 +252,7 @@ export default function AnexoForm() {
             <div className="md:mb-4 mb-0 flex flex-col max-md:w-full">
               <label
                 htmlFor="file-input"
-                className="transition-all duration-200  cursor-pointer text-md text-white font-medium p-2 rounded-md bg-[#278cee] hover:bg-slate-200 hover:text-[#278cee]"
+                className={`${showMessage && !showResult && "bg-slate-200 text-[#278cee]"} transition-all duration-200  cursor-pointer text-md text-white font-medium p-2 rounded-md bg-[#278cee] hover:bg-slate-200 hover:text-[#278cee]`}
               >
                 Selecciona archivo
               </label>
@@ -264,8 +265,9 @@ export default function AnexoForm() {
             </div>
           </div>
         </div>
+        </>
       )}
-      <div className="flex gap-5 items-center max-md:w-full">
+      <div className="flex max-md:flex-col gap-5 items-center max-md:w-full">
         {showMessage && !showResult && (
           <InfoDoc output={output} file_Name={file_Name} />
         )}

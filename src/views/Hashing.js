@@ -168,7 +168,7 @@ export default function HashingForm() {
           <div className="flex flex-col">
             <label
               htmlFor="file-input"
-              className="transition-all duration- cursor-pointer text-md text-white font-medium p-2 rounded-md bg-[#278cee] hover:bg-slate-200 hover:text-[#278cee]"
+              className={`${showMessage && !showResult && "bg-slate-200 text-[#278cee]"} transition-all duration- cursor-pointer text-md text-white font-medium p-2 rounded-md bg-[#278cee] hover:bg-slate-200 hover:text-[#278cee]`}
             >
               Selecciona archivo
             </label>
