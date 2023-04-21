@@ -1,6 +1,5 @@
 import React from "react";
 
-import "../assets/css/components/spinner.css"
 const Spinner = () => {
 	return (
 		<div className="sk-chase">

@@ -5,6 +5,8 @@ import { sellarDoc, verifyDoc } from "../helpers/requestApi";
 import { useSearchParams } from "react-router-dom";
 import InfoDoc from "../components/InfoDoc";
 import ButtonsVerifySellar from "../components/ButtonsVerifySellar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
 
 export default function HashingForm() {
 	const [params, setParams] = useSearchParams(); // hook for get params url
@@ -29,7 +31,6 @@ export default function HashingForm() {
 			setShowMessage(false); //added line to prevent show form
 		}
 	}, []);
-	console.log('hola')
 
 	const handleFileDragDrop = (e) => {
 		// Evitar el comportamiendo por defecto (Evitar que el fichero se abra/ejecute)
@@ -140,29 +141,33 @@ export default function HashingForm() {
 	};
 	// console.log(showResponse);
 	return (
-		<div className="container">
-			<div className="container-content  ">
+		<div className=" w-6/12 h-auto bg-white shadow-sm rounded-md flex flex-col items-center text-center p-8 ">
+			<div className="  ">
 				{!showResult && (
 					<div className="container-form-title  animate__animated animate__fadeIn">
-						<form>
-							<h4 className="form-heading">Sello de Tiempo</h4>
+						<form className="flex flex-col gap-5">
+							<h2 className="text-lg font-black text-[#a6a9b1]">Sello de Tiempo</h2>
 							<div
-								className={
+								className={`${
 									activeAnimationDrag
-										? "is-active file-drag-drop custom-drag-drop"
-										: "file-drag-drop custom-drag-drop"
-								}
+										? ""
+										: ""
+								} p-10 border-2 border-dashed`}
 								onDrop={handleFileDragDrop}
 								onDragOver={handleFileDragOver}
 								onDragLeave={() => setActiveAnimationDrag(false)}
 							>
-								<p>Arrastre y suelte el documento ...</p>
+								<FontAwesomeIcon className="text-[#a6a9b1] text-xl"  icon={faUpload}/>
+								<p className="mt-2 text-md font-medium">Arrastre y suelte el documento ...</p>
 							</div>
-							<div>
-								<label htmlFor="file-input" className="custom-file-upload">
+							<div className="flex flex-col">
+								<label htmlFor="file-input" className="transition-all duration- cursor-pointer text-md text-white font-medium p-2 rounded-md bg-[#278cee] hover:bg-slate-200 hover:text-[#278cee]">
 									Selecciona archivo
 								</label>
-								<input type="file" className="form-control" id="file-input" onChange={handleFileInput} />
+								<input type="file" className=" hidden" id="file-input" onChange={handleFileInput} />
+							</div>
+							<div>
+
 							</div>
 						</form>
 					</div>

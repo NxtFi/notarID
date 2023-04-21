@@ -2,11 +2,11 @@ import React from 'react'
 
 const ButtonsVerifySellar = ({handleButtonSellar, handleButtonVerificar}) => {
   return (
-    <div className="hashed-button animate__animated animate__fadeIn">
-						<button className="verify-doc" type="button" onClick={handleButtonVerificar}>
+    <div className="flex gap-5 justify-center mt-4">
+						<button className="transition duration-150 ease-in-out p-2 bg-[#278cee] rounded-md text-white hover:bg-white hover:text-[#278cee]" type="button" onClick={handleButtonVerificar}>
 							VERIFICAR
 						</button>
-						<button className="sellar-doc" type="button" onClick={handleButtonSellar}>
+						<button className="transition duration-150 ease-in-out p-2 bg-white rounded-md text-[#278cee] hover:bg-[#278cee] hover:text-white" type="button" onClick={handleButtonSellar}>
 							SELLAR
 						</button>
 					</div>

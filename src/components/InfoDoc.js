@@ -1,5 +1,7 @@
 import React from 'react'
 import { SpinnerDocHash } from './Spinner'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFileZipper } from '@fortawesome/free-regular-svg-icons'
 
 const InfoDoc = ({output,file_Name}) => {
   return (
@@ -16,7 +18,11 @@ const InfoDoc = ({output,file_Name}) => {
         )}
       </div>
     </div>
-    <p className="file-name">Archivo: {file_Name}</p>
+    <div className='flex gap-5  items-center p-5 bg-slate-200'>
+      <FontAwesomeIcon className='h-8 text-[#92b0a6]' icon={faFileZipper}/>
+      <p className="file-name ">{file_Name}</p>
+    </div>
+    
   </div>
   )
 }

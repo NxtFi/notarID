@@ -1,53 +1,7 @@
-html {
-	box-sizing: border-box;
-}
-*,
-*:before,
-*:after {
-	box-sizing: inherit;
-}
-@font-face {
-	font-family: "TTCommons-Regular";
-	src: url("./assets/fonts/TTCommons-Regular.ttf");
-	font-weight: normal;
-	font-style: normal;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@font-face {
-	font-family: "TTCommons-Bold";
-	src: url("./assets/fonts/TTCommons-Bold.ttf");
-	font-weight: Bold;
-	font-style: normal;
+body{
+	background-color: #f1f5f9;
 }
-
-@font-face {
-	font-family: "TTCommons-Light";
-	src: url("./assets/fonts/TTCommons-Light.ttf");
-	font-weight: light;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: "TTCommons-Light-Italic";
-	src: url("./assets/fonts/TTCommons-LightItalic.ttf");
-	font-weight: light;
-	font-style: italic;
-}
-
-:root {
-	--primary-color: #1e35c2;
-	--secondary-color: black;
-	--third-color: white;
-	--text-color: white;
-	--title-color: Y30505fb;
-}
-
-body {
-	font-family: "TTCommons-Regular", "DM Sans", sans-serif;
-	font-size: 62.5%;
-	color: white;
-	min-height: calc(100vh - 96px);
-	background-color: var(--primary-color);
-
-}
-@import "./assets/css/views.css";
