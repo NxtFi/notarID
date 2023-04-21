@@ -3,7 +3,7 @@ import { FaCopy } from "react-icons/fa";
 import copy from "copy-to-clipboard";
 import toast, { Toaster } from "react-hot-toast";
 import { ThreeCircles } from "react-loader-spinner";
-// import CheckIcon from "./Icons/CheckIcon";
+import CheckIcon from "./Icons/CheckIcon";
 
 const ShowResponse = ({ showResponse, backToInitialState }) => {
   const handleCopyClipboard = (hashdoc) => {
@@ -59,7 +59,7 @@ const ShowResponse = ({ showResponse, backToInitialState }) => {
             </div>
           ) : (
             <div className="res-msg animate__animated animate__fadeIn animate__delay-8s">
-              {/* <CheckIcon /> */}
+              <CheckIcon />
               <p className="hashed-algorithm-text">{showResponse.msg}</p>
             </div>
           )
