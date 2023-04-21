@@ -21,7 +21,7 @@ export default function HashingForm() {
 		sellado: false,
 		loading: false,
 	}); //state for save api response
-	console.log(output.dochash)
+
 	//Render one time and verify if exist <dochash> params
 	useEffect(() => {
 		const dochash = params.get("dochash");
@@ -86,7 +86,7 @@ export default function HashingForm() {
 			result = await sha256(fr.result);
 
 			// Setting the hashed text as the output
-			setOutput({ dochash: result, loading: true });
+			setOutput({ dochash: result, loading: true});
 			setParams({
 				dochash: result,
 			});
@@ -139,25 +139,24 @@ export default function HashingForm() {
 		params.delete("dochash");
 		setParams(params);
 	};
+
 	// console.log(showResponse);
 	return (
-		<div className=" w-6/12 h-auto bg-white shadow-sm rounded-md flex flex-col items-center text-center p-8 ">
-			<div className="  ">
+		<div className="w-6/12 h-auto text-[#6b7280] bg-white shadow-sm rounded-md flex flex-col items-center text-center p-8 ">
 				{!showResult && (
-					<div className="container-form-title  animate__animated animate__fadeIn">
-						<form className="flex flex-col gap-5">
-							<h2 className="text-lg font-black text-[#a6a9b1]">Sello de Tiempo</h2>
+						<form className="flex flex-col gap-5 w-10/12  ">
+							<h2 className="text-lg font-semibold ">Sello de Tiempo</h2>
 							<div
 								className={`${
 									activeAnimationDrag
-										? ""
+										? "bg-[#79b6f3] text-white border-white"
 										: ""
-								} p-10 border-2 border-dashed`}
+								} p-10 border-2 border-dashed transition-all duration-300 ease-in-out`}
 								onDrop={handleFileDragDrop}
 								onDragOver={handleFileDragOver}
 								onDragLeave={() => setActiveAnimationDrag(false)}
 							>
-								<FontAwesomeIcon className="text-[#a6a9b1] text-xl"  icon={faUpload}/>
+								<FontAwesomeIcon className=" text-xl"  icon={faUpload}/>
 								<p className="mt-2 text-md font-medium">Arrastre y suelte el documento ...</p>
 							</div>
 							<div className="flex flex-col">
@@ -167,10 +166,8 @@ export default function HashingForm() {
 								<input type="file" className=" hidden" id="file-input" onChange={handleFileInput} />
 							</div>
 							<div>
-
 							</div>
 						</form>
-					</div>
 				)}
 				{showMessage && !showResult && <InfoDoc output={output} file_Name={file_Name} />}
 				{showMessage && !showResult && output.loading && (
@@ -183,6 +180,5 @@ export default function HashingForm() {
 					<ShowResponse showResponse={showResponse} backToInitialState={backToInitialState} />
 				)}
 			</div>
-		</div>
 	);
 }

@@ -1,30 +1,46 @@
-import React from 'react'
-import { SpinnerDocHash } from './Spinner'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFileZipper } from '@fortawesome/free-regular-svg-icons'
+import React from "react";
+import { SpinnerDocHash } from "./Spinner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileZipper } from "@fortawesome/free-regular-svg-icons";
 
-const InfoDoc = ({output,file_Name}) => {
+const InfoDoc = ({ output, file_Name }) => {
   return (
-    <div className="hashed-output animate__animated animate__fadeIn">
-    <h4 className="hashed-algorithm-heading">Hash del archivo</h4>
-    <div className="hashed-algorithm-container">
-      <div className="hashed-algorithm-text">
-        {output.loading ? (
-          output.dochash
-        ) : (
-          <div className="spinnerDochash">
-            <SpinnerDocHash />
+    <>
+      {/* <div className="flex text-sm">
+        <h4>Hash: </h4>
+        <div>
+          <div className="hashed-algorithm-text">
+            {output.loading ? (
+              output.dochash
+            ) : (
+              <div className="spinnerDochash">
+                <SpinnerDocHash />
+              </div>
+            )}
           </div>
-        )}
+        </div>
+      </div> */}
+      <div className="items-center p-5 bg-slate-200">
+        <div className="flex gap-5">
+          <FontAwesomeIcon className="h-8 text-[#92b0a6]" icon={faFileZipper} />
+          <div className="text-left">
+            <p className="file-name ">{file_Name}</p>
+            {
+              output.loading && (
+                <p className="text-xs">Hash: {output.dochash} </p>
+              )
+            }
+          </div>
+        </div>
+        {
+          !output.loading &&(
+            <div className="bg-green-400 mt-3 rounded-xl text-[10px] text-white ">cargando</div>
+          )
+        }
+        
       </div>
-    </div>
-    <div className='flex gap-5  items-center p-5 bg-slate-200'>
-      <FontAwesomeIcon className='h-8 text-[#92b0a6]' icon={faFileZipper}/>
-      <p className="file-name ">{file_Name}</p>
-    </div>
-    
-  </div>
-  )
-}
+    </>
+  );
+};
 
-export default InfoDoc
+export default InfoDoc;

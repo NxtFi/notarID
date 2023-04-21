@@ -71,7 +71,7 @@ const ShowResponse = ({ showResponse, backToInitialState }) => {
 						<Spinner />
 					</div>
 				)}
-				<button type="button" className="again-button" onClick={backToInitialState}>
+				<button type="button" className="p-2 text-sm text-white mt-2 bg-[#278cee] rounded-md" onClick={backToInitialState}>
 					Volver a verificar/sellar
 				</button>
 			</div>

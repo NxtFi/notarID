@@ -4,6 +4,7 @@ export const verifyDoc = async (setResponse, setResult, output) => {
 	let endpoint =
 		"https://dev-001-node.cloud.nxtfi.org/v2/dc84d53faa57e49723397454bef9a6ec2c60d9f9c390dd370cbf483b25a823e7/_/";
 	endpoint += output;
+	console.log(output)
 	await fetch(endpoint)
 		// Exito
 		.then((response) => response.json())
@@ -88,6 +89,7 @@ export const sellarDoc = (setResponse, setResult, output, data_raw) => {
 					setResponse({ msg: "Documento enviado a sellar", data: {}, sellado: false, loading: true });
 					const fetchResponse = await fetch(`https://${location}/create`, settings);
 					const data = await fetchResponse.json();
+					console.log(data)
 					// console.log("Resultado: ", data);
 					return data;
 				} catch (e) {
