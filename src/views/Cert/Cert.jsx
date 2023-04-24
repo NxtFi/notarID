@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { sha256 } from "crypto-hash";
 import validator from "validator";
-import ShowResponse from "../components/ShowResponse";
-import { sellarDoc, verifyDoc } from "../helpers/requestApi";
+import ShowResponse from "../../components/ShowResponse";
+import { sellarDoc, verifyDoc } from "../../helpers/requestApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
-import InfoDoc from "../components/InfoDoc";
-import ButtonsVerifySellar from "../components/ButtonsVerifySellar";
+import InfoDoc from "../../components/InfoDoc";
+import ButtonsVerifySellar from "../../components/ButtonsVerifySellar";
 
 export default function CertForm() {
   const [emailError, setEmailError] = useState("Ingrese Un Email");

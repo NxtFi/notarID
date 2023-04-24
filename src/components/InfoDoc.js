@@ -4,21 +4,6 @@ import { faFileZipper } from "@fortawesome/free-regular-svg-icons";
 
 const InfoDoc = ({ output, file_Name }) => {
   return (
-    <>
-      {/* <div className="flex text-sm">
-        <h4>Hash: </h4>
-        <div>
-          <div className="hashed-algorithm-text">
-            {output.loading ? (
-              output.dochash
-            ) : (
-              <div className="spinnerDochash">
-                <SpinnerDocHash />
-              </div>
-            )}
-          </div>
-        </div>
-      </div> */}
       <div className="items-center md:p-5 p-3  bg-slate-200 overflow-auto max-md:w-full">
         <div className="flex gap-5">
           <FontAwesomeIcon className="h-8 text-[#92b0a6]" icon={faFileZipper} />
@@ -38,7 +23,6 @@ const InfoDoc = ({ output, file_Name }) => {
         }
         
       </div>
-    </>
   );
 };
 

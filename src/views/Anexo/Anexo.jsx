@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { sha256 } from "crypto-hash";
 import validator from "validator";
-import ShowResponse from "../components/ShowResponse";
-import { sellarDoc, verifyDoc } from "../helpers/requestApi";
-import InfoDoc from "../components/InfoDoc";
-import ButtonsVerifySellar from "../components/ButtonsVerifySellar";
+import ShowResponse from "../../components/ShowResponse";
+import { sellarDoc, verifyDoc } from "../../helpers/requestApi";
+import InfoDoc from "../../components/InfoDoc";
+import ButtonsVerifySellar from "../../components/ButtonsVerifySellar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 
@@ -154,19 +154,19 @@ export default function AnexoForm() {
   };
 
   return (
-    <div className="w-9/12 h-auto text-[#6b7280] bg-white shadow-sm rounded-md flex flex-col gap-5 md:gap-10 items-center text-center py-7 px-8  ">
+    <div className="w-9/12 h-auto max-[380px]:h-4/6 overflow-auto text-[#6b7280] bg-white shadow-sm rounded-md flex flex-col gap-5  md:gap-10 items-center text-center py-7  px-8  ">
       {!showResult && (
         <>
              <h2 className="text-lg font-semibold">Sello con datos anexos</h2>
-        <div className="flex max-md:flex-col gap-9 md:gap-12">
-          <form className="flex flex-col gap-5 w-full ">
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-8 ">
+        <div className="flex max-md:flex-col  gap-9 md:gap-12 ">
+          <form className="flex flex-col  gap-5 w-full ">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-8  ">
               <div className="flex flex-col">
                 <label htmlFor="name">Nombre</label>
                 <input
                   type="text"
                   name="name"
-                  className=" rounded-lg border md:p-1   p-0  border-[#94a3b8]"
+                  className=" rounded-lg border md:p-1  p-0  border-[#94a3b8]"
                   value={inputs.name || ""}
                   id="name"
                   onChange={handleChange}
@@ -183,7 +183,7 @@ export default function AnexoForm() {
                   onChange={handleChange}
                 />
               </div>
-              <div className="flex flex-col">
+              <div className="flex flex-col">  
                 <label htmlFor="dtype">Tipo de documento</label>
                 <select
                   name="dtype"
@@ -233,7 +233,7 @@ export default function AnexoForm() {
               </div>
             </div>
           </form>
-          <div className="flex flex-col justify-center gap-5 w-full max-md:items-center md:w-8/12">
+          <div className="flex flex-col justify-center gap-5 w-full max-md:items-center md:w-8/12 ">
             <div
               className={`${
                 activeAnimationDrag
@@ -245,14 +245,14 @@ export default function AnexoForm() {
               onDragLeave={() => setActiveAnimationDrag(false)}
             >
               <FontAwesomeIcon className=" text-xl" icon={faUpload} />
-              <p classname="mt-2 text-md font-medium">
+              <p className="mt-2 text-md font-medium">
                 Arrastre y suelte el documento ...
               </p>
             </div>
             <div className="md:mb-4 mb-0 flex flex-col max-md:w-full">
               <label
                 htmlFor="file-input"
-                className={`${showMessage && !showResult && "bg-slate-200 text-[#278cee]"} transition-all duration-200  cursor-pointer text-md text-white font-medium p-2 rounded-md bg-[#278cee] hover:bg-slate-200 hover:text-[#278cee]`}
+                className={`${showMessage && !showResult && "bg-slate-200 text-[#278cee]"} transition-all duration-200  cursor-pointer text-md text-white font-medium p-2 max-[380px]:p-1 rounded-md bg-[#278cee] hover:bg-slate-200 hover:text-[#278cee]`}
               >
                 Selecciona archivo
               </label>
@@ -267,7 +267,7 @@ export default function AnexoForm() {
         </div>
         </>
       )}
-      <div className="flex max-md:flex-col gap-5 items-center max-md:w-full">
+      <div className="flex max-md:flex-col gap-5 items-center  max-md:w-full ">
         {showMessage && !showResult && (
           <InfoDoc output={output} file_Name={file_Name} />
         )}

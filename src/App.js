@@ -1,7 +1,7 @@
-import Hashing from "./views/Hashing";
+import Hashing from "./views/Hashing/Hashing";
 import Navbar from "./components/Navbar/Navbar";
-import Cert from "./views/Cert.js";
-import Anexo from "./views/Anexo.js";
+import Cert from "./views/Cert/Cert";
+import Anexo from "./views/Anexo/Anexo";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Footer } from "./components/Footer";
 
