@@ -132,11 +132,11 @@ export default function AnexoForm() {
     data_raw += emailDir;
     data_raw += '",';
     data_raw += '"block":{"data":"// IMPORT ';
-    data_raw += "e4e9cdbc983681154f8c11abb07b8a90b2f9afd6b9c452337d98a5661d7ffc69"; // smart contract
+    data_raw += "005922b9e2c630d8d7d5bc6ebd2a24bb16e321cc1c50425de33ffa5a6436be84"; // smart contract
     data_raw += '\\n {\\"hash\\":\\"';
     data_raw += output.dochash; //doc hash
     data_raw +=
-      '\\"}","by":"NOTARIO","scope":"e4e9cdbc983681154f8c11abb07b8a90b2f9afd6b9c452337d98a5661d7ffc69"}}';
+      '\\"}","by":"NOTARIO","scope":"005922b9e2c630d8d7d5bc6ebd2a24bb16e321cc1c50425de33ffa5a6436be84"}}';
     sellarDoc(setResponse, setResult, output.dochash, data_raw);
     setShowMessage(false);
   };
