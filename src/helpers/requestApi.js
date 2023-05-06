@@ -2,7 +2,7 @@
 export const verifyDoc = async (setResponse, setResult, output) => {
 	// GET (Request).
 	let endpoint =
-		"https://dev-001-node.cloud.nxtfi.org/v2/dc84d53faa57e49723397454bef9a6ec2c60d9f9c390dd370cbf483b25a823e7/_/";
+		"https://demo-001-node.cloud.nxtfi.org/v2/e4e9cdbc983681154f8c11abb07b8a90b2f9afd6b9c452337d98a5661d7ffc69/_/";
 	endpoint += output;
 
 	await fetch(endpoint)
@@ -13,9 +13,8 @@ export const verifyDoc = async (setResponse, setResult, output) => {
 				// console.log("Bloque: ", json);
 				// setResponse({ msg: "Documento sellado", data: { hash: json }, sellado: true });
 				//obtener timestamp
-				//https://dev-001-node.cloud.nxtfi.org/v2/_block
-				let blockReadEndpoint = "https://dev-001-node.cloud.nxtfi.org/v2/_block/";
-				blockReadEndpoint += json;
+				let blockReadEndpoint = "https://demo-001-node.cloud.nxtfi.org/v2/_block/";
+				blockReadEndpoint += json.hash;
 				fetch(blockReadEndpoint)
 					// Exito
 					.then((response) => response.json())
@@ -26,7 +25,7 @@ export const verifyDoc = async (setResponse, setResult, output) => {
 							data: {
 								hash: blockData.hash,
 								timestamp: blockData.timestamp,
-								hashdoc:output,
+								hashdoc: output,
 								date: new Date(blockData.timestamp).toLocaleString(
 									"es-AR",
 									"America/Argentina/Buenos_Aires"
@@ -60,7 +59,7 @@ export const verifyDoc = async (setResponse, setResult, output) => {
 
 export const sellarDoc = (setResponse, setResult, output, data_raw) => {
 	let endpoint =
-		"https://dev-001-node.cloud.nxtfi.org/v2/dc84d53faa57e49723397454bef9a6ec2c60d9f9c390dd370cbf483b25a823e7/_/";
+		"https://demo-001-node.cloud.nxtfi.org/v2/e4e9cdbc983681154f8c11abb07b8a90b2f9afd6b9c452337d98a5661d7ffc69/_/";
 	endpoint += output;
 	fetch(endpoint)
 		// Exito
@@ -70,15 +69,11 @@ export const sellarDoc = (setResponse, setResult, output, data_raw) => {
 				// console.log("Documento selllado en el Bloque: ", json);
 				setResponse({
 					msg: "Documento ya se encuentra sellado",
-					data: { hash: json },
+					data: { hash: json.hash },
 					sellado: true,
 					loading: true,
 				});
 			} else {
-				// string pattern
-				//here was data_raw declaration
-				//let data = '{"block":{"data":"// IMPORT dc84d53faa57e49723397454bef9a6ec2c60d9f9c390dd370cbf483b25a823e7\\n {hash:\'1355d4c778090809336ce9d0980af78c16edf218ded10c2a7ac1736c9e8b1fff\'}","by":"NOTARIO","scope":"dc84d53faa57e49723397454bef9a6ec2c60d9f9c390dd370cbf483b25a823e7"}}';
-
 				const location = "signblock.dev.nxtfi.org";
 				const settings = {
 					method: "POST",
