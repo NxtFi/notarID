@@ -125,10 +125,10 @@ export default function CertForm() {
     data_raw += emailDir;
     data_raw += '",';
     data_raw += '"block":{"data":"// IMPORT ';
-    data_raw += "88f02c374191a26b5f7784ed16e43ec0b69de5aec71cc37ce7d4d80dd5d0718c"; // smart contract
+    data_raw += "088cd152d9784216ad60606b0fec905788d4116b1deacd458c9e56017954ab15"; // smart contract
     data_raw += '\\n {\\"hash\\":\\"';
     data_raw += output.dochash; //doc hash
-    data_raw += '\\"}","by":"NOTARIO","scope":"88f02c374191a26b5f7784ed16e43ec0b69de5aec71cc37ce7d4d80dd5d0718c"}}';
+    data_raw += '\\"}","by":"NOTARIO","scope":"088cd152d9784216ad60606b0fec905788d4116b1deacd458c9e56017954ab15"}}';
     sellarDoc(setResponse, setResult, output.dochash, data_raw);
     setShowMessage(false);
   };

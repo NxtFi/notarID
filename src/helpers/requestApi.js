@@ -2,7 +2,7 @@
 export const verifyDoc = async (setResponse, setResult, output) => {
 	// GET (Request).
 	let endpoint =
-		"https://demo-001-node.cloud.nxtfi.org/v2/88f02c374191a26b5f7784ed16e43ec0b69de5aec71cc37ce7d4d80dd5d0718c/_/";
+		"https://demo-001-node.cloud.nxtfi.org/v2/088cd152d9784216ad60606b0fec905788d4116b1deacd458c9e56017954ab15/_/";
 	endpoint += output;
 
 	await fetch(endpoint)
@@ -59,7 +59,7 @@ export const verifyDoc = async (setResponse, setResult, output) => {
 
 export const sellarDoc = (setResponse, setResult, output, data_raw) => {
 	let endpoint =
-		"https://demo-001-node.cloud.nxtfi.org/v2/88f02c374191a26b5f7784ed16e43ec0b69de5aec71cc37ce7d4d80dd5d0718c/_/";
+		"https://demo-001-node.cloud.nxtfi.org/v2/088cd152d9784216ad60606b0fec905788d4116b1deacd458c9e56017954ab15/_/";
 	endpoint += output;
 	fetch(endpoint)
 		// Exito
