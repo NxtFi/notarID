@@ -2,7 +2,7 @@
 export const verifyDoc = async (setResponse, setResult, output) => {
 	// GET (Request).
 	let endpoint =
-		"https://demo-001-node.cloud.nxtfi.org/v2/005922b9e2c630d8d7d5bc6ebd2a24bb16e321cc1c50425de33ffa5a6436be84/_/";
+		"https://demo-001-node.cloud.nxtfi.org/v2/1f84e128c48b75ca6b05ade7691815b302507254d913d5761459b0c2612a2f69/_/";
 	endpoint += output;
 
 	await fetch(endpoint)
@@ -14,7 +14,7 @@ export const verifyDoc = async (setResponse, setResult, output) => {
 				// setResponse({ msg: "Documento sellado", data: { hash: json }, sellado: true });
 				//obtener timestamp
 				let blockReadEndpoint = "https://demo-001-node.cloud.nxtfi.org/v2/_block/";
-				blockReadEndpoint += json.hash;
+				blockReadEndpoint += json.block;
 				fetch(blockReadEndpoint)
 					// Exito
 					.then((response) => response.json())
@@ -59,7 +59,7 @@ export const verifyDoc = async (setResponse, setResult, output) => {
 
 export const sellarDoc = (setResponse, setResult, output, data_raw) => {
 	let endpoint =
-		"https://demo-001-node.cloud.nxtfi.org/v2/005922b9e2c630d8d7d5bc6ebd2a24bb16e321cc1c50425de33ffa5a6436be84/_/";
+		"https://demo-001-node.cloud.nxtfi.org/v2/1f84e128c48b75ca6b05ade7691815b302507254d913d5761459b0c2612a2f69/_/";
 	endpoint += output;
 	fetch(endpoint)
 		// Exito
