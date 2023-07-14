@@ -100,3 +100,69 @@ export const sellarDoc = (setResponse, setResult, output, data_raw) => {
 		}); // Capturar errores
 	setResult(true);
 };
+
+
+
+// const handleFileInput = (e) => {
+//     e.preventDefault();
+//     setOutput({ dochash: "", loading: false });
+//     setShowMessage(false);
+
+//     // Initializing the file reader
+//     const fr = new FileReader();
+
+//     // Listening to when the file has been read.
+//     fr.onload = async () => {
+//       let result = "";
+//       // Hashing the content based on the active algorithm
+
+//       result = await sha256(fr.result);
+
+//       // Setting the hashed text as the output
+//       setOutput({ dochash: result, loading: true });
+
+//       // Setting the content of the file as file input
+//       e.target.value = null;
+//     };
+
+//     setShowMessage(true);
+//     // Reading the file.
+//     fr.readAsText(e.target.files[0]);
+//     setFileName(e.target.files[0].name);
+//     // console.log(e.target.files[0].name);
+//   };
+
+//   const handleFileDragDrop = (e) => {
+//     // Evitar el comportamiendo por defecto (Evitar que el fichero se abra/ejecute)
+//     e.preventDefault();
+//     setActiveAnimationDrag(false);
+//     setShowMessage(false);
+//     setOutput({ dochash: "", loading: false });
+
+//     if (e.dataTransfer.files) {
+//       // Usar la interfaz DataTransferItemList para acceder a el/los archivos)
+//       for (let i = 0; i < e.dataTransfer.files.length; i++) {
+//         let file = e.dataTransfer.files[i];
+//         // console.log("... file[" + i + "].name = " + file.name);
+//         setFileName(file.name);
+
+//         const fr = new FileReader();
+//         fr.readAsText(e.dataTransfer.files[i]);
+
+//         fr.onload = async () => {
+//           let result = "";
+//           result = await sha256(fr.result);
+//           // Setting the hashed text as the output
+//           setOutput({ dochash: result, loading: true });
+
+//           // Setting the content of the file as file input
+//         };
+//         setShowMessage(true);
+//       }
+//     } else {
+//       // Usar la interfaz DataTransfer para acceder a el/los archivos
+//       for (let i = 0; i < e.dataTransfer.files.length; i++) {
+//         // console.log("... file[" + i + "].name = " + e.dataTransfer.files[i].name);
+//       }
+//     }
+//   };
