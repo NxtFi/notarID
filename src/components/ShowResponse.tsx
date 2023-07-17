@@ -1,4 +1,3 @@
-import React from "react";
 import { FaCopy } from "react-icons/fa";
 import copy from "copy-to-clipboard";
 import toast, { Toaster } from "react-hot-toast";
@@ -6,12 +5,15 @@ import { ThreeCircles } from "react-loader-spinner";
 import CheckIcon from "./Icons/Check/CheckIcon";
 import XmarkIcon from "./Icons/Xmark/XmarkIcon";
 
+interface Props {
+  showResponse: boolean;
+  resetState: () => void;
+}
 
-const ShowResponse = ({ showResponse, backToInitialState }) => {
-  const handleCopyClipboard = (hashdoc) => {
+const ShowResponse = ({ showResponse, resetState }: Props) => {
+  const handleCopyClipboard = (hashdoc: string) => {
     copy(hashdoc);
     toast.success("Copiado al portapapeles", {
-      gutter: 1,
       id: "clipboard",
       duration: 1000,
       iconTheme: {
@@ -60,9 +62,12 @@ const ShowResponse = ({ showResponse, backToInitialState }) => {
             </div>
           ) : (
             <div className="">
-              {
-                showResponse.msg === "Sin resultado" || showResponse.msg === "Documento no sellado" ? <XmarkIcon /> : <CheckIcon />
-              }
+              {showResponse.msg === "Sin resultado" ||
+              showResponse.msg === "Documento no sellado" ? (
+                <XmarkIcon />
+              ) : (
+                <CheckIcon />
+              )}
               <p className="hashed-algorithm-text mt-4">{showResponse.msg}</p>
             </div>
           )
@@ -86,7 +91,7 @@ const ShowResponse = ({ showResponse, backToInitialState }) => {
       <button
         type="button"
         className="p-2 text-sm text-white mt-2 bg-[#278cee] rounded-md"
-        onClick={backToInitialState}
+        onClick={resetState}
       >
         Volver a verificar / sellar
       </button>

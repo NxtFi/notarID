@@ -1,34 +1,16 @@
-import { sha256 } from "crypto-hash";
 import ShowResponse from "../../components/ShowResponse";
-import { sellarDoc, verifyDoc } from "../../helpers/requestApi";
 import InfoDoc from "../../components/InfoDoc";
 import ButtonsVerifySellar from "../../components/ButtonsVerifySellar";
 import { Form, Formik } from "formik";
 import { CustomInput } from "../../components/inputs/CustomInput";
 import { CustomFileInput } from "../../components/inputs/CustomFileInput";
+import { useState } from "react";
+import { fileInfo } from "../../helpers/interfaces";
 
 export default function CertForm() {
-  const handleButtonVerificar = (e) => {
-    // GET (Request).
-    verifyDoc(setResponse, setResult, output.dochash);
-    setResult(true);
-  };
-
-  const handleButtonSellar = async (e) => {
-    let data_raw = "{";
-    data_raw += '"email":"';
-    data_raw += emailDir;
-    data_raw += '",';
-    data_raw += '"block":{"data":"// IMPORT ';
-    data_raw +=
-      "088cd152d9784216ad60606b0fec905788d4116b1deacd458c9e56017954ab15"; // smart contract
-    data_raw += '\\n {\\"hash\\":\\"';
-    data_raw += output.dochash; //doc hash
-    data_raw +=
-      '\\"}","by":"NOTARIO","scope":"088cd152d9784216ad60606b0fec905788d4116b1deacd458c9e56017954ab15"}}';
-    sellarDoc(setResponse, setResult, output.dochash, data_raw);
-    setShowMessage(false);
-  };
+  const [showMessage, setShowMessage] = useState(false);
+  const [showResult, setShowResult] = useState(false);
+  const [fileInfo, setFileInfo] = useState<fileInfo>();
 
   return (
     <div className="md:w-6/12 w-9/12 h-auto gap-2 text-[#6b7280] bg-white shadow-sm rounded-md flex flex-col items-center text-center px-7 py-6 ">
@@ -56,10 +38,8 @@ export default function CertForm() {
           </Formik>
         </>
       )}
-      {showMessage && !showResult && (
-        <InfoDoc output={output} file_Name={file_Name} />
-      )}
-      {showMessage && !showResult && emailOk && output.loading && (
+      {showMessage && !showResult && <InfoDoc file={fileInfo!} />}
+      {/* {showMessage && !showResult && (
         <ButtonsVerifySellar
           handleButtonSellar={handleButtonSellar}
           handleButtonVerificar={handleButtonVerificar}
@@ -70,7 +50,7 @@ export default function CertForm() {
           showResponse={showResponse}
           backToInitialState={backToInitialState}
         /> //component show response
-      )}
+      )} */}
     </div>
   );
 }
