@@ -39,7 +39,7 @@ export default function Navbar() {
       <div className="flex items-center gap-3 py-2">
         <a
           href="https://www.notarid.demo.nxtfi.org/"
-          className="h-10 hover:scale-105 transition-all duration-150"
+          className="h-10 w-16 hover:scale-105 transition-all duration-150"
         >
           <img src={nxtfi_logo} alt="NxtFi" id="nxtfi_logo"></img>
         </a>
