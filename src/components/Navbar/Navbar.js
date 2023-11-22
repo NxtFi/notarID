@@ -38,7 +38,7 @@ export default function Navbar() {
     <nav className="md:flex transition-all duration-500 ease-in max-md:flex-col w-full h-16 bg-[#ffffff] text-[#6b7280] justify-between px-8 items-center font-medium  absolute top-0">
       <div className="flex items-center gap-3 py-2">
         <a
-          href="https://www.notarid.demo.nxtfi.org/"
+          href="https://g2m.demo.nxtfi.org/"
           className="h-10 w-16 hover:scale-105 transition-all duration-150"
         >
           <img src={nxtfi_logo} alt="G2M" id="nxtfi_logo"></img>
