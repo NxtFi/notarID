@@ -4,7 +4,8 @@ import { NavLink } from "react-router-dom";
 
 import { Links } from "./Links";
 
-import nxtfi_logo from "../../assets/img/logo2.png";
+//import nxtfi_logo from "../../assets/img/logo2.png";
+import nxtfi_logo from "../../assets/img/logo3.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 
