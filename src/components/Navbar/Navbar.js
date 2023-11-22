@@ -41,7 +41,7 @@ export default function Navbar() {
           href="https://www.notarid.demo.nxtfi.org/"
           className="h-10 w-16 hover:scale-105 transition-all duration-150"
         >
-          <img src={nxtfi_logo} alt="NxtFi" id="nxtfi_logo"></img>
+          <img src={nxtfi_logo} alt="G2M" id="nxtfi_logo"></img>
         </a>
         <h1 className="font-black text-lg text-[#489ef3]">NotarID</h1>
         <FontAwesomeIcon
