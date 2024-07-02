@@ -49,6 +49,24 @@ const ShowResponse = ({ showResponse, backToInitialState }) => {
                 <h3 className="font-semibold">Hash del bloque:</h3>
                 <p className="text-sm">{showResponse.data.hash}</p>
               </div>
+              {
+                showResponse.data.name !== "" ? <div className="grid gap-1">
+                <h3 className="font-semibold">Name:</h3>
+                <p className="text-sm">{showResponse.data.name} {showResponse.data.lastName}</p>
+                </div>
+              }
+              {
+                showResponse.data.docnumber !== "" ? <div className="grid gap-1">
+                <h3 className="font-semibold">Document:</h3>
+                <p className="text-sm">{showResponse.data.doctype} {showResponse.data.docnumber}</p>
+                </div>
+              }
+              {
+                showResponse.data.obs !== "" ? <div className="grid gap-1">
+                <h3 className="font-semibold">Name:</h3>
+                <p className="text-sm">{showResponse.data.obs}</p>
+                </div>
+              }
               <div className="grid gap-1">
                 <h3 className="font-semibold">Timestamp:</h3>
                 <p className="text-sm">{showResponse.data.timestamp}</p>
