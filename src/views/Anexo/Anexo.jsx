@@ -127,8 +127,6 @@ export default function AnexoForm() {
   };
 
   const handleButtonSellar = async (e) => {
-    console.log(" SELLAR")
-    console.log(e)
     let data_raw = "{";
     data_raw += '"email":"';
     data_raw += emailDir;
