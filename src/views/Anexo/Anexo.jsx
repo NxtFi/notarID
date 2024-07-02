@@ -136,7 +136,7 @@ export default function AnexoForm() {
     data_raw += '\\n {\\"hash\\":\\"' + output.dochash + '\\",'; //doc hash
     data_raw += '\\"name\\":\\"' + (inputs.name || "") + '\\",';
     data_raw += '\\"lastName\\":\\"' + (inputs.ape || "") + '\\",';
-    data_raw += '\\"doctype\\":\\"' + (inputs.dtype || "") + '\\",';
+    data_raw += '\\"doctype\\":\\"' + (inputs.dtype || "DNI") + '\\",';
     data_raw += '\\"docnumber\\":\\"' + (inputs.docnumber || "") + '\\",';
     data_raw += '\\"obs\\":\\"' + (inputs.obs || "") + '\\"';
     data_raw += '}","by":"NOTARIO","scope":"088cd152d9784216ad60606b0fec905788d4116b1deacd458c9e56017954ab15"}}';
