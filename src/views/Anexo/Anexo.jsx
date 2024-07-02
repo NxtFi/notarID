@@ -127,6 +127,8 @@ export default function AnexoForm() {
   };
 
   const handleButtonSellar = async (e) => {
+    console.log(" SELLAR")
+    console.log(e)
     let data_raw = "{";
     data_raw += '"email":"';
     data_raw += emailDir;
@@ -137,6 +139,12 @@ export default function AnexoForm() {
     data_raw += output.dochash; //doc hash
     data_raw +=
       '\\"}","by":"NOTARIO","scope":"088cd152d9784216ad60606b0fec905788d4116b1deacd458c9e56017954ab15"}}';
+    data_raw += '"name":"' + (inputs.name || "") + '",';
+    data_raw += '"lastName":"' + (inputs.ape || "") + '",';
+    data_raw += '"doctype":"' + (inputs.dtype || "") + '",';
+    data_raw += '"docnumber":"' + (inputs.docnumber || "") + '",';
+    data_raw += '"obs":"' + (inputs.obs || "") + '"';
+    data_raw += "}}";
     sellarDoc(setResponse, setResult, output.dochash, data_raw);
     setShowMessage(false);
   };
