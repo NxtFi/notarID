@@ -47,7 +47,7 @@ const ShowResponse = ({ showResponse, backToInitialState }) => {
               </div>
               <div className="grid gap-1 ">
                 <h3 className="font-semibold">Hash del bloque:</h3>
-                <p className="text-sm"><a href={`https://demo-001-node.cloud.nxtfi.org/v2/_block/${showResponse.data.hash}`}>{showResponse.data.hash}</a></p>
+                <p className="text-sm"><a style="color: cornflowerblue;text-decoration: underline;" href={"https://demo-001-node.cloud.nxtfi.org/v2/_block/" + showResponse.data.hash}>{showResponse.data.hash}</a></p>
               </div>
               {
                 showResponse.data.name !== "" ? <div className="grid gap-1">
