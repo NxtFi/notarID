@@ -53,19 +53,19 @@ const ShowResponse = ({ showResponse, backToInitialState }) => {
                 showResponse.data.name !== "" ? <div className="grid gap-1">
                 <h3 className="font-semibold">Name:</h3>
                 <p className="text-sm">{showResponse.data.name} {showResponse.data.lastName}</p>
-                </div>
+                </div> : <>
               }
               {
                 showResponse.data.docnumber !== "" ? <div className="grid gap-1">
                 <h3 className="font-semibold">Document:</h3>
                 <p className="text-sm">{showResponse.data.doctype} {showResponse.data.docnumber}</p>
-                </div>
+                </div> : <>
               }
               {
                 showResponse.data.obs !== "" ? <div className="grid gap-1">
                 <h3 className="font-semibold">Name:</h3>
                 <p className="text-sm">{showResponse.data.obs}</p>
-                </div>
+                </div> : <>
               }
               <div className="grid gap-1">
                 <h3 className="font-semibold">Timestamp:</h3>
