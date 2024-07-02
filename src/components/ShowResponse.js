@@ -63,7 +63,7 @@ const ShowResponse = ({ showResponse, backToInitialState }) => {
               }
               {
                 showResponse.data.obs !== "" ? <div className="grid gap-1">
-                <h3 className="font-semibold">Name:</h3>
+                <h3 className="font-semibold">Observations:</h3>
                 <p className="text-sm">{showResponse.data.obs}</p>
                 </div> : <div></div>
               }
